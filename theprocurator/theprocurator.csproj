@@ -207,6 +207,9 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\tpn-full-logo.jpg" />
+    <Content Include="Content\images\tpn_header_logo.png" />
+    <Content Include="Content\images\tpn_header_logo_2.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
