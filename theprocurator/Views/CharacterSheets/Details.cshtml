@@ -1,0 +1,51 @@
+﻿@model theprocurator.Data.Model.CharacterSheet
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CharacterSheet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterSheetName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterSheetName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterSheetUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterSheetUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterSheetForm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterSheetForm)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CharacterSheetId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

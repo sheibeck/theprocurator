@@ -1,0 +1,57 @@
+﻿@model theprocurator.Data.Model.CharacterSheet
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>CharacterSheet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterSheetName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterSheetName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterSheetUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterSheetUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterSheetForm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterSheetForm)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

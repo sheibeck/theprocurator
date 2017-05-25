@@ -60,7 +60,5 @@ namespace theprocurator.Data
             modelBuilder.Entity<IdentityUserClaim>().Property(u => u.ClaimType).HasMaxLength(150);
             modelBuilder.Entity<IdentityUserClaim>().Property(u => u.ClaimValue).HasMaxLength(500);
         }
-
-
     }
 }

@@ -23,6 +23,10 @@ namespace theprocurator
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/formeo")
+                .Include("~/Scripts/formeo.min.js")
+                .Include("~/Scripts/tpn.charactersheet.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

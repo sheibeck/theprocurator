@@ -1,0 +1,46 @@
+﻿@model IEnumerable<theprocurator.Data.Model.CharacterSheet>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CharacterSheetName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CharacterSheetUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CharacterSheetForm)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CharacterSheetName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CharacterSheetUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CharacterSheetForm)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CharacterSheetId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CharacterSheetId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CharacterSheetId })
+        </td>
+    </tr>
+}
+
+</table>
