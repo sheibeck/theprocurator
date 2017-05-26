@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using theprocurator.Data;
 using theprocurator.Data.Model;
 using Microsoft.AspNet.Identity;
+using static theprocurator.Helpers.AjaxHelpers;
 
 namespace theprocurator.Controllers
 {
@@ -23,43 +24,28 @@ namespace theprocurator.Controllers
             return View(characterSheet.ToList());
         }
 
-        // GET: CharacterSheets/Details/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CharacterSheet characterSheet = db.CharacterSheet.Find(id);
-            if (characterSheet == null)
-            {
-                return HttpNotFound();
-            }
-            return View(characterSheet);
-        }
-
-        // GET: CharacterSheets/Create
+            // GET: CharacterSheets/Create
         public ActionResult Create()
         {
-            return View();
+            var characterSheet = new CharacterSheet();
+            return View(characterSheet);
         }
 
         // POST: CharacterSheets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm")] CharacterSheet characterSheet)
-        {
+        //[ValidateAntiForgeryToken]
+        [ValidateJSONAntiForgeryHeader]
+        public ActionResult Edit([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm,UserId")] CharacterSheet characterSheet)
+        {            
             if (ModelState.IsValid)
             {
-                characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
-                characterSheet.CharacterSheetId = Guid.NewGuid();
-                db.CharacterSheet.Add(characterSheet);
+                db.Entry(characterSheet).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirect = false, responseText = "Character sheet saved." }, JsonRequestBehavior.AllowGet);
             }
-            return View(characterSheet);
+            return Json(new { success = false, redirect = false, responseText = "Error saving character sheet." }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Edit/5
@@ -82,16 +68,21 @@ namespace theprocurator.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm")] CharacterSheet characterSheet)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm")] CharacterSheet characterSheet)
         {
+            // revalidate after fetching the logged in user
+            characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
+            ModelState.Clear();
+            TryValidateModel(characterSheet);
+
             if (ModelState.IsValid)
             {
-                db.Entry(characterSheet).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                db.Entry(characterSheet).State = EntityState.Added;
+                db.SaveChanges();                
+                return Json(new { success = true, redirect = true, responseText = Url.Action("Edit", new { id = characterSheet.CharacterSheetId }) }, JsonRequestBehavior.AllowGet);
             }
-            return View(characterSheet);
+            return Json(new { success = false, redirect = false, responseText = "Error saving character sheet." }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Delete/5

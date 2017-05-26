@@ -202,6 +202,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AjaxHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -232,6 +233,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\tpn.common.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -269,7 +271,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\CharacterSheets\Create.cshtml" />
     <Content Include="Views\CharacterSheets\Delete.cshtml" />
-    <Content Include="Views\CharacterSheets\Details.cshtml" />
     <Content Include="Views\CharacterSheets\Edit.cshtml" />
     <Content Include="Views\CharacterSheets\Index.cshtml" />
   </ItemGroup>

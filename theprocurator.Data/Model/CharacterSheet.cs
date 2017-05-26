@@ -30,7 +30,8 @@ namespace theprocurator.Data.Model
         public string CharacterSheetForm { get; set; }
 
 
-        // Foreign Keys        
+        // Foreign Keys      
+        [Required] 
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }

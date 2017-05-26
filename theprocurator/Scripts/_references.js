@@ -7,3 +7,4 @@
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="respond.js" />
 /// <reference path="tpn.charactersheet.js" />
+/// <reference path="tpn.common.js" />
