@@ -1,26 +1,23 @@
 ﻿@model IEnumerable<theprocurator.Data.Model.CharacterSheet>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Character Sheets";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Character Sheets</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create a Character Sheet", "Create")
 </p>
 <table class="table">
-    <tr>
+    <tr>        
         <th>
-            @Html.DisplayNameFor(model => model.CharacterSheetName)
+            Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CharacterSheetUrl)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CharacterSheetForm)
-        </th>
+            # Characters
+        </th>                
         <th></th>
     </tr>
 
@@ -30,15 +27,12 @@
             @Html.DisplayFor(modelItem => item.CharacterSheetName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CharacterSheetUrl)
-        </td>
+            @Html.DisplayFor(modelItem => item.Characters.Count)
+        </td>                
         <td>
-            @Html.DisplayFor(modelItem => item.CharacterSheetForm)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CharacterSheetId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CharacterSheetId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CharacterSheetId })
+            <a href="@Url.Action("Create", "Characters", new { id = item.CharacterSheetId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-user"></span> Create Character</a>
+            <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>                        
+            <a href="@Url.Action("Delete", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
         </td>
     </tr>
 }

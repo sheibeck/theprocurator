@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using NotyNotification.Extension;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,18 +10,23 @@ using System.Web;
 using System.Web.Mvc;
 using theprocurator.Data;
 using theprocurator.Data.Model;
+using theprocurator.Helpers;
 using static theprocurator.Helpers.AjaxHelpers;
 
 namespace theprocurator.Controllers
 {
     public class CharactersController : Controller
     {
-        private TheProcuratorDbContext db = new TheProcuratorDbContext();
+        private TheProcuratorDbContext db = new TheProcuratorDbContext();        
 
         // GET: Characters
         public ActionResult Index()
         {
-            var character = db.Character.Include(c => c.User);
+            string currentUserId = IdentityExtensions.GetUserId(this.User.Identity);
+            var character = db.Character
+                                .Include(c => c.CharacterSheet)
+                                .Include(c => c.User)
+                              .Where( c => c.UserId == currentUserId);
             return View(character.ToList());
         }
 
@@ -40,16 +46,25 @@ namespace theprocurator.Controllers
         }
 
         // GET: Characters/Create
-        public ActionResult Create()
+        public ActionResult Create(Guid id)
         {
             var character = new Character();
-            // revalidate after fetching the logged in user
+            
+            // grab the character sheet we want to make this character from
             character.UserId = IdentityExtensions.GetUserId(User.Identity);
+            character.CharacterSheet = db.CharacterSheet.Where(c => c.CharacterSheetId == id)
+                                            .FirstOrDefault();
 
-            // TODO: allow user to pick sheet
-            character.CharacterSheetId = db.CharacterSheet.FirstOrDefault().CharacterSheetId;
-            character.CharacterSheet = db.CharacterSheet.FirstOrDefault();
-            return View(character);
+            if (character.CharacterSheet == null)
+            {
+                return Json(AjaxHelpers.Notify("Could not find the selected character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+            }
+
+            else
+            {
+                character.CharacterSheetId = character.CharacterSheet.CharacterSheetId;
+                return View(character).WithNotification(string.Format("Creating a new character with sheet: {0}", character.CharacterSheet.CharacterSheetName), NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.information);
+            }
         }
 
         // POST: Characters/Create
@@ -63,11 +78,11 @@ namespace theprocurator.Controllers
             {                
                 db.Entry(character).State = EntityState.Added;             
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                return Json(AjaxHelpers.Notify("Character created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "Characters", new { id = character.CharacterId})), JsonRequestBehavior.AllowGet);
             }
 
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", character.UserId);
-            return View(character);
+            return Json(AjaxHelpers.Notify("Error creating character.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);            
         }
 
         // GET: Characters/Edit/5
@@ -98,10 +113,9 @@ namespace theprocurator.Controllers
             {
                 db.Entry(character).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(AjaxHelpers.Notify("Character saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", character.UserId);
-            return View(character);
+            return Json(AjaxHelpers.Notify("Error saving character.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Characters/Delete/5
@@ -116,7 +130,7 @@ namespace theprocurator.Controllers
             {
                 return HttpNotFound();
             }
-            return View(character);
+            return View(character).WithNotification("Deleting this character cannot be undone!", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.warning); ;
         }
 
         // POST: Characters/Delete/5
@@ -127,7 +141,8 @@ namespace theprocurator.Controllers
             Character character = db.Character.Find(id);
             db.Character.Remove(character);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Index").WithNotification("Character deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
         }
 
         protected override void Dispose(bool disposing)

@@ -1,11 +1,11 @@
 ﻿@model theprocurator.Data.Model.CharacterSheet
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Character Sheet";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Build Character Sheet</h2>
+<h2>Edit Character Sheet</h2>
 
 <div class="form-horizontal">
     <form id="meta-data">
@@ -37,8 +37,9 @@
     <div class="render-form"></div>  
 </div>
 <div class="action-buttons">
-    <button type="button" class="preview">Print Preview</button>
-    @Html.ActionLink("Back to List", "Index")
+    <button type="button" class="btn btn-primary js-btn-save">Save</button>
+    <button type="button" class="preview btn btn-info">Print Preview</button>
+    <a href="@Url.Action("Index", "CharacterSheets")" class="btn btn-default">Cancel</a>
 </div>
 
 @section Scripts {

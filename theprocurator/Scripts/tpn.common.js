@@ -51,7 +51,12 @@
 
         for (var entry of formData.entries())
         {
-            result[entry[0]] = entry[1];
+            if (result[entry[0]]) {
+                result[entry[0]] = result[entry[0]] + "," + entry[1];
+            }
+            else {
+                result[entry[0]] = entry[1];
+            }
         }
         result = JSON.stringify(result);
         return result;

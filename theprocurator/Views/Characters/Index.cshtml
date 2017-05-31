@@ -1,56 +1,37 @@
 ﻿@model IEnumerable<theprocurator.Data.Model.Character>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Characters";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Characters</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create a Character", "Create")
 </p>
 <table class="table">
-    <tr>
+    <tr>        
         <th>
-            @Html.DisplayNameFor(model => model.User.Email)
-        </th>
+            Character Name
+        </th>        
         <th>
-            @Html.DisplayNameFor(model => model.CharacterName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CharacterUrl)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CharacterData)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CharacterSheetId)
+            Character Sheet
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.Email)
-        </td>
+    <tr>        
         <td>
             @Html.DisplayFor(modelItem => item.CharacterName)
+        </td>      
+        <td>
+            @Html.DisplayFor(modelItem => item.CharacterSheet.CharacterSheetName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CharacterUrl)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CharacterData)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CharacterSheetId)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CharacterId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CharacterId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CharacterId })
+            <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+            <a href="@Url.Action("Delete", "Characters", new { id = item.CharacterId })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
         </td>
     </tr>
 }

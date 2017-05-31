@@ -22,7 +22,12 @@ namespace theprocurator.Controllers
         // GET: CharacterSheets
         public ActionResult Index()
         {
-            var characterSheet = db.CharacterSheet;
+            string currentUserId = IdentityExtensions.GetUserId(this.User.Identity);
+
+            var characterSheet = db.CharacterSheet
+                                    .Include(c => c.Characters)
+                                    .Include(c => c.User)
+                                    .Where(c => c.UserId == currentUserId);
             return View(characterSheet.ToList());
         }
 

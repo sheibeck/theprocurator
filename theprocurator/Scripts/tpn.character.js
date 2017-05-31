@@ -27,10 +27,58 @@
         tpn_char.config.formeo.render(tpn_char.config.renderContainer);
 
         var data = JSON.parse($("#CharacterData").val());
+        var controls = JSON.parse($("#CharacterSheet_CharacterSheetForm").val());
         for (var key in data) {
-            $('#' + key)
-                .text(data[key])
-                .val(data[key]);
+            try {
+                switch(controls.fields[key].tag)
+                {
+                    case 'select':
+                        $("select[id='" + key + "']").val(data[key]);
+                        break;
+
+                    case 'textarea':
+                        $('#' + key)
+                            .text(data[key])
+                        break;
+
+                    default: 
+                        switch (controls.fields[key].attrs.type) {
+                            case 'checkbox':
+                                //uncheck any defaults
+                                $("input[id='" + key + "'][type=checkbox]").prop("checked", false);
+
+                                //check the real values
+                                $.each(data[key].split(','), function (item, value) {
+                                    $("input[id='" + key + "'][type=checkbox][value='" + value + "']").prop("checked", true);
+                                })
+                                break;
+
+                            case 'radio':
+                                //uncheck any defaults
+                                $("input[id='" + key + "'][type=checkbox]").prop("checked", false);
+
+                                // check the real values
+                                $.each(data[key].split(','), function (item, value) {
+                                    $("input[id='" + key + "'][type=radio][value='" + value + "']").prop("checked", true);
+                                })
+                                break;
+
+                            case 'file':
+                                break;
+
+                            default:
+                                $('#' + key)
+                                    .text(data[key])
+                                    .val(data[key]);
+                        }
+
+                }
+            }
+            catch(ex)
+            {                
+                //console.log(ex);
+                continue;
+            }
         }
     }
 
@@ -45,7 +93,7 @@
             'UserId': metaData.get('UserId')
         }
 
-        if (tpn_common.config.routeaction === "edit")
+        if (tpn_common.config.routeaction === "Edit")
         {
             data["CharacterId"] = metaData.get('CharacterId')
         }
@@ -54,6 +102,10 @@
     };
 
     function bindDOM() {
+        $('.preview').on('click', function () {
+            window.print();
+        })
+
         $(".js-btn-save").on('click', function (e) {
             $("form.character-form").submit();
         });
@@ -62,7 +114,22 @@
             e.preventDefault();
             tpn_char.saveCharacter($(this), 'meta-data');
             return false;
-        });        
+        });
+
+        $('.preview').on('click', function () {
+            var $this = $(this);
+
+            document.body.classList.toggle('form-rendered', tpn_charsheet.config.editing);
+
+            if (tpn_charsheet.config.editing) {
+                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+                $this.text('Edit Form');
+            } else {
+                $this.text('Print');
+            }
+
+            return tpn_charsheet.config.editing = !tpn_charsheet.config.editing;
+        })
     }
 
     tpn_char.init = function () {        

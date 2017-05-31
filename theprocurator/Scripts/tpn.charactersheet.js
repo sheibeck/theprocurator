@@ -1,8 +1,7 @@
 ﻿(function (tpn_charsheet, $, undefined) {
 
     tpn_charsheet.config = {
-        controller: 'CharacterSheets'
-        , editing: true        
+        controller: 'CharacterSheets'           
         , formeo: null
         , renderContainer: document.querySelector('.render-form')
         , formeoOpts: {        
@@ -66,19 +65,11 @@
     };
 
     function bindDOM() {
-        $('.preview').on('click', function () {
-            var $this = $(this);            
-
-            document.body.classList.toggle('form-rendered', tpn_charsheet.config.editing);
-
-            if (tpn_charsheet.config.editing) {                
-                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
-                $this.text('Edit Form');
-            } else {
-                $this.text('Print Preview');
-            }
-
-            return tpn_charsheet.config.editing = !tpn_charsheet.config.editing;
+        $('.preview').on('click', function () {           
+            document.body.classList.toggle('form-rendered', true);
+            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);            
+            window.print();
+            document.body.classList.toggle('form-rendered', false);
         })
 
         $("form.build-form").on('submit', function (e) {
@@ -86,11 +77,11 @@
             return false;
         });
 
-        $(document).on('click', 'button.save-form', function (e) {
+        $(document).on('click', 'button.save-form, button.js-btn-save', function (e) {
             e.preventDefault();
             tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data');
             return false;
-        });
+        });     
     }
 
     tpn_charsheet.init = function() {
