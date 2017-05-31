@@ -54,9 +54,10 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/tpn")
+    @Html.Partial("NotyNotifications")
 
     @RenderSection("scripts", required: false)
 
-    @AntiForgery.GetHtml()
+    @AntiForgery.GetHtml()    
 </body>
 </html>

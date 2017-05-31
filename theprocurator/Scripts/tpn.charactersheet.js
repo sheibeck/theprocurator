@@ -75,17 +75,14 @@
                 "__RequestVerificationToken": formForgeryToken
             }
         })
-        .done(function (data) {
-            if (data != null && data.success) {
-                if (data.redirect) {
-                    document.location = data.responseText;
-                }
-                else {
-                    alert(data.responseText);
-                }
-            } else {                
-                alert(data.responseText);
-            }
+        .done(function (data) {            
+            ShowNotification(data.message, data.type, data.position, data.modal);
+
+            if (data != null && data.url) {
+                window.setTimeout(function () {
+                    document.location = data.url;
+                }, 1000);
+            }            
         })
         .fail(function (xhr, err) {
             console.log(xhr.responseText);

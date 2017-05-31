@@ -31,5 +31,19 @@ namespace theprocurator.Helpers
 
             private const string KEY_NAME = "__RequestVerificationToken";
         }
+
+        public static object Notify(string message, NotyNotification.Model.Position position, NotyNotification.Model.AlertType type)
+        {
+            return new { message = message, type = type.ToString(), position = position.ToString(), modal = false};
+        }
+        public static object Notify(string message, NotyNotification.Model.Position position, NotyNotification.Model.AlertType type, bool? modal)
+        {
+            return new { message = message, type = type.ToString(), position = position.ToString(), modal = modal ?? false };
+        }
+
+        public static object Notify(string message, NotyNotification.Model.Position position, NotyNotification.Model.AlertType type, bool? modal, string redirectUrl)
+        {
+            return new { message = message, type = type.ToString(), position = position.ToString(), modal = modal ?? false, url = redirectUrl};
+        }
     }
 }

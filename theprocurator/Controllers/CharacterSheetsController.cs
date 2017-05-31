@@ -10,6 +10,8 @@ using theprocurator.Data;
 using theprocurator.Data.Model;
 using Microsoft.AspNet.Identity;
 using static theprocurator.Helpers.AjaxHelpers;
+using NotyNotification.Extension;
+using theprocurator.Helpers;
 
 namespace theprocurator.Controllers
 {
@@ -36,16 +38,18 @@ namespace theprocurator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        [ValidateJSONAntiForgeryHeader]
+        //[ValidateJSONAntiForgeryHeader]
         public ActionResult Edit([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm,UserId")] CharacterSheet characterSheet)
         {            
             if (ModelState.IsValid)
             {
                 db.Entry(characterSheet).State = EntityState.Modified;
                 db.SaveChanges();
-                return Json(new { success = true, redirect = false, responseText = "Character sheet saved." }, JsonRequestBehavior.AllowGet);
+
+                return Json(AjaxHelpers.Notify("Character sheet saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
             }
-            return Json(new { success = false, redirect = false, responseText = "Error saving character sheet." }, JsonRequestBehavior.AllowGet);
+                
+            return Json(AjaxHelpers.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Edit/5
@@ -60,7 +64,7 @@ namespace theprocurator.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             return View(characterSheet);
         }
 
@@ -69,7 +73,7 @@ namespace theprocurator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm")] CharacterSheet characterSheet)
+        public ActionResult Create([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm,UserId")] CharacterSheet characterSheet)
         {
             // revalidate after fetching the logged in user
             characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
@@ -79,10 +83,11 @@ namespace theprocurator.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(characterSheet).State = EntityState.Added;
-                db.SaveChanges();                
-                return Json(new { success = true, redirect = true, responseText = Url.Action("Edit", new { id = characterSheet.CharacterSheetId }) }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { success = false, redirect = false, responseText = "Error saving character sheet." }, JsonRequestBehavior.AllowGet);
+                db.SaveChanges();
+                               
+                return Json(AjaxHelpers.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
+            }            
+            return Json(AjaxHelpers.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Delete/5
@@ -97,7 +102,7 @@ namespace theprocurator.Controllers
             {
                 return HttpNotFound();
             }
-            return View(characterSheet);
+            return View(characterSheet).WithNotification("Deleting this character sheet cannot be undone!", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.warning);
         }
 
         // POST: CharacterSheets/Delete/5
@@ -108,10 +113,11 @@ namespace theprocurator.Controllers
             CharacterSheet characterSheet = db.CharacterSheet.Find(id);
             db.CharacterSheet.Remove(characterSheet);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            
+            return RedirectToAction("Index").WithNotification("Character sheet deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
         }
 
-        protected override void Dispose(bool disposing)
+    protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

@@ -26,7 +26,7 @@ namespace theprocurator.Data
         //Identity and Authorization
         public DbSet<IdentityUserLogin> UserLogins { get; set; }
         public DbSet<IdentityUserClaim> UserClaims { get; set; }
-        public DbSet<IdentityUserRole> UserRoles { get; set; }
+        public DbSet<IdentityUserRole> UserRoles { get; set; }        
 
         //Custom DbSets
         public DbSet<CharacterSheet> CharacterSheet { get; set; }
@@ -59,6 +59,6 @@ namespace theprocurator.Data
             modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaim");
             modelBuilder.Entity<IdentityUserClaim>().Property(u => u.ClaimType).HasMaxLength(150);
             modelBuilder.Entity<IdentityUserClaim>().Property(u => u.ClaimValue).HasMaxLength(500);
-        }
+        }        
     }
 }
