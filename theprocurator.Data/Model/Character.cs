@@ -32,7 +32,7 @@ namespace theprocurator.Data.Model
 
         // Character Sheet
         [Required]
-        public Guid CharacerSheetId { get; set; }
+        public Guid CharacterSheetId { get; set; }
         public CharacterSheet CharacterSheet { get; set; }
 
         // User        

@@ -1,7 +1,8 @@
 ﻿(function (tpn_charsheet, $, undefined) {
 
     tpn_charsheet.config = {
-        editing: true        
+        controller: 'CharacterSheets'
+        , editing: true        
         , formeo: null
         , renderContainer: document.querySelector('.render-form')
         , formeoOpts: {        
@@ -52,7 +53,6 @@
 
     tpn_charsheet.saveSheet = function (formeoObj, metaDataForm) {
         var metaData = new FormData(document.getElementById(metaDataForm));
-        var formForgeryToken = $('input[name="__RequestVerificationToken"]').val();     
 
         var data = {
             'CharacterSheetId': metaData.get('CharacterSheetId'),
@@ -62,7 +62,7 @@
             'UserId': metaData.get('UserId')
         }
 
-        tpn_common.ajax('CharacterSheets', data);
+        tpn_common.ajax(tpn_charsheet.config.controller, data);
     };
 
     function bindDOM() {

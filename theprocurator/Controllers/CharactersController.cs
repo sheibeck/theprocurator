@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using theprocurator.Data;
 using theprocurator.Data.Model;
+using static theprocurator.Helpers.AjaxHelpers;
 
 namespace theprocurator.Controllers
 {
@@ -41,22 +42,23 @@ namespace theprocurator.Controllers
         // GET: Characters/Create
         public ActionResult Create()
         {
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
-            return View();
+            var character = new Character();
+            // revalidate after fetching the logged in user
+            character.UserId = IdentityExtensions.GetUserId(User.Identity);
+
+            // TODO: allow user to pick sheet
+            character.CharacterSheetId = db.CharacterSheet.FirstOrDefault().CharacterSheetId;
+            character.CharacterSheet = db.CharacterSheet.FirstOrDefault();
+            return View(character);
         }
 
         // POST: Characters/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CharacterId,CharacterName,CharacterUrl,CharacterData,CharacerSheetId,UserId")] Character character)
-        {
-            // revalidate after fetching the logged in user
-            character.UserId = IdentityExtensions.GetUserId(User.Identity);
-            ModelState.Clear();
-            TryValidateModel(character);
-
+        [ValidateAjax]
+        public ActionResult Create(Character character)
+        {           
             if (ModelState.IsValid)
             {                
                 db.Entry(character).State = EntityState.Added;             
@@ -75,12 +77,13 @@ namespace theprocurator.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = db.Character.Find(id);
+            Character character = db.Character.Include( c => c.CharacterSheet)
+                                    .Where( c => c.CharacterId == id).FirstOrDefault();
             if (character == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", character.UserId);
+            
             return View(character);
         }
 
@@ -88,8 +91,8 @@ namespace theprocurator.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CharacterId,CharacterName,CharacterUrl,CharacterData,CharacerSheetId,UserId")] Character character)
+        [ValidateAjax]
+        public ActionResult Edit(Character character)
         {
             if (ModelState.IsValid)
             {

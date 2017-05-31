@@ -30,6 +30,9 @@ namespace theprocurator.Controllers
         public ActionResult Create()
         {
             var characterSheet = new CharacterSheet();
+            // revalidate after fetching the logged in user
+            characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
+                        
             return View(characterSheet);
         }
 
@@ -74,11 +77,6 @@ namespace theprocurator.Controllers
         [ValidateAjax]
         public ActionResult Create(CharacterSheet characterSheet)
         {
-            // revalidate after fetching the logged in user
-            characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
-            ModelState.Clear();
-            TryValidateModel(characterSheet);
-
             if (ModelState.IsValid)
             {
                 db.Entry(characterSheet).State = EntityState.Added;

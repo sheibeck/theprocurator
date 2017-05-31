@@ -127,6 +127,10 @@
     <Compile Include="Migrations\201705241658211_Base.Designer.cs">
       <DependentUpon>201705241658211_Base.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705311413584_UserId-Update.cs" />
+    <Compile Include="Migrations\201705311413584_UserId-Update.Designer.cs">
+      <DependentUpon>201705311413584_UserId-Update.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AccountViewModels.cs" />
     <Compile Include="Model\CharacterHistory.cs" />
@@ -152,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705241658211_Base.resx">
       <DependentUpon>201705241658211_Base.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705311413584_UserId-Update.resx">
+      <DependentUpon>201705311413584_UserId-Update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

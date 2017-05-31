@@ -241,6 +241,7 @@
     <Content Include="Scripts\noty\layouts\topRight.js" />
     <Content Include="Scripts\noty\promise.js" />
     <Content Include="Scripts\noty\themes\default.js" />
+    <Content Include="Scripts\tpn.character.js" />
     <Content Include="Scripts\tpn.charactersheet.js" />
     <Content Include="Scripts\formeo.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

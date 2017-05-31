@@ -21,5 +21,6 @@
 /// <reference path="noty/promise.js" />
 /// <reference path="noty/themes/default.js" />
 /// <reference path="respond.js" />
+/// <reference path="tpn.character.js" />
 /// <reference path="tpn.charactersheet.js" />
 /// <reference path="tpn.common.js" />

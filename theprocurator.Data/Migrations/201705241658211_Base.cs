@@ -15,7 +15,7 @@ namespace theprocurator.Data.Migrations
                         CharacterName = c.String(nullable: false, maxLength: 250),
                         CharacterUrl = c.String(nullable: false, maxLength: 250),
                         CharacterData = c.String(nullable: false),
-                        CharacerSheetId = c.Guid(nullable: false),
+                        CharacterSheetId = c.Guid(nullable: false),
                         UserId = c.String(maxLength: 128),
                         CharacterSheet_CharacterSheetId = c.Guid(),
                     })
