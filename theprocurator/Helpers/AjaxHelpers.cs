@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Filters;
@@ -30,6 +31,36 @@ namespace theprocurator.Helpers
             }
 
             private const string KEY_NAME = "__RequestVerificationToken";
+        }
+
+        public class ValidateAjaxAttribute : ActionFilterAttribute
+        {
+            public override void OnActionExecuting(ActionExecutingContext filterContext)
+            {
+                if (!filterContext.HttpContext.Request.IsAjaxRequest())
+                    return;
+
+                var modelState = filterContext.Controller.ViewData.ModelState;
+                if (!modelState.IsValid)
+                {
+                    var errorModel =
+                            from x in modelState.Keys
+                            where modelState[x].Errors.Count > 0
+                            select new
+                            {
+                                key = x,
+                                errors = modelState[x].Errors.
+                                                              Select(y => y.ErrorMessage).
+                                                              ToArray()
+                            };
+                    filterContext.Result = new JsonResult()
+                    {
+                        Data = errorModel
+                    };
+                    filterContext.HttpContext.Response.StatusCode =
+                                                          (int)HttpStatusCode.BadRequest;
+                }
+            }
         }
 
         public static object Notify(string message, NotyNotification.Model.Position position, NotyNotification.Model.AlertType type)

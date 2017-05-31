@@ -37,9 +37,8 @@ namespace theprocurator.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[ValidateJSONAntiForgeryHeader]
-        public ActionResult Edit([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm,UserId")] CharacterSheet characterSheet)
+        [ValidateAjax]
+        public ActionResult Edit(CharacterSheet characterSheet)
         {            
             if (ModelState.IsValid)
             {
@@ -72,8 +71,8 @@ namespace theprocurator.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CharacterSheetId,CharacterSheetName,CharacterSheetUrl,CharacterSheetForm,UserId")] CharacterSheet characterSheet)
+        [ValidateAjax]
+        public ActionResult Create(CharacterSheet characterSheet)
         {
             // revalidate after fetching the logged in user
             characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
@@ -87,7 +86,7 @@ namespace theprocurator.Controllers
                                
                 return Json(AjaxHelpers.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
             }            
-            return Json(AjaxHelpers.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+            return Json(AjaxHelpers.Notify("Error creating character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Delete/5

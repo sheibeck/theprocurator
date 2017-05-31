@@ -44,49 +44,25 @@
         tpn_charsheet.config.formeoOpts.container = elem;
         tpn_charsheet.config.formeo = new Formeo(tpn_charsheet.config.formeoOpts, $('#CharacterSheetForm').val());
         
-        if ($('#CharacterSheetId').val() == '00000000-0000-0000-0000-000000000000')
+        if ($('#CharacterSheetId').val() === tpn_common.emptyguid)
         {
             $('#CharacterSheetId').val(JSON.parse(tpn_charsheet.config.formeo.formData).id);
         }
     };
 
-    tpn_charsheet.saveSheet = function (fm) {
-        var formForgeryToken = $('input[name="__RequestVerificationToken"]').val();
-        var sheetId = $('#CharacterSheetId').val();
-        var sheetName = $('#CharacterSheetName').val();
-        var sheetUrl = $('#CharacterSheetUrl').val();
-        var sheetUser = $('#UserId').val();
-        var sheetForm = JSON.stringify(JSON.parse(fm.formData));
+    tpn_charsheet.saveSheet = function (formeoObj, metaDataForm) {
+        var metaData = new FormData(document.getElementById(metaDataForm));
+        var formForgeryToken = $('input[name="__RequestVerificationToken"]').val();     
 
         var data = {
-                'CharacterSheetId' : sheetId,
-                'CharacterSheetName': sheetName,
-                'CharacterSheetUrl': sheetUrl,
-                'CharacterSheetForm': sheetForm,
-                'UserId': sheetUser
+            'CharacterSheetId': metaData.get('CharacterSheetId'),
+            'CharacterSheetName': metaData.get('CharacterSheetName'),
+            'CharacterSheetUrl': metaData.get('CharacterSheetUrl'),
+            'CharacterSheetForm': JSON.stringify(JSON.parse(formeoObj.formData)),
+            'UserId': metaData.get('UserId')
         }
 
-        var jqxhr = $.ajax({
-            url: tpn_common.getRootUrl() + 'CharacterSheets/' + tpn_common.config.routeaction,
-            contentType: 'application/json; charset=utf-8',
-            type: 'POST',
-            data: JSON.stringify(data),
-            headers: {
-                "__RequestVerificationToken": formForgeryToken
-            }
-        })
-        .done(function (data) {            
-            ShowNotification(data.message, data.type, data.position, data.modal);
-
-            if (data != null && data.url) {
-                window.setTimeout(function () {
-                    document.location = data.url;
-                }, 1000);
-            }            
-        })
-        .fail(function (xhr, err) {
-            console.log(xhr.responseText);
-        })
+        tpn_common.ajax('CharacterSheets', data);
     };
 
     function bindDOM() {
@@ -112,7 +88,7 @@
 
         $(document).on('click', 'button.save-form', function (e) {
             e.preventDefault();
-            tpn_charsheet.saveSheet(tpn_charsheet.config.formeo);
+            tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data');
             return false;
         });
     }
