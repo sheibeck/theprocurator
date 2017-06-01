@@ -24,7 +24,7 @@
 x64/
 x86/
 bld/
-[Bb]in/
+#[Bb]in/
 [Oo]bj/
 [Ll]og/
 
@@ -293,3 +293,4 @@ __pycache__/
 
 # End of https://www.gitignore.io/api/visualstudio
 packages/
+theprocurator.Data/bin/
