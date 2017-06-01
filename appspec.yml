@@ -8,5 +8,5 @@
 version: 0.0
 os: windows
 files:
-  - source: \
+  - source: \theprocurator
     destination: c:\webs\theprocurator
