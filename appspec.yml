@@ -8,10 +8,6 @@
 version: 0.0
 os: windows
 files:
-  - source: \theprocurator
+  - source: theprocurator
     destination: c:\webs\theprocurator
-exclude: 
-  - "*.cs"
-  - Web.*.config
-  - Properties
-  - Models
+    
