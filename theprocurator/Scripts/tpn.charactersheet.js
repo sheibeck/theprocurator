@@ -66,10 +66,11 @@
 
     function bindDOM() {
         $('.preview').on('click', function () {           
-            document.body.classList.toggle('form-rendered', true);
+            /* document.body.classList.toggle('form-rendered', true);
             tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);            
             window.print();
             document.body.classList.toggle('form-rendered', false);
+            */
         })
 
         $("form.build-form").on('submit', function (e) {
