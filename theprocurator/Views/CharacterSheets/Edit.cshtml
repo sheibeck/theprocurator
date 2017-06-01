@@ -1,0 +1,56 @@
+﻿@model theprocurator.Data.Model.CharacterSheet
+
+@{
+    ViewBag.Title = "Edit Character Sheet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Character Sheet</h2>
+
+<div class="form-horizontal">
+    <form id="meta-data">
+        <div class="form-group">
+            @Html.HiddenFor(model => model.CharacterSheetId)
+            @Html.HiddenFor(model => model.CharacterSheetForm)
+            @Html.HiddenFor(model => model.UserId)
+            <h4 class="col-xs-12 col-sm-2 col-lg-1">Sheet Name</h4>
+            <div class="col-xs-12 col-sm-4 col-lg-5">
+                @Html.EditorFor(model => model.CharacterSheetName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CharacterSheetName, "", new { @class = "text-danger" })
+            </div>
+
+            <h4 class="col-xs-12 col-sm-2 col-lg-1">Sheet Url</h4>
+            <div class="col-xs-12 col-sm-4 col-lg-5">
+                @Html.EditorFor(model => model.CharacterSheetUrl, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CharacterSheetUrl, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </form>    
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
+    @using (Html.BeginForm("CharacterSheets", "Create", FormMethod.Post, new { @class = "build-form" }))
+    {
+        @Html.AntiForgeryToken()
+    }    
+  
+    <div class="render-form"></div>  
+</div>
+<div class="action-buttons">
+    <button type="button" class="btn btn-primary js-btn-save">Save</button>
+    <button type="button" class="preview btn btn-info">Print Preview</button>
+    <a href="@Url.Action("Index", "CharacterSheets")" class="btn btn-default">Cancel</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/formeo")
+    @Scripts.Render("~/Scripts/tpn.charactersheet.js")
+
+    <script type="text/javascript">
+        (function ($) {
+            tpn_common.config.routeaction = "@ViewContext.RouteData.Values["action"]";
+            tpn_charsheet.initFormeo('.build-form');
+        })(jQuery);
+    </script>
+}

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "theprocurator", "theprocurator\theprocurator.csproj", "{D1E75C0D-33A7-4747-977B-41B89834CD30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "theprocurator.Tests", "theprocurator.Tests\theprocurator.Tests.csproj", "{3633F8E2-0681-4C88-B27D-B153B6ABACDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "theprocurator.Data", "theprocurator.Data\theprocurator.Data.csproj", "{B69949E6-EDC7-4F96-A34C-83A1E81A07D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1E75C0D-33A7-4747-977B-41B89834CD30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E75C0D-33A7-4747-977B-41B89834CD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E75C0D-33A7-4747-977B-41B89834CD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E75C0D-33A7-4747-977B-41B89834CD30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3633F8E2-0681-4C88-B27D-B153B6ABACDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3633F8E2-0681-4C88-B27D-B153B6ABACDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3633F8E2-0681-4C88-B27D-B153B6ABACDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3633F8E2-0681-4C88-B27D-B153B6ABACDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B69949E6-EDC7-4F96-A34C-83A1E81A07D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B69949E6-EDC7-4F96-A34C-83A1E81A07D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B69949E6-EDC7-4F96-A34C-83A1E81A07D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B69949E6-EDC7-4F96-A34C-83A1E81A07D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

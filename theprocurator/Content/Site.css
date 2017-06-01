@@ -1,0 +1,76 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.navbar-logo img {
+    max-height: 60px;
+    padding: 2px;
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+
+
+/* formeo */
+.form-rendered .build-form {
+  display: none;
+}
+
+.render-form {
+  display: none;  
+  margin: auto;
+  padding: 0px;
+  width: 670px; /* width: 7in; */
+  height: 900px; /* or height: 9.5in; */
+  outline: 2px dashed #CCC;
+  page-break-after: always;
+}
+
+.form-rendered .render-form {
+  display: block;
+}
+
+@media print {
+    body {
+       
+    }
+
+   .form-group, h2, hr, .action-buttons, footer, form {
+        display: none;
+   }   
+
+   .render-form {
+      display: none;
+      margin: auto;      
+      padding: 0px;
+      outline: 0px;
+      width: 100%; /* width: 7in; */
+      height: 100%; /* or height: 9.5in; */   
+      page-break-after: always;
+   }
+
+   .character-form {
+      display: block;
+      margin: auto;      
+      padding: 0px;
+      outline: 0px;
+      width: 100%; /* width: 7in; */
+      height: 100%; /* or height: 9.5in; */   
+      page-break-after: always;
+   }
+}

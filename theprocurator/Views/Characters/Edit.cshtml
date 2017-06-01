@@ -1,0 +1,57 @@
+﻿@model theprocurator.Data.Model.Character
+
+@{
+    ViewBag.Title = "Edit Character";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Character</h2>
+
+<div class="form-horizontal">
+    <form id="meta-data">
+        <div class="form-group">
+            @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.CharacterId)
+            @Html.HiddenFor(model => model.CharacterSheetId)
+            @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetForm)
+            @Html.HiddenFor(model => model.CharacterData)
+            <h4 class="col-xs-12 col-sm-2 col-lg-1">Character Name</h4>
+            <div class="col-xs-12 col-sm-4 col-lg-5">
+                @Html.EditorFor(model => model.CharacterName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CharacterName, "", new { @class = "text-danger" })
+            </div>
+
+            <h4 class="col-xs-12 col-sm-2 col-lg-1">Character Url</h4>
+            <div class="col-xs-12 col-sm-4 col-lg-5">
+                @Html.EditorFor(model => model.CharacterUrl, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CharacterUrl, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </form>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "character-form" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+</div>
+
+<div class="action-buttons">
+    <button type="button" class="btn btn-primary js-btn-save">Save</button>
+    <a href="@Url.Action("Index", "Characters")" class="btn btn-default">Cancel</a>
+    <button type="button" class="btn btn-info preview">Print</button>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/formeo")
+    @Scripts.Render("~/Scripts/tpn.character.js")
+
+    <script type="text/javascript">
+        (function ($) {
+            tpn_common.config.routeaction = "@ViewContext.RouteData.Values["action"]";
+            tpn_char.initFormeo('.character-form');
+        })(jQuery);
+    </script>
+}
