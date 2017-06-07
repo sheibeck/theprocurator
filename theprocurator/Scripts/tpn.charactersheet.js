@@ -72,18 +72,22 @@
         tpn_common.ajax(tpn_charsheet.config.controller, data);
     };
 
+    tpn_charsheet.print = function() {
+        document.body.classList.toggle('form-rendered', true);
+        tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+
+        tpn_common.fixPageBreaks();
+
+        window.print();
+        document.body.classList.toggle('form-rendered', false);
+    }
+
     function bindDOM() {
-        $('.preview').on('click', function () {           
-            document.body.classList.toggle('form-rendered', true);
-            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
-
-            tpn_common.fixPageBreaks();
-
-            window.print();
-            document.body.classList.toggle('form-rendered', false);            
+        $('.preview').on('click', function (e) {
+            e.preventDefault();
+            tpn_charsheet.print();
+            return false;
         })
-
-
 
         $("form.build-form").on('submit', function (e) {
             e.preventDefault();
@@ -94,7 +98,17 @@
             e.preventDefault();
             tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data');
             return false;
-        });     
+        });
+
+        window.setTimeout(function () {
+            if (tpn_common.config.routeaction.toLowerCase() === 'print') {
+                document.body.classList.toggle('form-rendered', true);
+                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+                tpn_common.fixPageBreaks();
+                window.print();
+                window.history.back();
+            }
+        }, 500);
     }
 
     tpn_charsheet.init = function() {

@@ -113,7 +113,9 @@
         });
 
         $(".js-btn-save").on('click', function (e) {
+            e.preventDefault();
             $("form.character-form").submit();
+            return false;
         });
 
         $("form.character-form").on('submit', function (e) {
@@ -135,7 +137,14 @@
             }
 
             return tpn_charsheet.config.editing = !tpn_charsheet.config.editing;
-        })
+        });
+
+        window.setTimeout(function () {
+            if (tpn_common.config.routeaction.toLowerCase() === 'print') {
+                window.print();
+                window.history.back();
+            }
+        }, 2000);
     }
 
     tpn_char.init = function () {        

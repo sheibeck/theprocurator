@@ -30,8 +30,10 @@
             @Html.DisplayFor(modelItem => item.Characters.Count)
         </td>                
         <td>
-            <a href="@Url.Action("Create", "Characters", new { id = item.CharacterSheetId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-user"></span> Create Character</a>
-            <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>                        
+            <a href="@Url.Action("Create", "Characters", new { id = item.CharacterSheetId })" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-user"></span> Create Character</a>
+            <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+            <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-info btn-xs preview"><span class="glyphicon glyphicon-print"></span> Print</a>               
+            <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-copy"></span> Copy</a>
             <a href="@Url.Action("Delete", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
         </td>
     </tr>

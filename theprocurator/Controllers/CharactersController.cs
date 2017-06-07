@@ -30,19 +30,33 @@ namespace theprocurator.Controllers
             return View(character.ToList());
         }
 
-        // GET: Characters/Details/5
-        public ActionResult View(Guid? id)
+        // POST: CharacterSheets/Copy       
+        public ActionResult Copy(Guid id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = db.Character.Find(id);
+
+            Character character = db.Character.AsNoTracking().FirstOrDefault(cs => cs.CharacterId == id);
+            //db.CharacterSheet.Find(id);
+
             if (character == null)
             {
                 return HttpNotFound();
             }
-            return View(character);
+
+            // copy this sheet into the persons list of sheets
+            db.Entry(character).State = EntityState.Detached;
+            character.UserId = IdentityExtensions.GetUserId(User.Identity);
+            character.CharacterId = Guid.NewGuid();
+            character.CharacterName = character.CharacterName + " copy";
+            character.CharacterUrl = character.CharacterUrl + "-copy";
+            db.Character.Add(character);
+            db.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = character.CharacterId })
+                    .WithNotification("Character was added to your collection.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
         }
 
         public FileStreamResult Pdf(Guid id)

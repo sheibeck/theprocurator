@@ -35,10 +35,7 @@
 .render-form {
   display: none;  
   margin: auto;
-  padding: 0px;
-  width: 670px; /* width: 7in; */
-  height: 900px; /* or height: 9.5in; */
-  outline: 2px dashed #CCC;  
+  padding: 0px;    
 }
 
 .form-rendered .render-form {
@@ -49,9 +46,24 @@
     page-break-after:always;
 }
 
+.f-radio,
+.f-checkbox
+{
+    float:left;
+    padding-right: 5px;
+}
+
+.f-radio:last-child,
+.f-checkbox:last-child
+{
+    float:none;    
+}
+
+
 @media print {
     body {
         -webkit-print-color-adjust: exact;
+        padding: 0px;
     }
 
    .form-group, h2, hr, .action-buttons, footer, form {
@@ -76,17 +88,4 @@
       height: 100%; /* or height: 9.5in; */   
    }
 
-}
-
-.f-radio,
-.f-checkbox
-{
-    float:left;
-    padding-right: 5px;
-}
-
-.f-radio:last-child,
-.f-checkbox:last-child
-{
-    float:none;    
 }

@@ -34,7 +34,7 @@ namespace theprocurator.Controllers
             return View(characterSheet.ToList());
         }
 
-            // GET: CharacterSheets/Create
+        // GET: CharacterSheets/Create
         public ActionResult Create()
         {
             var characterSheet = new CharacterSheet();
@@ -42,6 +42,34 @@ namespace theprocurator.Controllers
             characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
                         
             return View(characterSheet);
+        }
+
+        // POST: Character/Copy       
+        public ActionResult Copy(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CharacterSheet characterSheet = db.CharacterSheet.AsNoTracking().FirstOrDefault(cs => cs.CharacterSheetId == id);
+            //db.CharacterSheet.Find(id);
+
+            if (characterSheet == null)
+            {
+                return HttpNotFound();
+            }
+
+            // copy this sheet into the persons list of sheets
+            db.Entry(characterSheet).State = EntityState.Detached;
+            characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
+            characterSheet.CharacterSheetId = Guid.NewGuid();
+            characterSheet.CharacterSheetName = characterSheet.CharacterSheetName + " copy";
+            characterSheet.CharacterSheetUrl = characterSheet.CharacterSheetName + "-copy";
+            db.CharacterSheet.Add(characterSheet);
+            db.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = characterSheet.CharacterSheetId })
+                    .WithNotification("Character sheet was added to your collection.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
         }
 
         // POST: CharacterSheets/Create

@@ -15,7 +15,17 @@
             @Html.HiddenFor(model => model.CharacterSheetId)
             @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetForm)
             @Html.HiddenFor(model => model.CharacterData)
-            @Html.HiddenFor(model => model.CharacterName)            
+            <h4 class="col-xs-12 col-sm-2 col-lg-1">Character Name</h4>
+            <div class="col-xs-12 col-sm-4 col-lg-5">
+                @Html.EditorFor(model => model.CharacterName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CharacterName, "", new { @class = "text-danger" })
+            </div>
+
+            <h4 class="col-xs-12 col-sm-2 col-lg-1">Character Url</h4>
+            <div class="col-xs-12 col-sm-4 col-lg-5">
+                @Html.EditorFor(model => model.CharacterUrl, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CharacterUrl, "", new { @class = "text-danger" })
+            </div>            
         </div>
     </form>
     
@@ -26,9 +36,9 @@
 </div>
 
 <div class="action-buttons">
-    <button type="button" class="btn btn-primary js-btn-save">Save</button>
-    <a href="@Url.Action("Index", "Characters")" class="btn btn-default">Cancel</a>
-    <button type="button" class="btn btn-info print-pdf">Print</button>
+    <a href="#" class="btn btn-primary js-btn-save"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+    <a href="@Url.Action("Index", "Characters")" class="btn btn-default"><span class="glyphicon glyphicon-backward"></span> Cancel</a>
+    <a href="@Url.Action("Print", "Characters", new { id = Model.CharacterId })" class="btn btn-info"><span class="glyphicon glyphicon-print"></span> Print</a>
 </div>
 
 @section Scripts {

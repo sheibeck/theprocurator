@@ -31,6 +31,8 @@
         </td>
         <td>
             <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+            <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId })" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-print"></span> Print</a>
+            <a href="@Url.Action("Copy", "Characters", new { id = item.CharacterId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-copy"></span> Copy</a>
             <a href="@Url.Action("Delete", "Characters", new { id = item.CharacterId })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
         </td>
     </tr>

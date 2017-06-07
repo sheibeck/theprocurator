@@ -306,7 +306,6 @@
     <Content Include="Views\CharacterSheets\Index.cshtml" />
     <Content Include="Views\Characters\Create.cshtml" />
     <Content Include="Views\Characters\Delete.cshtml" />
-    <Content Include="Views\Characters\Details.cshtml" />
     <Content Include="Views\Characters\Edit.cshtml" />
     <Content Include="Views\Characters\Index.cshtml" />
     <Content Include="Views\Shared\NotyNotifications.cshtml" />
