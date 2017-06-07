@@ -66,6 +66,16 @@
         result = JSON.stringify(result);
         return result;
     }
+
+    // find any HR tags and drop a page-break on its parent div
+    // to support page breaks on print
+    tpn_common.fixPageBreaks = function () {        
+        $('hr').each(function () {
+            var $elem = $(this);
+            $elem.closest('.f-row').addClass('page-break');
+        })
+    }
+
 })(window.tpn_common = window.tpn_common || {}, jQuery);
 
 (function ($) {

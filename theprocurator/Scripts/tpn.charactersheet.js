@@ -18,8 +18,7 @@
                         'textarea',
                         'select',
                         'checkbox',
-                        'radio',
-                        'upload'                    
+                        'radio'                        
                     ]
                 },
                 disable: {
@@ -28,14 +27,16 @@
                         'date-input',
                         'hidden',
                         'number',
-                        'button'
+                        'button',
+                        'upload'
                     ]
                 }
             },       
             svgSprite: tpn_common.getRootUrl() + 'Content/images/formeo-sprite.svg',
             sessionStorage: true,
             editPanelOrder: ['attrs', 'options'],
-            container: 'form-edit'
+            container: 'form-edit',
+            style: '/Content/theme/fantasy.css'
         }
     };
 
@@ -74,7 +75,10 @@
     function bindDOM() {
         $('.preview').on('click', function () {           
             document.body.classList.toggle('form-rendered', true);
-            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);            
+            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+
+            tpn_common.fixPageBreaks();
+
             window.print();
             document.body.classList.toggle('form-rendered', false);            
         })

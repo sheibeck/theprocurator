@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace theprocurator.Helpers
 {
-    public static class PrintHelper
+    public static class OutputHelper
     {
         public static FileStreamResult PrintToPdf(this Controller controller, string id, string fileName)
         {
@@ -16,8 +16,8 @@ namespace theprocurator.Helpers
             HtmlToPdf htmlToPdfConverter = new HtmlToPdf();
 
             // set browser width
-            htmlToPdfConverter.BrowserWidth = 1024;
-            htmlToPdfConverter.BrowserHeight = 768;
+            htmlToPdfConverter.BrowserWidth = 670;
+            htmlToPdfConverter.BrowserHeight = 900;
 
             // set PDF page size and orientation
             htmlToPdfConverter.Document.PageSize = PdfPageSize.Letter;

@@ -213,7 +213,7 @@
     </Compile>
     <Compile Include="Helpers\AjaxHelpers.cs" />
     <Compile Include="Helpers\CutyCaptWrapper.cs" />
-    <Compile Include="Helpers\PrintHelper.cs" />
+    <Compile Include="Helpers\OutputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -224,6 +224,8 @@
     <Content Include="Content\images\tpn-full-logo.jpg" />
     <Content Include="Content\images\tpn_header_logo.png" />
     <Content Include="Content\images\tpn_header_logo_2.png" />
+    <Content Include="Content\Print.css" />
+    <Content Include="Content\theme\fantasy.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -310,6 +312,7 @@
     <Content Include="Views\Shared\NotyNotifications.cshtml" />
     <Content Include="Views\Characters\Print.cshtml" />
     <Content Include="Views\Shared\_Print.cshtml" />
+    <Content Include="Views\CharacterSheets\Print.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

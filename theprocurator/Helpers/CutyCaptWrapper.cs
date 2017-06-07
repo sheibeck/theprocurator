@@ -57,7 +57,7 @@ public class CutyCaptWrapper
 
             FileInfo ScreenShotThumbnailFileNameInfo = new FileInfo(ScreenShotThumbnailFileName);
 
-            if (!ScreenShotThumbnailFileNameInfo.Exists || ScreenShotThumbnailFileNameInfo.CreationTime < DateTime.Now.AddHours(-ThumbExpiryTimeInHours))
+            if (!ScreenShotThumbnailFileNameInfo.Exists || ScreenShotThumbnailFileNameInfo.CreationTime < DateTime.Now.AddMinutes(-5))
             {
           
                     ProcessStartInfo info = new ProcessStartInfo(CutyCaptPath, RunArguments);
@@ -101,7 +101,17 @@ public class CutyCaptWrapper
             }
             using (Image NewImage = FullsizeImage.GetThumbnailImage(NewWidth, NewHeight, null, IntPtr.Zero))
             {
-                NewImage.Save(outFilePath, ImageFormat.Png);
+                try
+                {
+                    if (File.Exists(outFilePath))
+                        File.Delete(outFilePath);
+
+                    NewImage.Save(outFilePath, ImageFormat.Png);
+                }
+                catch
+                {
+                    // windows is holding the file open. Just ignore it for now
+                }
             }
         }
     }

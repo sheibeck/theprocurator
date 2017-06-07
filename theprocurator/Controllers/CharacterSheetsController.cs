@@ -73,6 +73,21 @@ namespace theprocurator.Controllers
             return db.SaveChanges();
         }
 
+        public ActionResult Print(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CharacterSheet characterSheet = db.CharacterSheet.Find(id);
+            if (characterSheet == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(characterSheet);
+        }
+
         // GET: CharacterSheets/Edit/5
         public ActionResult Edit(Guid? id)
         {

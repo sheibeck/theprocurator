@@ -9,7 +9,8 @@
             svgSprite: tpn_common.getRootUrl() + 'Content/images/formeo-sprite.svg',
             sessionStorage: true,
             editPanelOrder: ['attrs', 'options'],
-            container: 'form-edit'
+            container: 'form-edit',
+            style: '/Content/theme/fantasy.css'
         }
     };
 
@@ -18,8 +19,10 @@
         tpn_char.config.formeo = new Formeo(tpn_char.config.formeoOpts, $('#CharacterSheet_CharacterSheetForm').val());
 
         //show the character sheet form right off the bat
-        window.setTimeout(function () {
+        window.setTimeout(function () {            
             tpn_char.loadCharacter();
+
+            tpn_common.fixPageBreaks();
         }, 1000);
     };
 
