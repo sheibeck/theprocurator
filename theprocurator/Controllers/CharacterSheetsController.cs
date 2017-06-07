@@ -9,9 +9,12 @@ using System.Web.Mvc;
 using theprocurator.Data;
 using theprocurator.Data.Model;
 using Microsoft.AspNet.Identity;
-using static theprocurator.Helpers.AjaxHelpers;
+using static theprocurator.Helpers.AjaxHelper;
 using NotyNotification.Extension;
 using theprocurator.Helpers;
+using System.Drawing;
+using System.IO;
+using HiQPdf;
 
 namespace theprocurator.Controllers
 {
@@ -53,10 +56,10 @@ namespace theprocurator.Controllers
                 db.Entry(characterSheet).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(AjaxHelpers.Notify("Character sheet saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
+                return Json(Helpers.AjaxHelper.Notify("Character sheet saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
             }
-                
-            return Json(AjaxHelpers.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+
+            return Json(Helpers.AjaxHelper.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Edit/5
@@ -87,9 +90,9 @@ namespace theprocurator.Controllers
                 db.Entry(characterSheet).State = EntityState.Added;
                 db.SaveChanges();
                                
-                return Json(AjaxHelpers.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
+                return Json(Helpers.AjaxHelper.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
             }            
-            return Json(AjaxHelpers.Notify("Error creating character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+            return Json(Helpers.AjaxHelper.Notify("Error creating character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Delete/5

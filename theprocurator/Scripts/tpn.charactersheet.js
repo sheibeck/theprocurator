@@ -48,6 +48,13 @@
         {
             $('#CharacterSheetId').val(JSON.parse(tpn_charsheet.config.formeo.formData).id);
         }
+
+        // keep the toolbar in view        
+        $(window).scroll(function () {
+            $(".formeo-controls")
+				.stop()
+				.animate({ "marginTop": ($(window).scrollTop() + 0) + "px" }, "slow");
+        });               
     };
 
     tpn_charsheet.saveSheet = function (formeoObj, metaDataForm) {
@@ -66,12 +73,13 @@
 
     function bindDOM() {
         $('.preview').on('click', function () {           
-            /* document.body.classList.toggle('form-rendered', true);
+            document.body.classList.toggle('form-rendered', true);
             tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);            
             window.print();
-            document.body.classList.toggle('form-rendered', false);
-            */
+            document.body.classList.toggle('form-rendered', false);            
         })
+
+
 
         $("form.build-form").on('submit', function (e) {
             e.preventDefault();

@@ -11,7 +11,7 @@ using System.Web.Mvc;
 using theprocurator.Data;
 using theprocurator.Data.Model;
 using theprocurator.Helpers;
-using static theprocurator.Helpers.AjaxHelpers;
+using static theprocurator.Helpers.AjaxHelper;
 
 namespace theprocurator.Controllers
 {
@@ -45,6 +45,28 @@ namespace theprocurator.Controllers
             return View(character);
         }
 
+        public FileStreamResult Pdf(Guid id)
+        {
+            Character character = db.Character.Find(id);            
+            return this.PrintToPdf(id.ToString(), character.CharacterName);            
+        }
+
+        public ActionResult Print(Guid id)
+        {     
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Character character = db.Character.Include(c => c.CharacterSheet)
+                                    .Where(c => c.CharacterId == id).FirstOrDefault();
+            if (character == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(character);
+        }
+   
         // GET: Characters/Create
         public ActionResult Create(Guid id)
         {
@@ -57,7 +79,7 @@ namespace theprocurator.Controllers
 
             if (character.CharacterSheet == null)
             {
-                return Json(AjaxHelpers.Notify("Could not find the selected character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+                return Json(Helpers.AjaxHelper.Notify("Could not find the selected character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
             }
 
             else
@@ -79,10 +101,10 @@ namespace theprocurator.Controllers
                 db.Entry(character).State = EntityState.Added;             
                 db.SaveChanges();
 
-                return Json(AjaxHelpers.Notify("Character created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "Characters", new { id = character.CharacterId})), JsonRequestBehavior.AllowGet);
+                return Json(Helpers.AjaxHelper.Notify("Character created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "Characters", new { id = character.CharacterId})), JsonRequestBehavior.AllowGet);
             }
 
-            return Json(AjaxHelpers.Notify("Error creating character.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);            
+            return Json(Helpers.AjaxHelper.Notify("Error creating character.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);            
         }
 
         // GET: Characters/Edit/5
@@ -113,9 +135,9 @@ namespace theprocurator.Controllers
             {
                 db.Entry(character).State = EntityState.Modified;
                 db.SaveChanges();
-                return Json(AjaxHelpers.Notify("Character saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
+                return Json(Helpers.AjaxHelper.Notify("Character saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
             }
-            return Json(AjaxHelpers.Notify("Error saving character.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+            return Json(Helpers.AjaxHelper.Notify("Error saving character.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Characters/Delete/5

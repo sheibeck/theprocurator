@@ -14,7 +14,7 @@
         return url;
     }
 
-    tpn_common.ajax = function (controller, data) {
+    tpn_common.ajax = function (controller, data, callback) {
         //var formForgeryToken = $('input[name="__RequestVerificationToken"]').val();
 
         var jqxhr = $.ajax({
@@ -29,11 +29,15 @@
        .done(function (data) {
            ShowNotification(data.message, data.type, data.position, data.modal);
 
+           if (callback) {
+               callback();
+           }
+
            if (data.url) {
                window.setTimeout(function () {
                    document.location = data.url;
                }, 1000);
-           }
+           }           
        })
        .fail(function (xhr, err) {
            var modelStateErrors = xhr.responseJSON;
@@ -49,8 +53,9 @@
         var formData = new FormData($form[0]);
         var result = {};
 
-        for (var entry of formData.entries())
+        for (var i = 0; i < formData.entries().length; i++)
         {
+            var entry = formData.entries()[i];
             if (result[entry[0]]) {
                 result[entry[0]] = result[entry[0]] + "," + entry[1];
             }
@@ -62,3 +67,9 @@
         return result;
     }
 })(window.tpn_common = window.tpn_common || {}, jQuery);
+
+(function ($) {
+    if (!window.console) window.console = {};
+    if (!window.console.log) window.console.log = function () { };
+    console.log('test');
+})(jQuery);

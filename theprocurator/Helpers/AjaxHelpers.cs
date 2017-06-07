@@ -9,7 +9,7 @@ using System.Web.Mvc.Filters;
 
 namespace theprocurator.Helpers
 {
-    public class AjaxHelpers
+    public class AjaxHelper
     {
         public class ValidateJSONAntiForgeryHeader : FilterAttribute, IAuthorizationFilter
         {
