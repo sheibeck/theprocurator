@@ -48,7 +48,7 @@ namespace theprocurator.Controllers
         public FileStreamResult Pdf(Guid id)
         {
             Character character = db.Character.Find(id);            
-            return this.PrintToPdf(id.ToString(), character.CharacterName);            
+            return this.PrintToPdf(id.ToString(), character.CharacterName);
         }
 
         public ActionResult Print(Guid id)

@@ -69,7 +69,7 @@
 })(window.tpn_common = window.tpn_common || {}, jQuery);
 
 (function ($) {
+    //fix console.log issues for IE
     if (!window.console) window.console = {};
     if (!window.console.log) window.console.log = function () { };
-    console.log('test');
 })(jQuery);

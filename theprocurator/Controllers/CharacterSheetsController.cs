@@ -54,12 +54,23 @@ namespace theprocurator.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(characterSheet).State = EntityState.Modified;
-                db.SaveChanges();
+                SaveDBChanges(characterSheet.CharacterSheetId);
 
                 return Json(Helpers.AjaxHelper.Notify("Character sheet saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
             }
 
             return Json(Helpers.AjaxHelper.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Saves the database changes.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        private int SaveDBChanges(Guid id)
+        {            
+            this.ToThumbnail(id.ToString());
+            return db.SaveChanges();
         }
 
         // GET: CharacterSheets/Edit/5
@@ -88,8 +99,8 @@ namespace theprocurator.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(characterSheet).State = EntityState.Added;
-                db.SaveChanges();
-                               
+                SaveDBChanges(characterSheet.CharacterSheetId);
+
                 return Json(Helpers.AjaxHelper.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
             }            
             return Json(Helpers.AjaxHelper.Notify("Error creating character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);

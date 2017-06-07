@@ -31,7 +31,7 @@ namespace theprocurator.Helpers
             var request = HttpContext.Current.Request;
             var address = string.Format("{0}://{1}", request.Url.Scheme, request.Url.Authority);
 
-            string url = string.Format("{0}/{1}/Print/{2}", address, controller.RouteData.Values["controller"].ToString(), id);
+            string url = string.Format("{0}/{1}/Print/{2}", address, controller.RouteData.Values["controller"], id);
 
             // convert URL to a PDF file
             var filePath = string.Format("{0}\\{1}.pdf", HttpContext.Current.Server.MapPath("~/App_Data"), fileName);
@@ -44,7 +44,26 @@ namespace theprocurator.Helpers
 
             MemoryStream ms = new MemoryStream(pdfBuffer);
 
-            return new FileStreamResult(ms, "application/pdf");            
+            return new FileStreamResult(ms, "application/pdf");
         }
+
+        public static FileStreamResult ToThumbnail(this Controller controller, string id)
+        {
+            var request = HttpContext.Current.Request;
+            var address = string.Format("{0}://{1}", request.Url.Scheme, request.Url.Authority);
+            string url = string.Format("{0}/{1}/Print/{2}", address, controller.RouteData.Values["controller"], id);
+
+            var cc = new CutyCaptWrapper();
+            var filePath = cc.GetScreenShot(url, id);
+
+            MemoryStream ms = new MemoryStream();
+            FileStream file = new FileStream(HttpContext.Current.Server.MapPath("~/" + filePath), FileMode.Open, FileAccess.Read);
+
+            byte[] bytes = new byte[file.Length];
+            file.Read(bytes, 0, (int)file.Length);
+            ms.Write(bytes, 0, (int)file.Length);
+         
+            return new FileStreamResult(ms, "image/png");
+        }        
     }
 }
