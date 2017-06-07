@@ -10,7 +10,7 @@
             sessionStorage: true,
             editPanelOrder: ['attrs', 'options'],
             container: 'form-edit',
-            style: '/Content/theme/fantasy.css'
+            style: '/Content/theme/' + ($("#CharacterSheetTheme").val() || 'default') + '.css'
         }
     };
 
@@ -20,15 +20,29 @@
 
         //show the character sheet form right off the bat
         window.setTimeout(function () {            
-            tpn_char.loadCharacter();
-
-            tpn_common.fixPageBreaks();
+            tpn_char.renderFormeo(tpn_char.loadCharacter);
         }, 1000);
     };
 
-    tpn_char.loadCharacter = function () {
-        tpn_char.config.formeo.render(tpn_char.config.renderContainer);
 
+    tpn_char.renderFormeo = function(callback)
+    {
+        try {
+            tpn_char.config.formeo.render(tpn_char.config.renderContainer);
+            if (callback)
+                callback();
+        }
+        catch (ex) {
+            window.setTimeout(function () {
+                tpn_char.config.formeo.render(tpn_char.config.renderContainer);
+                if (callback)
+                    callback();
+            }, 500);
+        }
+        
+    }
+
+    tpn_char.loadCharacter = function () {        
         // render the character values
         var charData = $("#CharacterData").val();
         if (charData) {
@@ -84,6 +98,9 @@
                     continue;
                 }
             }
+
+            // insert page breaks for properly paged printing
+            tpn_common.fixPageBreaks();
         }
     }
 
@@ -123,22 +140,7 @@
             tpn_char.saveCharacter($(this), 'meta-data');
             return false;
         });
-
-        $('.preview').on('click', function () {
-            var $this = $(this);
-
-            document.body.classList.toggle('form-rendered', tpn_charsheet.config.editing);
-
-            if (tpn_charsheet.config.editing) {
-                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
-                $this.text('Edit Form');
-            } else {
-                $this.text('Print');
-            }
-
-            return tpn_charsheet.config.editing = !tpn_charsheet.config.editing;
-        });
-
+       
         window.setTimeout(function () {
             if (tpn_common.config.routeaction.toLowerCase() === 'print') {
                 window.print();

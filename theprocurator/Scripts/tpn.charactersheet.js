@@ -36,7 +36,7 @@
             sessionStorage: true,
             editPanelOrder: ['attrs', 'options'],
             container: 'form-edit',
-            style: '/Content/theme/fantasy.css'
+            style: '/Content/theme/' + ($("#CharacterSheetTheme").val() || 'default') + '.css'
         }
     };
 
@@ -65,6 +65,7 @@
             'CharacterSheetId': metaData.get('CharacterSheetId'),
             'CharacterSheetName': metaData.get('CharacterSheetName'),
             'CharacterSheetUrl': metaData.get('CharacterSheetUrl'),
+            'CharacterSheetTheme': metaData.get('CharacterSheetTheme'),
             'CharacterSheetForm': JSON.stringify(JSON.parse(formeoObj.formData)),
             'UserId': metaData.get('UserId')
         }
@@ -74,12 +75,26 @@
 
     tpn_charsheet.print = function() {
         document.body.classList.toggle('form-rendered', true);
-        tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+
+        tpn_charsheet.renderFormeo();
 
         tpn_common.fixPageBreaks();
 
         window.print();
         document.body.classList.toggle('form-rendered', false);
+    }
+
+    tpn_charsheet.renderFormeo = function()
+    {
+        try {
+            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+        }
+        catch(ex)
+        {
+            window.setTimeout(function () {
+                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+            }, 500);
+        }
     }
 
     function bindDOM() {
@@ -103,7 +118,7 @@
         window.setTimeout(function () {
             if (tpn_common.config.routeaction.toLowerCase() === 'print') {
                 document.body.classList.toggle('form-rendered', true);
-                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+                tpn_charsheet.renderFormeo();
                 tpn_common.fixPageBreaks();
                 window.print();
                 window.history.back();

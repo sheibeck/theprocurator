@@ -16,6 +16,7 @@
             @Html.HiddenFor(model => model.CharacterSheetId)
             @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetForm)
             @Html.HiddenFor(model => model.CharacterData)           
+            @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetTheme)
         </div>
     </form>    
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })

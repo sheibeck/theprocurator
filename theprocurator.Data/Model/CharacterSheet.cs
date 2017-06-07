@@ -28,7 +28,9 @@ namespace theprocurator.Data.Model
         [Required]        
         [Display(Name = "Form")]
         public string CharacterSheetForm { get; set; }
-
+        
+        [Display(Name = "Theme")]
+        public string CharacterSheetTheme { get; set; }
 
         // Foreign Keys      
         [Required] 

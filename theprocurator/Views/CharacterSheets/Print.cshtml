@@ -13,6 +13,7 @@
             @Html.HiddenFor(model => model.UserId)
             @Html.HiddenFor(model => model.CharacterSheetName)
             @Html.HiddenFor(model => model.CharacterSheetUrl)
+            @Html.HiddenFor(model => model.CharacterSheetTheme)
          </div>
     </form>    
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })

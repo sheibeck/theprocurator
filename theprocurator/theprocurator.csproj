@@ -225,6 +225,8 @@
     <Content Include="Content\images\tpn_header_logo.png" />
     <Content Include="Content\images\tpn_header_logo_2.png" />
     <Content Include="Content\Print.css" />
+    <Content Include="Content\theme\default.css" />
+    <Content Include="Content\theme\sci-fi.css" />
     <Content Include="Content\theme\fantasy.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

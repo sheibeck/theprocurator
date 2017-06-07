@@ -17,6 +17,9 @@
         </th>
         <th>
             # Characters
+        </th>
+        <th>
+            Theme
         </th>                
         <th></th>
     </tr>
@@ -28,6 +31,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Characters.Count)
+        </td> 
+        <td>
+            @( @String.IsNullOrEmpty(item.CharacterSheetTheme) ? "default" : @item.CharacterSheetTheme )
         </td>                
         <td>
             <a href="@Url.Action("Create", "Characters", new { id = item.CharacterSheetId })" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-user"></span> Create Character</a>
