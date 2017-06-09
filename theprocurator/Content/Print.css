@@ -10,21 +10,3 @@
 .form-group, h2, hr, .action-buttons, footer, form {
     display: none;
 }   
-
-.render-form {
-    display: none;
-    margin: auto;      
-    padding: 0px;
-    outline: 0px;
-    width: 100%; /* width: 7in; */
-    height: 100%; /* or height: 9.5in; */   
-}
-
-.character-form {
-    display: block;
-    margin: auto;      
-    padding: 0px;
-    outline: 0px;
-    width: 100%; /* width: 7in; */
-    height: 100%; /* or height: 9.5in; */   
-}

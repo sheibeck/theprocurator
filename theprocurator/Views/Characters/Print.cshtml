@@ -21,13 +21,13 @@
     </form>    
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "" }))
+    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "main-form" }))
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.AntiForgeryToken()
-
-        <div class="character-form"></div>
+        @Html.AntiForgeryToken()        
     }
+
+    <div class="character-form"></div>
 </div>
 
 
