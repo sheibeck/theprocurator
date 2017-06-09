@@ -66,12 +66,21 @@
         {
             if (typeof entry[1] == 'object')
             {
-                if (entry[1].size > 0) {
-                    var fileId = guid();
-                    uploadFile(entry[0], fileId);
-                    result[entry[0]] = fileId + "_" + entry[1].name;
+                var file = entry[1];
 
-                    tpn_common.config.reloadUI = true; //force reload after the save so the image shows up
+                if (file.size > 0) {
+
+                    if (validateFile(file)) {
+                        var fileId = guid();
+
+                        uploadFile(entry[0], fileId);
+                        result[entry[0]] = fileId + "_" + entry[1].name;
+
+                        tpn_common.config.reloadUI = true; //force reload after the save so the image shows up
+                    }
+                    else {
+                        return false;
+                    }
                 }
                 else {
                     result[entry[0]] = "";
@@ -83,6 +92,24 @@
         }
         result = JSON.stringify(result);
         return result;
+    }
+
+    function validateFile(file) {
+
+        var ext = file.name.split('.').pop();
+        if (ext !== "jpg" && ext !== "png") {
+            ShowNotification("Image is wrong type. It must be JPG or PNG", "error", "center", true);
+            return false;
+        }
+
+        // check file size        
+        if (file.size > 1024 * 1024)
+        {
+            ShowNotification("Image is too large. It must be less than 1MB.", "error", "center", true);
+            return false;
+        }
+
+        return true;
     }
 
     function guid() {
@@ -115,10 +142,10 @@
             processData: false,
             async: false,
             success: function (response) {
-                console.log("uploaded file: " + JSON.stringify(formData))              
+                console.log(response)
             },
             error: function (error) {
-                ShowNotification("Error saving image: " + error.responseText, "error", "center", false);
+                ShowNotification("Error saving image: " + (error.responseText) ? error.responseText : "", "error", "center", false);
             }
         });
     }
@@ -136,21 +163,26 @@
             processData: false,
             async: false,
             success: function (response) {
-                console.log("uploaded file: " + JSON.stringify(formData))
+                console.log(response)
             },
             error: function (error) {
-                ShowNotification("Error removing file: " + error.responseText, "error", "center", false);
+                ShowNotification("Error deleting image: " + (error.responseText) ? error.responseText : "", "error", "center", false);
             }
         });
     }
 
     // find any HR tags and drop a page-break on its parent div
     // to support page breaks on print
-    tpn_common.fixPageBreaks = function () {        
+    tpn_common.fixPrintables = function () {
         $('hr').each(function () {
             var $elem = $(this);
             $elem.closest('.f-row').addClass('page-break');
         })
+
+        if (tpn_common.config.routeaction.toLowerCase() === 'print') {
+            $('input[type=file]').prev('label').remove();
+            $('input[type=file]').remove();
+        }
     }
 
 })(window.tpn_common = window.tpn_common || {}, jQuery);

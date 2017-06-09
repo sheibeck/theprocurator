@@ -85,7 +85,7 @@
                                 case 'file':
                                     if (data[key]) {
                                         $('#' + key).after('<a href="#" class="remove-image js-no-print" data-image="' + data[key] + '">[remove]</a>')
-                                                    .after('<img src="/Content/Character/Images/' + data[key] + '" alt="' + data[key] + '" />');
+                                                    .after('<img class="img-responsive" src="/Content/Character/Images/' + data[key] + '" alt="' + data[key] + '" />');
                                         $('#' + key).prev().hide(); // hide the upload label
                                         $('#' + key).hide(); // hide the upload control
                                     }
@@ -106,27 +106,30 @@
             }
 
             // insert page breaks for properly paged printing
-            tpn_common.fixPageBreaks();
+            tpn_common.fixPrintables();
         }
     }
 
     tpn_char.saveCharacter = function ($form, metaDataForm) {
         var metaData = new FormData(document.getElementById(metaDataForm));
 
-        var data = {            
-            'CharacterSheetId': metaData.get('CharacterSheetId'),
-            'CharacterName': metaData.get('CharacterName'),
-            'CharacterUrl': metaData.get('CharacterUrl'),
-            'CharacterData': JSON.stringify(JSON.parse(tpn_common.formDataToJSON($form))),
-            'UserId': metaData.get('UserId')
-        }
+        // make sure our json formatted data is not value "false"
+        var jsonData = tpn_common.formDataToJSON($form);
+        if (jsonData) {
+            var data = {
+                'CharacterSheetId': metaData.get('CharacterSheetId'),
+                'CharacterName': metaData.get('CharacterName'),
+                'CharacterUrl': metaData.get('CharacterUrl'),
+                'CharacterData': JSON.stringify(JSON.parse(jsonData)),
+                'UserId': metaData.get('UserId')
+            }
 
-        if (tpn_common.config.routeaction === "Edit")
-        {
-            data["CharacterId"] = metaData.get('CharacterId')
-        }
+            if (tpn_common.config.routeaction === "Edit") {
+                data["CharacterId"] = metaData.get('CharacterId')
+            }
 
-        tpn_common.ajax(tpn_char.config.controller, data);
+            tpn_common.ajax(tpn_char.config.controller, data);
+        }
     };
 
     function bindDOM() {

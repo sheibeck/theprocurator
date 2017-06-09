@@ -76,7 +76,7 @@
     tpn_charsheet.print = function() {
         document.body.classList.toggle('form-rendered', true);
         tpn_charsheet.renderFormeo();
-        tpn_common.fixPageBreaks();     
+        tpn_common.fixPrintables();
     }
 
     tpn_charsheet.renderFormeo = function()
@@ -114,8 +114,7 @@
             if (tpn_common.config.routeaction.toLowerCase() === 'print') {
                 document.body.classList.toggle('form-rendered', true);
                 tpn_charsheet.renderFormeo();
-                tpn_common.fixPageBreaks();
-                $('input[type=file]').parent().hide();
+                tpn_common.fixPrintables();                
             }
         }, 500);
     }
