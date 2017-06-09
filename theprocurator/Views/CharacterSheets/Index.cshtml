@@ -19,6 +19,9 @@
             # Characters
         </th>
         <th>
+            Published
+        </th>
+        <th>
             Theme
         </th>                
         <th></th>
@@ -27,11 +30,15 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CharacterSheetName)
+            <p>@Html.DisplayFor(modelItem => item.CharacterSheetName)</p>
+            <p class="small">edited: @item.UpdatedOn</p>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Characters.Count)
         </td> 
+        <th>
+            @Html.DisplayFor(modelItem => item.Published)
+        </th>
         <td>
             @( @String.IsNullOrEmpty(item.CharacterSheetTheme) ? "default" : @item.CharacterSheetTheme )
         </td>                

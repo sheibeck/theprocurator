@@ -15,12 +15,13 @@
             @Html.HiddenFor(model => model.CharacterSheetUrl)
             @Html.HiddenFor(model => model.CharacterSheetTheme)
          </div>
-    </form>    
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    
-    @using (Html.BeginForm("CharacterSheets", "Create", FormMethod.Post, new { @class = "build-form" }))
+    </form>            
+    @using (Html.BeginForm("CharacterSheets", "Create", FormMethod.Post, new { @class = "" }))
     {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.AntiForgeryToken()
+
+        <div class="build-form"></div>
     }    
   
     <div class="render-form"></div>  

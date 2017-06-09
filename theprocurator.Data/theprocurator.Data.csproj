@@ -135,6 +135,14 @@
     <Compile Include="Migrations\201706071840257_Sheet-Theme.Designer.cs">
       <DependentUpon>201706071840257_Sheet-Theme.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706091542228_Updated-Date.cs" />
+    <Compile Include="Migrations\201706091542228_Updated-Date.Designer.cs">
+      <DependentUpon>201706091542228_Updated-Date.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706091553089_Published.cs" />
+    <Compile Include="Migrations\201706091553089_Published.Designer.cs">
+      <DependentUpon>201706091553089_Published.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AccountViewModels.cs" />
     <Compile Include="Model\CharacterHistory.cs" />
@@ -172,6 +180,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706071840257_Sheet-Theme.resx">
       <DependentUpon>201706071840257_Sheet-Theme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706091542228_Updated-Date.resx">
+      <DependentUpon>201706091542228_Updated-Date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706091553089_Published.resx">
+      <DependentUpon>201706091553089_Published.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -66,11 +66,13 @@
             'CharacterSheetName': metaData.get('CharacterSheetName'),
             'CharacterSheetUrl': metaData.get('CharacterSheetUrl'),
             'CharacterSheetTheme': metaData.get('CharacterSheetTheme'),
+            'Published': metaData.get('Published') === "on" ? true : false,
             'CharacterSheetForm': JSON.stringify(JSON.parse(formeoObj.formData)),
             'UserId': metaData.get('UserId')
         }
 
         tpn_common.ajax(tpn_charsheet.config.controller, data);
+      
     };
 
     tpn_charsheet.print = function() {
@@ -99,7 +101,7 @@
             return false;
         })
 
-        $("form.build-form").on('submit', function (e) {
+        $("form.main-form").on('submit', function (e) {
             e.preventDefault();
             return false;
         });

@@ -53,7 +53,8 @@ namespace theprocurator.Controllers
             character.UserId = IdentityExtensions.GetUserId(User.Identity);
             character.CharacterId = Guid.NewGuid();
             character.CharacterName = character.CharacterName + " copy";
-            character.CharacterUrl = character.CharacterUrl + "-copy";
+            character.CharacterUrl = character.CharacterUrl.Replace(" ", "-") + "-copy";
+            character.UpdatedOn = DateTime.Now;
             db.Character.Add(character);
             db.SaveChanges();
 
@@ -113,8 +114,9 @@ namespace theprocurator.Controllers
         public ActionResult Create(Character character)
         {           
             if (ModelState.IsValid)
-            {                
-                db.Entry(character).State = EntityState.Added;             
+            {
+                character.UpdatedOn = DateTime.Now;
+                db.Entry(character).State = EntityState.Added;
                 db.SaveChanges();
 
                 return Json(Helpers.AjaxHelper.Notify("Character created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "Characters", new { id = character.CharacterId})), JsonRequestBehavior.AllowGet);
@@ -219,6 +221,7 @@ namespace theprocurator.Controllers
         {
             if (ModelState.IsValid)
             {
+                character.UpdatedOn = DateTime.Now;
                 db.Entry(character).State = EntityState.Modified;
                 db.SaveChanges();
                 return Json(Helpers.AjaxHelper.Notify("Character saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);

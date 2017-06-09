@@ -64,7 +64,8 @@ namespace theprocurator.Controllers
             characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
             characterSheet.CharacterSheetId = Guid.NewGuid();
             characterSheet.CharacterSheetName = characterSheet.CharacterSheetName + " copy";
-            characterSheet.CharacterSheetUrl = characterSheet.CharacterSheetName + "-copy";
+            characterSheet.CharacterSheetUrl = characterSheet.CharacterSheetUrl + "-copy";
+            characterSheet.UpdatedOn = DateTime.Now;
             db.CharacterSheet.Add(characterSheet);
             db.SaveChanges();
 
@@ -81,6 +82,7 @@ namespace theprocurator.Controllers
         {            
             if (ModelState.IsValid)
             {
+                characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Modified;
                 SaveDBChanges(characterSheet.CharacterSheetId);
 
@@ -141,6 +143,7 @@ namespace theprocurator.Controllers
         {
             if (ModelState.IsValid)
             {
+                characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Added;
                 SaveDBChanges(characterSheet.CharacterSheetId);
 

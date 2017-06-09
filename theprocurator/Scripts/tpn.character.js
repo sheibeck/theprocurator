@@ -84,11 +84,13 @@
 
                                 case 'file':
                                     if (data[key]) {
-                                        $('#' + key).after('<a href="#" class="remove-image js-no-print" data-image="' + data[key] + '">[remove]</a>')
+                                        $('#' + key).after('<a href="#" class="remove-image js-no-print" data-input-id="' + key + '" data-image="' + data[key] + '">[remove]</a>')
                                                     .after('<img class="img-responsive" src="/Content/Character/Images/' + data[key] + '" alt="' + data[key] + '" />');
-                                        $('#' + key).prev().hide(); // hide the upload label
-                                        $('#' + key).hide(); // hide the upload control
+                                        $('#' + key).prev().remove(); // hide the upload label
+                                        $('#' + key).after("<input type='hidden' name='" + key + "' id='" + key + "' value='" + data[key] + "' />"); // add a hidden input so we keep the current value
+                                        $('input[type=file][id=' + key + ']').remove(); // hide the upload control
                                     }
+
                                     break;
 
                                 default:
@@ -120,6 +122,7 @@
                 'CharacterSheetId': metaData.get('CharacterSheetId'),
                 'CharacterName': metaData.get('CharacterName'),
                 'CharacterUrl': metaData.get('CharacterUrl'),
+                'Published': metaData.get('Published') === "on" ? true : false,
                 'CharacterData': JSON.stringify(JSON.parse(jsonData)),
                 'UserId': metaData.get('UserId')
             }
@@ -140,11 +143,11 @@
 
         $(".js-btn-save").on('click', function (e) {
             e.preventDefault();
-            $("form.character-form").submit();
+            $("form.main-form").submit();
             return false;
         });
 
-        $("form.character-form").on('submit', function (e) {
+        $("form.main-form").on('submit', function (e) {
             e.preventDefault();
             tpn_char.saveCharacter($(this), 'meta-data');
             return false;
@@ -153,11 +156,16 @@
         $(document).on('click', '.remove-image', function (e) {
             var $image = $(this);
             tpn_common.deleteFile($image);
+            
+            $('#' + $image.data('input-id')).val(''); // clear out the image so it's properly deleted from the db
 
             $image.prev().remove();
             $image.prev().show();
             $image.remove();
-            $(".js-btn-save").click();
+
+            tpn_common.config.reloadUI = true;
+
+            $('.js-btn-save').click();            
         });              
     }
 

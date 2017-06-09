@@ -48,12 +48,21 @@
            }
        })
        .fail(function (xhr, err) {
-           var modelStateErrors = xhr.responseJSON;
-           ShowNotification("Error saving form", "error", "center", false);
+           var modelStateErrors = xhr.responseJSON;           
 
-           for (var i = 0; i < modelStateErrors.length; i++) {
-               $('span[data-valmsg-for="' + modelStateErrors[i].key + '"]').text(modelStateErrors[i].errors[0]);
+           if (modelStateErrors) {
+               for (var i = 0; i < modelStateErrors.length; i++) {
+                   var errorFor = $('span[data-valmsg-for="' + modelStateErrors[i].key + '"]');
+                   if (errorFor) {
+                       $('span[data-valmsg-for="' + modelStateErrors[i].key + '"]').text(modelStateErrors[i].errors[0]);
+                   }
+                   else {
+                       $('.metadata').after("<p>" + modelStateErrors[i].errors[0] + "</p>");
+                   }
+               }
            }
+
+           ShowNotification("Error saving form", "error", "center", true);
        })
     }
 

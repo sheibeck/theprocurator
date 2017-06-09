@@ -40,12 +40,14 @@
             </div>        
         </div>
     </form>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <hr />    
 
-    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "character-form" }))
+    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "main-form" }))
     {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.AntiForgeryToken()
+
+        <div class="character-form"></div>
     }    
 </div>
 
