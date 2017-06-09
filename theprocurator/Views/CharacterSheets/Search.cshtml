@@ -1,0 +1,68 @@
+﻿@model IEnumerable<theprocurator.Data.Model.CharacterSheet>
+
+@{
+    ViewBag.Title = "Sheet Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="h2 row">
+    <div class="col-xs-12 col-md-3">Search Results</div>
+    <div class="col-xs-12 col-md-9">
+        <small>
+            <em>
+                published sheets @if (ViewBag.SearchText != "")
+            {<span> matching</span> <strong>'@ViewBag.SearchText'</strong> }
+            </em>
+        </small>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Create a Character Sheet", "Create")
+</p>
+<table class="table">
+    <tr>        
+        <th>
+            Name
+        </th>
+        <th>
+            # Characters
+        </th>
+        <th>
+            Owner
+        </th>
+        <th>
+            Theme
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            <p>@Html.DisplayFor(modelItem => item.CharacterSheetName)</p>
+            <h6>
+            @if (item.ParentId != Guid.Empty) { <p class="small">this sheet is a copy of @item.ParentId</p>}
+            <p class="small">edited: @item.UpdatedOn</p>
+            </h6>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Characters.Count)
+        </td> 
+        <th>
+            @Html.DisplayFor(modelItem => item.User.UserName.Split('@')[0])
+        </th>
+        <td>
+            @( @String.IsNullOrEmpty(item.CharacterSheetTheme) ? "default" : @item.CharacterSheetTheme )
+        </td>                
+        <td>            
+            <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId })" target="_blank" class="btn btn-info btn-xs preview"><span class="glyphicon glyphicon-eye-open"></span> View Sheet</a>
+            @if (item.User.UserName != User.Identity.Name)
+            { 
+                <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span> Add to Collection</a> 
+            }
+        </td>
+    </tr>
+}
+
+</table>

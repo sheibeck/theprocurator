@@ -16,7 +16,7 @@ using theprocurator.Helpers;
 using static theprocurator.Helpers.AjaxHelper;
 
 namespace theprocurator.Controllers
-{
+{    
     public class CharactersController : Controller
     {
         private TheProcuratorDbContext db = new TheProcuratorDbContext();        
@@ -32,6 +32,24 @@ namespace theprocurator.Controllers
             return View(character.ToList());
         }
 
+        public ActionResult Search(string searchtext)
+        {
+            var characterSheet = db.Character
+                                    .Include(c => c.CharacterSheet)
+                                    .Include(c => c.User)
+                                    .OrderBy(c => c.CharacterName)
+                                    .Where(c => c.Published == true)
+                                    .Where(c => c.CharacterSheet.CharacterSheetName.Contains(searchtext))
+                                    .Where(c => c.CharacterSheet.CharacterSheetTheme.Contains(searchtext))
+                                    .Where(c => c.User.UserName.Contains(searchtext));
+
+            ViewBag.SearchText = searchtext;
+
+            return View(characterSheet.ToList());
+        }
+
+
+        [Authorize]
         // POST: CharacterSheets/Copy       
         public ActionResult Copy(Guid id)
         {
@@ -51,9 +69,11 @@ namespace theprocurator.Controllers
             // copy this sheet into the persons list of sheets
             db.Entry(character).State = EntityState.Detached;
             character.UserId = IdentityExtensions.GetUserId(User.Identity);
+            character.ParentId = id;
             character.CharacterId = Guid.NewGuid();
             character.CharacterName = character.CharacterName + " copy";
             character.CharacterUrl = character.CharacterUrl.Replace(" ", "-") + "-copy";
+            character.Published = false;            
             character.UpdatedOn = DateTime.Now;
             db.Character.Add(character);
             db.SaveChanges();
@@ -83,10 +103,18 @@ namespace theprocurator.Controllers
 
             return View(character);
         }
-   
+
+        [Authorize]
         // GET: Characters/Create
         public ActionResult Create(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return RedirectToAction("Index", "CharacterSheets")
+                    .WithNotification(string.Format("Choose a sheet from your collection and press the CREATE CHARACTER button"),
+                        NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.information, 5000, true, true);
+            }
+
             var character = new Character();
             
             // grab the character sheet we want to make this character from
@@ -109,11 +137,13 @@ namespace theprocurator.Controllers
         // POST: Characters/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAjax]
+        [ValidateJSONAntiForgeryHeader]
         public ActionResult Create(Character character)
         {           
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && CheckSecurity(character.UserId))
             {
                 character.UpdatedOn = DateTime.Now;
                 db.Entry(character).State = EntityState.Added;
@@ -126,6 +156,7 @@ namespace theprocurator.Controllers
         }
 
         // GET: Characters/Edit/5
+        [Authorize]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -148,6 +179,7 @@ namespace theprocurator.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         [ValidateAjax]
         public ActionResult FileUpload(string id)
@@ -187,6 +219,7 @@ namespace theprocurator.Controllers
             return Json("File uploaded successfully");
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAjax]
         public ActionResult FileDelete(string fileName)
@@ -215,11 +248,13 @@ namespace theprocurator.Controllers
         // POST: Characters/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAjax]
+        [ValidateJSONAntiForgeryHeader]
         public ActionResult Edit(Character character)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && CheckSecurity(character.UserId))
             {
                 character.UpdatedOn = DateTime.Now;
                 db.Entry(character).State = EntityState.Modified;
@@ -230,6 +265,7 @@ namespace theprocurator.Controllers
         }
 
         // GET: Characters/Delete/5
+        [Authorize]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -245,15 +281,28 @@ namespace theprocurator.Controllers
         }
 
         // POST: Characters/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
             Character character = db.Character.Find(id);
-            db.Character.Remove(character);
-            db.SaveChanges();
+            if (CheckSecurity(character.UserId))
+            {
+                db.Character.Remove(character);
+                db.SaveChanges();
 
-            return RedirectToAction("Index").WithNotification("Character deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
+                return RedirectToAction("Index").WithNotification("Character deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
+            }
+            return RedirectToAction("Index").WithNotification("Error deleting character.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error);
+        }
+
+        private bool CheckSecurity(string userId)
+        {
+            if (IdentityExtensions.GetUserId(User.Identity) != userId)
+                return false;
+            else
+                return true;
         }
 
         protected override void Dispose(bool disposing)

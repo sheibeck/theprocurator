@@ -66,6 +66,7 @@
             'CharacterSheetName': metaData.get('CharacterSheetName'),
             'CharacterSheetUrl': metaData.get('CharacterSheetUrl'),
             'CharacterSheetTheme': metaData.get('CharacterSheetTheme'),
+            'ParentId': metaData.get('ParentId') || tpn_common.emptyguid,
             'Published': metaData.get('Published') === "on" ? true : false,
             'CharacterSheetForm': JSON.stringify(JSON.parse(formeoObj.formData)),
             'UserId': metaData.get('UserId')

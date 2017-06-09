@@ -16,16 +16,16 @@
     }
 
     tpn_common.ajax = function (controller, data, callback) {
-        //var formForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+        var formForgeryToken = $('input[name="__RequestVerificationToken"]').val();
 
         var jqxhr = $.ajax({
             url: tpn_common.getRootUrl() + controller + '/' + tpn_common.config.routeaction,
             contentType: 'application/json; charset=utf-8',
             type: 'POST',
-            data: JSON.stringify(data)
-            /*, headers: {
+            data: JSON.stringify(data),
+            headers: {
                  "__RequestVerificationToken": formForgeryToken
-             } */
+            }
         })
        .done(function (data) {
            ShowNotification(data.message, data.type, data.position, data.modal);
@@ -196,7 +196,7 @@
 
 })(window.tpn_common = window.tpn_common || {}, jQuery);
 
-(function ($) {
+(function ($) {    
     //fix console.log issues for IE
     if (!window.console) window.console = {};
     if (!window.console.log) window.console.log = function () { };

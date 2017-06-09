@@ -35,6 +35,7 @@ namespace theprocurator.Data.Model
         public Guid CharacterSheetId { get; set; }
         public CharacterSheet CharacterSheet { get; set; }
 
+        public Guid ParentId { get; set; }
         public DateTime UpdatedOn { get; set; }        
         public bool Published { get; set; }
 

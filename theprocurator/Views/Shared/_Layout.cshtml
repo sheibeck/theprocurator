@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>                
-                <a class="navbar-logo navbar-brand" href="Index">
+                <a class="navbar-logo navbar-brand" href="/">
                     <img src="~/Content/images/tpn_header_logo_2.png"  alt="The Procurator" />
                 </a>
                 &nbsp;
@@ -27,13 +27,13 @@
                 <ul class="nav navbar-nav">                    
                     <li>@Html.ActionLink("Character Sheets", "Index", "CharacterSheets")</li>
                     <li>@Html.ActionLink("Characters", "Index", "Characters")</li>
-                </ul>            
+                </ul>
                 @Html.Partial("_LoginPartial")
-                <form class="navbar-form navbar-right navbar-collapse collapse" role="search">
+                <form class="navbar-form navbar-right navbar-collapse collapse" role="search" method="post" action="/CharacterSheets/Search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" placeholder="Search Sheets..." id="searchtext" name="searchtext">
                     </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
+                    <button type="submit" class="btn btn-default js-btn-search">Search</button>
                 </form>
             </div>
         </div>

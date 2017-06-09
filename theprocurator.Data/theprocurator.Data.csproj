@@ -143,6 +143,10 @@
     <Compile Include="Migrations\201706091553089_Published.Designer.cs">
       <DependentUpon>201706091553089_Published.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706091925274_Parents.cs" />
+    <Compile Include="Migrations\201706091925274_Parents.Designer.cs">
+      <DependentUpon>201706091925274_Parents.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AccountViewModels.cs" />
     <Compile Include="Model\CharacterHistory.cs" />
@@ -186,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706091553089_Published.resx">
       <DependentUpon>201706091553089_Published.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706091925274_Parents.resx">
+      <DependentUpon>201706091925274_Parents.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

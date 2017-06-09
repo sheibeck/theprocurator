@@ -122,6 +122,7 @@
                 'CharacterSheetId': metaData.get('CharacterSheetId'),
                 'CharacterName': metaData.get('CharacterName'),
                 'CharacterUrl': metaData.get('CharacterUrl'),
+                'ParentId': metaData.get('ParentId') || tpn_common.emptyguid,
                 'Published': metaData.get('Published') === "on" ? true : false,
                 'CharacterData': JSON.stringify(JSON.parse(jsonData)),
                 'UserId': metaData.get('UserId')
@@ -134,6 +135,11 @@
             tpn_common.ajax(tpn_char.config.controller, data);
         }
     };
+
+    function initSearch() {
+        $('form[role=search]').attr('action', '/Characters/Search');
+        $('#searchtext').attr('placeholder', 'Search Characters...');
+    }
 
     function bindDOM() {
         $('.print-pdf').on('click', function () {
@@ -166,11 +172,12 @@
             tpn_common.config.reloadUI = true;
 
             $('.js-btn-save').click();            
-        });              
+        });
     }
 
     tpn_char.init = function () {        
         bindDOM();
+        initSearch();
     }
 
 })(window.tpn_char = window.tpn_char || {}, jQuery);

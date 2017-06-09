@@ -18,6 +18,7 @@ using HiQPdf;
 
 namespace theprocurator.Controllers
 {
+    [Authorize]
     public class CharacterSheetsController : Controller
     {
         private TheProcuratorDbContext db = new TheProcuratorDbContext();
@@ -30,11 +31,29 @@ namespace theprocurator.Controllers
             var characterSheet = db.CharacterSheet
                                     .Include(c => c.Characters)
                                     .Include(c => c.User)
+                                    .OrderBy(c => c.CharacterSheetName)
                                     .Where(c => c.UserId == currentUserId);
             return View(characterSheet.ToList());
         }
 
+        public ActionResult Search(string searchtext)
+        {
+            var characterSheet = db.CharacterSheet
+                                    .Include(c => c.Characters)
+                                    .Include(c => c.User)
+                                    .OrderBy(c => c.CharacterSheetName)
+                                    .Where(c => c.Published == true)
+                                    .Where(c => c.CharacterSheetName.Contains(searchtext))                                    
+                                    .Where(c => c.CharacterSheetTheme.Contains(searchtext))
+                                    .Where(c => c.User.UserName.Contains(searchtext));
+
+            ViewBag.SearchText = searchtext;
+
+            return View(characterSheet.ToList());
+        }
+
         // GET: CharacterSheets/Create
+        [Authorize]
         public ActionResult Create()
         {
             var characterSheet = new CharacterSheet();
@@ -44,7 +63,8 @@ namespace theprocurator.Controllers
             return View(characterSheet);
         }
 
-        // POST: Character/Copy       
+        // POST: Character/Copy
+        [Authorize]
         public ActionResult Copy(Guid id)
         {
             if (id == null)
@@ -62,9 +82,11 @@ namespace theprocurator.Controllers
             // copy this sheet into the persons list of sheets
             db.Entry(characterSheet).State = EntityState.Detached;
             characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
+            characterSheet.ParentId = id;
             characterSheet.CharacterSheetId = Guid.NewGuid();
             characterSheet.CharacterSheetName = characterSheet.CharacterSheetName + " copy";
             characterSheet.CharacterSheetUrl = characterSheet.CharacterSheetUrl + "-copy";
+            characterSheet.Published = false;
             characterSheet.UpdatedOn = DateTime.Now;
             db.CharacterSheet.Add(characterSheet);
             db.SaveChanges();
@@ -76,11 +98,13 @@ namespace theprocurator.Controllers
         // POST: CharacterSheets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAjax]
+        [ValidateJSONAntiForgeryHeader]
         public ActionResult Edit(CharacterSheet characterSheet)
-        {            
-            if (ModelState.IsValid)
+        {
+            if (ModelState.IsValid && CheckSecurity(characterSheet.UserId))
             {
                 characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Modified;
@@ -119,6 +143,7 @@ namespace theprocurator.Controllers
         }
 
         // GET: CharacterSheets/Edit/5
+        [Authorize]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -137,11 +162,13 @@ namespace theprocurator.Controllers
         // POST: CharacterSheets/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAjax]
+        [ValidateJSONAntiForgeryHeader]
         public ActionResult Create(CharacterSheet characterSheet)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && CheckSecurity(characterSheet.UserId))
             {
                 characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Added;
@@ -153,6 +180,7 @@ namespace theprocurator.Controllers
         }
 
         // GET: CharacterSheets/Delete/5
+        [Authorize]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -164,22 +192,37 @@ namespace theprocurator.Controllers
             {
                 return HttpNotFound();
             }
-            return View(characterSheet).WithNotification("Deleting this character sheet cannot be undone!", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.warning);
+            return View(characterSheet).WithNotification("Deleting this sheet will also delete any characters created with it. This action cannot be undone!", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.warning, 5000);
         }
 
         // POST: CharacterSheets/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
             CharacterSheet characterSheet = db.CharacterSheet.Find(id);
-            db.CharacterSheet.Remove(characterSheet);
-            db.SaveChanges();
-            
-            return RedirectToAction("Index").WithNotification("Character sheet deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
+            if (CheckSecurity(characterSheet.UserId))
+            {
+                IEnumerable<Character> chars = db.Character.Where(c => c.CharacterSheetId == id);
+                db.Character.RemoveRange(chars);
+                db.CharacterSheet.Remove(characterSheet);
+                db.SaveChanges();
+
+                return RedirectToAction("Index").WithNotification("Character sheet deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
+            }
+            return RedirectToAction("Index").WithNotification("Error deleting character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error);
         }
 
-    protected override void Dispose(bool disposing)
+        private bool CheckSecurity(string userId)
+        {
+            if (IdentityExtensions.GetUserId(User.Identity) != userId)
+                return false;
+            else
+                return true;
+        }
+
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
