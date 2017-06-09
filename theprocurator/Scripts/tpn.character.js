@@ -1,7 +1,7 @@
 ﻿(function (tpn_char, $, undefined) {
 
     tpn_char.config = {
-        controller: 'Characters'
+        controller: 'Characters'        
         , formeo: null
         , renderContainer: document.querySelector('.character-form')
         , formeoOpts: {            
@@ -9,7 +9,8 @@
             svgSprite: tpn_common.getRootUrl() + 'Content/images/formeo-sprite.svg',
             sessionStorage: true,
             editPanelOrder: ['attrs', 'options'],
-            container: 'form-edit'
+            container: 'form-edit',
+            style: '/Content/theme/' + ($("#CharacterSheet_CharacterSheetTheme").val() || 'default') + '.css'
         }
     };
 
@@ -18,118 +19,154 @@
         tpn_char.config.formeo = new Formeo(tpn_char.config.formeoOpts, $('#CharacterSheet_CharacterSheetForm').val());
 
         //show the character sheet form right off the bat
-        window.setTimeout(function () {
-            tpn_char.loadCharacter();
+        window.setTimeout(function () {            
+            tpn_char.renderFormeo(tpn_char.loadCharacter);
         }, 1000);
     };
 
-    tpn_char.loadCharacter = function () {
-        tpn_char.config.formeo.render(tpn_char.config.renderContainer);
 
-        var data = JSON.parse($("#CharacterData").val());
-        var controls = JSON.parse($("#CharacterSheet_CharacterSheetForm").val());
-        for (var key in data) {
-            try {
-                switch(controls.fields[key].tag)
-                {
-                    case 'select':
-                        $("select[id='" + key + "']").val(data[key]);
-                        break;
+    tpn_char.renderFormeo = function(callback)
+    {
+        try {
+            tpn_char.config.formeo.render(tpn_char.config.renderContainer);
+            if (callback)
+                callback();
+        }
+        catch (ex) {
+            window.setTimeout(function () {
+                tpn_char.config.formeo.render(tpn_char.config.renderContainer);
+                if (callback)
+                    callback();
+            }, 500);
+        }
+        
+    }
 
-                    case 'textarea':
-                        $('#' + key)
-                            .text(data[key])
-                        break;
+    tpn_char.loadCharacter = function () {        
+        // render the character values
+        var charData = $("#CharacterData").val();
+        if (charData) {
+            var data = JSON.parse(charData);
+            var controls = JSON.parse($("#CharacterSheet_CharacterSheetForm").val());
+            for (var key in data) {
+                try {
+                    switch (controls.fields[key].tag) {
+                        case 'select':
+                            $("select[id='" + key + "']").val(data[key]);
+                            break;
 
-                    default: 
-                        switch (controls.fields[key].attrs.type) {
-                            case 'checkbox':
-                                //uncheck any defaults
-                                $("input[id='" + key + "'][type=checkbox]").prop("checked", false);
+                        case 'textarea':
+                            $('#' + key)
+                                .text(data[key])
+                            break;                        
 
-                                //check the real values
-                                $.each(data[key].split(','), function (item, value) {
-                                    $("input[id='" + key + "'][type=checkbox][value='" + value + "']").prop("checked", true);
-                                })
-                                break;
+                        default:
+                            switch (controls.fields[key].attrs.type) {
+                                case 'checkbox':
+                                    //uncheck any defaults
+                                    $("input[id='" + key + "'][type=checkbox]").prop("checked", false);
 
-                            case 'radio':
-                                //uncheck any defaults
-                                $("input[id='" + key + "'][type=checkbox]").prop("checked", false);
+                                    //check the real values
+                                    $.each(data[key].split(','), function (item, value) {
+                                        $("input[id='" + key + "'][type=checkbox][value='" + value + "']").prop("checked", true);
+                                    })
+                                    break;
 
-                                // check the real values
-                                $.each(data[key].split(','), function (item, value) {
-                                    $("input[id='" + key + "'][type=radio][value='" + value + "']").prop("checked", true);
-                                })
-                                break;
+                                case 'radio':
+                                    //uncheck any defaults
+                                    $("input[id='" + key + "'][type=checkbox]").prop("checked", false);
 
-                            case 'file':
-                                break;
+                                    // check the real values
+                                    $.each(data[key].split(','), function (item, value) {
+                                        $("input[id='" + key + "'][type=radio][value='" + value + "']").prop("checked", true);
+                                    })
+                                    break;
 
-                            default:
-                                $('#' + key)
-                                    .text(data[key])
-                                    .val(data[key]);
-                        }
+                                case 'file':
+                                    if (data[key]) {
+                                        $('#' + key).after('<a href="#" class="remove-image js-no-print" data-input-id="' + key + '" data-image="' + data[key] + '">[remove]</a>')
+                                                    .after('<img class="img-responsive" src="/Content/Character/Images/' + data[key] + '" alt="' + data[key] + '" />');
+                                        $('#' + key).prev().remove(); // hide the upload label
+                                        $('#' + key).after("<input type='hidden' name='" + key + "' id='" + key + "' value='" + data[key] + "' />"); // add a hidden input so we keep the current value
+                                        $('input[type=file][id=' + key + ']').remove(); // hide the upload control
+                                    }
 
+                                    break;
+
+                                default:
+                                    $('#' + key)
+                                        .text(data[key])
+                                        .val(data[key]);
+                            }
+
+                    }
+                }
+                catch (ex) {
+                    //console.log(ex);
+                    continue;
                 }
             }
-            catch(ex)
-            {                
-                //console.log(ex);
-                continue;
-            }
+
+            // insert page breaks for properly paged printing
+            tpn_common.fixPrintables();
         }
     }
 
     tpn_char.saveCharacter = function ($form, metaDataForm) {
         var metaData = new FormData(document.getElementById(metaDataForm));
 
-        var data = {            
-            'CharacterSheetId': metaData.get('CharacterSheetId'),
-            'CharacterName': metaData.get('CharacterName'),
-            'CharacterUrl': metaData.get('CharacterUrl'),
-            'CharacterData': JSON.stringify(JSON.parse(tpn_common.formDataToJSON($form))),
-            'UserId': metaData.get('UserId')
-        }
+        // make sure our json formatted data is not value "false"
+        var jsonData = tpn_common.formDataToJSON($form);
+        if (jsonData) {
+            var data = {
+                'CharacterSheetId': metaData.get('CharacterSheetId'),
+                'CharacterName': metaData.get('CharacterName'),
+                'CharacterUrl': metaData.get('CharacterUrl'),
+                'Published': metaData.get('Published') === "on" ? true : false,
+                'CharacterData': JSON.stringify(JSON.parse(jsonData)),
+                'UserId': metaData.get('UserId')
+            }
 
-        if (tpn_common.config.routeaction === "Edit")
-        {
-            data["CharacterId"] = metaData.get('CharacterId')
-        }
+            if (tpn_common.config.routeaction === "Edit") {
+                data["CharacterId"] = metaData.get('CharacterId')
+            }
 
-        tpn_common.ajax(tpn_char.config.controller, data);
+            tpn_common.ajax(tpn_char.config.controller, data);
+        }
     };
 
     function bindDOM() {
-        $('.preview').on('click', function () {
-            window.print();
-        })
-
-        $(".js-btn-save").on('click', function (e) {
-            $("form.character-form").submit();
+        $('.print-pdf').on('click', function () {
+            var printUrl = tpn_common.getRootUrl() + 'Characters/Pdf/' + $('#CharacterId').val();
+            window.open(printUrl);
         });
 
-        $("form.character-form").on('submit', function (e) {
+        $(".js-btn-save").on('click', function (e) {
+            e.preventDefault();
+            $("form.main-form").submit();
+            return false;
+        });
+
+        $("form.main-form").on('submit', function (e) {
             e.preventDefault();
             tpn_char.saveCharacter($(this), 'meta-data');
             return false;
         });
 
-        $('.preview').on('click', function () {
-            var $this = $(this);
+        $(document).on('click', '.remove-image', function (e) {
+            var $image = $(this);
+            tpn_common.deleteFile($image);
+            
+            $('#' + $image.data('input-id')).val(''); // clear out the image so it's properly deleted from the db
 
-            document.body.classList.toggle('form-rendered', tpn_charsheet.config.editing);
+            $image.prev().remove();
+            $image.prev().show();
+            $image.remove();
 
-            if (tpn_charsheet.config.editing) {
-                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
-                $this.text('Edit Form');
-            } else {
-                $this.text('Print');
-            }
+            tpn_common.config.reloadUI = true;
 
-            return tpn_charsheet.config.editing = !tpn_charsheet.config.editing;
-        })
+            $('.js-btn-save').click();            
+        });              
     }
 
     tpn_char.init = function () {        

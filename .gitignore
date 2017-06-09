@@ -294,3 +294,6 @@ __pycache__/
 # End of https://www.gitignore.io/api/visualstudio
 packages/
 theprocurator.Data/bin/
+theprocurator/App_Data/
+theprocurator/Content/Character/
+theprocurator/Content/CharacterSheet/

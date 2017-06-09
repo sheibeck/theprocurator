@@ -13,32 +13,47 @@
             @Html.HiddenFor(model => model.UserId)
             @Html.HiddenFor(model => model.CharacterSheetId)
             @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetForm)
+            @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetTheme)
             @Html.HiddenFor(model => model.CharacterData)
-            <h4 class="col-xs-12 col-sm-2 col-lg-1">Character Name</h4>
-            <div class="col-xs-12 col-sm-4 col-lg-5">
-                @Html.EditorFor(model => model.CharacterName, new { htmlAttributes = new { @class = "form-control" } })
+            
+            <div class="col-md-4">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" id="basic-addon1">Name</span>
+                    @Html.EditorFor(model => model.CharacterName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
                 @Html.ValidationMessageFor(model => model.CharacterName, "", new { @class = "text-danger" })
             </div>
 
-            <h4 class="col-xs-12 col-sm-2 col-lg-1">Character Url</h4>
-            <div class="col-xs-12 col-sm-4 col-lg-5">
-                @Html.EditorFor(model => model.CharacterUrl, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-4">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" id="basic-addon1">Url</span>
+                    @Html.EditorFor(model => model.CharacterUrl, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
                 @Html.ValidationMessageFor(model => model.CharacterUrl, "", new { @class = "text-danger" })
             </div>
+
+            <div class="col-md-4">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" id="basic-addon1">Sheet</span>
+                    <input type="text" readonly="readonly" class="form-control" value="@Model.CharacterSheet.CharacterSheetName" />
+                </div>
+            </div>        
         </div>
     </form>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <hr />    
 
-    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "character-form" }))
+    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "main-form" }))
     {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.AntiForgeryToken()
+
+        <div class="character-form"></div>
     }    
 </div>
 
 <div class="action-buttons">
-    <button type="button" class="btn btn-primary js-btn-save">Save</button>
-    <a href="@Url.Action("Index", "Characters")" class="btn btn-default">Cancel</a>
+    <a href="#" class="btn btn-primary js-btn-save"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+    <a href="@Url.Action("Index", "Characters")" class="btn btn-default"><span class="glyphicon glyphicon-backward"></span> Cancel</a>
 </div>
 
 @section Scripts {

@@ -19,7 +19,7 @@
                         'select',
                         'checkbox',
                         'radio',
-                        'upload'                    
+                        'upload'
                     ]
                 },
                 disable: {
@@ -35,7 +35,8 @@
             svgSprite: tpn_common.getRootUrl() + 'Content/images/formeo-sprite.svg',
             sessionStorage: true,
             editPanelOrder: ['attrs', 'options'],
-            container: 'form-edit'
+            container: 'form-edit',
+            style: '/Content/theme/' + ($("#CharacterSheetTheme").val() || 'default') + '.css'
         }
     };
 
@@ -48,6 +49,13 @@
         {
             $('#CharacterSheetId').val(JSON.parse(tpn_charsheet.config.formeo.formData).id);
         }
+
+        // keep the toolbar in view        
+        $(window).scroll(function () {
+            $(".formeo-controls")
+				.stop()
+				.animate({ "marginTop": ($(window).scrollTop() + 0) + "px" }, "slow");
+        });               
     };
 
     tpn_charsheet.saveSheet = function (formeoObj, metaDataForm) {
@@ -57,23 +65,43 @@
             'CharacterSheetId': metaData.get('CharacterSheetId'),
             'CharacterSheetName': metaData.get('CharacterSheetName'),
             'CharacterSheetUrl': metaData.get('CharacterSheetUrl'),
+            'CharacterSheetTheme': metaData.get('CharacterSheetTheme'),
+            'Published': metaData.get('Published') === "on" ? true : false,
             'CharacterSheetForm': JSON.stringify(JSON.parse(formeoObj.formData)),
             'UserId': metaData.get('UserId')
         }
 
         tpn_common.ajax(tpn_charsheet.config.controller, data);
+      
     };
 
+    tpn_charsheet.print = function() {
+        document.body.classList.toggle('form-rendered', true);
+        tpn_charsheet.renderFormeo();
+        tpn_common.fixPrintables();
+    }
+
+    tpn_charsheet.renderFormeo = function()
+    {
+        try {
+            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+        }
+        catch(ex)
+        {
+            window.setTimeout(function () {
+                tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+            }, 500);
+        }
+    }
+
     function bindDOM() {
-        $('.preview').on('click', function () {           
-            /* document.body.classList.toggle('form-rendered', true);
-            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);            
-            window.print();
-            document.body.classList.toggle('form-rendered', false);
-            */
+        $('.preview').on('click', function (e) {
+            e.preventDefault();
+            tpn_charsheet.print();
+            return false;
         })
 
-        $("form.build-form").on('submit', function (e) {
+        $("form.main-form").on('submit', function (e) {
             e.preventDefault();
             return false;
         });
@@ -82,7 +110,15 @@
             e.preventDefault();
             tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data');
             return false;
-        });     
+        });
+
+        window.setTimeout(function () {
+            if (tpn_common.config.routeaction.toLowerCase() === 'print') {
+                document.body.classList.toggle('form-rendered', true);
+                tpn_charsheet.renderFormeo();
+                tpn_common.fixPrintables();                
+            }
+        }, 500);
     }
 
     tpn_charsheet.init = function() {

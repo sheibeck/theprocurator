@@ -1,0 +1,36 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Acme');
+
+.stage-wrap *
+, .formeo-render * {
+    font-family: 'Acme', sans-serif;
+}
+
+.stage-wrap H1
+, .formeo-render H1 {
+    background-color: #000 !important;
+    color: white !important;
+    padding: 10px;
+}
+
+.stage-wrap label
+, .formeo-render label {
+    font-size: 1.2em;
+}
+
+.f-checkbox label
+, .f-radio label {
+    font-size: 1.0em;
+    font-weight: 500;
+}
+
+.f-render-column {
+    padding: 5px !important;
+    border: 1px double #ccc;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.f-row.page-break .f-render-column {
+    border: none !important;
+}

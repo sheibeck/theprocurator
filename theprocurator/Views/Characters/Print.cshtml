@@ -1,0 +1,45 @@
+﻿@model theprocurator.Data.Model.Character
+
+@section theme {   
+}
+
+@{
+    ViewBag.Title = "Character";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+<div class="form-horizontal">
+    <form id="meta-data">
+        <div class="form-group">
+            @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.CharacterId)
+            @Html.HiddenFor(model => model.CharacterSheetId)
+            @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetForm)
+            @Html.HiddenFor(model => model.CharacterData)           
+            @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetTheme)
+        </div>
+    </form>    
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @using (Html.BeginForm("Character", "Create", FormMethod.Post, new { @class = "main-form" }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.AntiForgeryToken()        
+    }
+
+    <div class="character-form"></div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/formeo")
+    @Scripts.Render("~/Scripts/tpn.character.js")
+
+    <script type="text/javascript">
+        (function ($) {
+            tpn_common.config.routeaction = "@ViewContext.RouteData.Values["action"]";
+            tpn_char.initFormeo('.character-form');
+        })(jQuery);
+    </script>
+}

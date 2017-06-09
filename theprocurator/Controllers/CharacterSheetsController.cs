@@ -9,9 +9,12 @@ using System.Web.Mvc;
 using theprocurator.Data;
 using theprocurator.Data.Model;
 using Microsoft.AspNet.Identity;
-using static theprocurator.Helpers.AjaxHelpers;
+using static theprocurator.Helpers.AjaxHelper;
 using NotyNotification.Extension;
 using theprocurator.Helpers;
+using System.Drawing;
+using System.IO;
+using HiQPdf;
 
 namespace theprocurator.Controllers
 {
@@ -31,7 +34,7 @@ namespace theprocurator.Controllers
             return View(characterSheet.ToList());
         }
 
-            // GET: CharacterSheets/Create
+        // GET: CharacterSheets/Create
         public ActionResult Create()
         {
             var characterSheet = new CharacterSheet();
@@ -39,6 +42,35 @@ namespace theprocurator.Controllers
             characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
                         
             return View(characterSheet);
+        }
+
+        // POST: Character/Copy       
+        public ActionResult Copy(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CharacterSheet characterSheet = db.CharacterSheet.AsNoTracking().FirstOrDefault(cs => cs.CharacterSheetId == id);
+            //db.CharacterSheet.Find(id);
+
+            if (characterSheet == null)
+            {
+                return HttpNotFound();
+            }
+
+            // copy this sheet into the persons list of sheets
+            db.Entry(characterSheet).State = EntityState.Detached;
+            characterSheet.UserId = IdentityExtensions.GetUserId(User.Identity);
+            characterSheet.CharacterSheetId = Guid.NewGuid();
+            characterSheet.CharacterSheetName = characterSheet.CharacterSheetName + " copy";
+            characterSheet.CharacterSheetUrl = characterSheet.CharacterSheetUrl + "-copy";
+            characterSheet.UpdatedOn = DateTime.Now;
+            db.CharacterSheet.Add(characterSheet);
+            db.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = characterSheet.CharacterSheetId })
+                    .WithNotification("Character sheet was added to your collection.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
         }
 
         // POST: CharacterSheets/Create
@@ -50,13 +82,40 @@ namespace theprocurator.Controllers
         {            
             if (ModelState.IsValid)
             {
+                characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Modified;
-                db.SaveChanges();
+                SaveDBChanges(characterSheet.CharacterSheetId);
 
-                return Json(AjaxHelpers.Notify("Character sheet saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
+                return Json(Helpers.AjaxHelper.Notify("Character sheet saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
             }
-                
-            return Json(AjaxHelpers.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+
+            return Json(Helpers.AjaxHelper.Notify("Error saving character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Saves the database changes.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        private int SaveDBChanges(Guid id)
+        {            
+            this.ToThumbnail(id.ToString());
+            return db.SaveChanges();
+        }
+
+        public ActionResult Print(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CharacterSheet characterSheet = db.CharacterSheet.Find(id);
+            if (characterSheet == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(characterSheet);
         }
 
         // GET: CharacterSheets/Edit/5
@@ -84,12 +143,13 @@ namespace theprocurator.Controllers
         {
             if (ModelState.IsValid)
             {
+                characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Added;
-                db.SaveChanges();
-                               
-                return Json(AjaxHelpers.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
+                SaveDBChanges(characterSheet.CharacterSheetId);
+
+                return Json(Helpers.AjaxHelper.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
             }            
-            return Json(AjaxHelpers.Notify("Error creating character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
+            return Json(Helpers.AjaxHelper.Notify("Error creating character sheet.", NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.error, true), JsonRequestBehavior.AllowGet);
         }
 
         // GET: CharacterSheets/Delete/5

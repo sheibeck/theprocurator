@@ -1,0 +1,12 @@
+﻿ body {
+    -webkit-print-color-adjust: exact !important;
+    padding: 0px;
+}
+
+.js-no-print {
+    display: none;
+}
+
+.form-group, h2, hr, .action-buttons, footer, form {
+    display: none;
+}   

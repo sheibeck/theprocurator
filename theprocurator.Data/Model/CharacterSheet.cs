@@ -28,7 +28,14 @@ namespace theprocurator.Data.Model
         [Required]        
         [Display(Name = "Form")]
         public string CharacterSheetForm { get; set; }
+        
+        [Display(Name = "Theme")]
+        public string CharacterSheetTheme { get; set; }
 
+
+        public string CharacterSheetParentId { get; set; }
+        public DateTime UpdatedOn { get; set; }
+        public bool Published { get; set; }
 
         // Foreign Keys      
         [Required] 
