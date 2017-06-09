@@ -315,6 +315,8 @@
     <Content Include="Views\Characters\Print.cshtml" />
     <Content Include="Views\Shared\_Print.cshtml" />
     <Content Include="Views\CharacterSheets\Print.cshtml" />
+    <Content Include="Views\CharacterSheets\Search.cshtml" />
+    <Content Include="Views\Characters\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

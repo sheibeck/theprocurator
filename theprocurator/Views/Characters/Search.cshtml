@@ -2,11 +2,21 @@
 @using System.Text.RegularExpressions;
 
 @{
-    ViewBag.Title = "Characters";
+    ViewBag.Title = "Character Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Characters</h2>
+<div class="h2 row">
+    <div class="col-xs-12 col-md-3">Search Results</div>
+    <div class="col-xs-12 col-md-9">
+        <small>
+            <em>
+                published characters @if (ViewBag.SearchText != "")
+            {<span> matching</span> <strong>'@ViewBag.SearchText'</strong> }
+            </em>
+        </small>
+    </div>
+</div>
 
 <p>
     @Html.ActionLink("Create a Character", "Create", new { id = Guid.Empty })
@@ -18,10 +28,10 @@
             Character Name            
         </th>
         <th>
-            Published
+            Owner
         </th>
         <th>
-            Character Sheet
+            Sheet
         </th>
         <th></th>
     </tr>
@@ -49,7 +59,7 @@
             <p class="small">edited: @item.UpdatedOn</p>
         </td>  
         <th>
-            @Html.DisplayFor(modelItem => item.Published)
+            @Html.DisplayFor(modelItem => item.User.UserName.Split('@')[0])
         </th>    
         <td>
             @Html.DisplayFor(modelItem => item.CharacterSheet.CharacterSheetName)
