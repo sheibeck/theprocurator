@@ -295,3 +295,5 @@ __pycache__/
 packages/
 theprocurator.Data/bin/
 theprocurator/App_Data/
+theprocurator/Content/Character/
+theprocurator/Content/CharacterSheet/

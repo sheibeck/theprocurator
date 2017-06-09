@@ -18,7 +18,8 @@
                         'textarea',
                         'select',
                         'checkbox',
-                        'radio'                        
+                        'radio',
+                        'upload'
                     ]
                 },
                 disable: {
@@ -27,8 +28,7 @@
                         'date-input',
                         'hidden',
                         'number',
-                        'button',
-                        'upload'
+                        'button'
                     ]
                 }
             },       
@@ -75,13 +75,8 @@
 
     tpn_charsheet.print = function() {
         document.body.classList.toggle('form-rendered', true);
-
         tpn_charsheet.renderFormeo();
-
-        tpn_common.fixPageBreaks();
-
-        window.print();
-        document.body.classList.toggle('form-rendered', false);
+        tpn_common.fixPageBreaks();     
     }
 
     tpn_charsheet.renderFormeo = function()
@@ -120,8 +115,7 @@
                 document.body.classList.toggle('form-rendered', true);
                 tpn_charsheet.renderFormeo();
                 tpn_common.fixPageBreaks();
-                window.print();
-                window.history.back();
+                $('input[type=file]').parent().hide();
             }
         }, 500);
     }

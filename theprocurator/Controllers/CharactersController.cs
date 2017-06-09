@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using theprocurator.Data;
@@ -136,6 +138,76 @@ namespace theprocurator.Controllers
             }
             
             return View(character);
+        }
+
+
+        /// <summary>
+        /// Files the upload.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAjax]
+        public ActionResult FileUpload(string id)
+        {
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var fileName = string.Format("{0}_{1}", id, fileContent.FileName);
+                        var imageDir = Server.MapPath("~/Content/Character/Images");
+                        var path = Path.Combine(imageDir, fileName);
+
+                        if (!Directory.Exists(imageDir))
+                        {
+                            Directory.CreateDirectory(imageDir);
+                        }
+
+                        using (FileStream fs = new FileStream(path, FileMode.Create))
+                        {
+                            stream.CopyTo(fs);                            
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Upload failed");
+            }
+
+            return Json("File uploaded successfully");
+        }
+
+        [HttpPost]
+        [ValidateAjax]
+        public ActionResult FileDelete(string fileName)
+        {
+            try
+            {                
+                var imageDir = Server.MapPath("~/Content/Character/Images");
+                var path = Path.Combine(imageDir, fileName);
+
+                FileInfo fi = new FileInfo(path);
+
+                if (fi.Exists)
+                {
+                    fi.Delete();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Delete failed");
+            }
+
+            return Json("File deleted successfully");
         }
 
         // POST: Characters/Edit/5

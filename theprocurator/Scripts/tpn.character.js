@@ -1,7 +1,7 @@
 ﻿(function (tpn_char, $, undefined) {
 
     tpn_char.config = {
-        controller: 'Characters'
+        controller: 'Characters'        
         , formeo: null
         , renderContainer: document.querySelector('.character-form')
         , formeoOpts: {            
@@ -10,7 +10,7 @@
             sessionStorage: true,
             editPanelOrder: ['attrs', 'options'],
             container: 'form-edit',
-            style: '/Content/theme/' + ($("#CharacterSheetTheme").val() || 'default') + '.css'
+            style: '/Content/theme/' + ($("#CharacterSheet_CharacterSheetTheme").val() || 'default') + '.css'
         }
     };
 
@@ -58,7 +58,7 @@
                         case 'textarea':
                             $('#' + key)
                                 .text(data[key])
-                            break;
+                            break;                        
 
                         default:
                             switch (controls.fields[key].attrs.type) {
@@ -83,6 +83,12 @@
                                     break;
 
                                 case 'file':
+                                    if (data[key]) {
+                                        $('#' + key).after('<a href="#" class="remove-image js-no-print" data-image="' + data[key] + '">[remove]</a>')
+                                                    .after('<img src="/Content/Character/Images/' + data[key] + '" alt="' + data[key] + '" />');
+                                        $('#' + key).prev().hide(); // hide the upload label
+                                        $('#' + key).hide(); // hide the upload control
+                                    }
                                     break;
 
                                 default:
@@ -140,13 +146,16 @@
             tpn_char.saveCharacter($(this), 'meta-data');
             return false;
         });
-       
-        window.setTimeout(function () {
-            if (tpn_common.config.routeaction.toLowerCase() === 'print') {
-                window.print();
-                window.history.back();
-            }
-        }, 2000);
+
+        $(document).on('click', '.remove-image', function (e) {
+            var $image = $(this);
+            tpn_common.deleteFile($image);
+
+            $image.prev().remove();
+            $image.prev().show();
+            $image.remove();
+            $(".js-btn-save").click();
+        });              
     }
 
     tpn_char.init = function () {        

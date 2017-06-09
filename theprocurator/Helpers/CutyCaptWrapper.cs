@@ -29,9 +29,14 @@ public class CutyCaptWrapper
         ThumbNailSize = 1;
         ThumbKeepAspectRatio = false;
         ThumbExpiryTimeInHours = 168; //1 week
-        ScreenShotPath = HttpContext.Current.Server.MapPath("~/App_Data/ThumbCache/"); // must be within the web root
+        ScreenShotPath = HttpContext.Current.Server.MapPath("~/Content/CharacterSheet/Thumbnails/"); // must be within the web root
         CutyCaptPath = HttpContext.Current.Server.MapPath("~/tools/CutyCapt.exe"); // must be within the web root
-        //CutyCaptWorkingDirectory = HttpContext.Current.Server.MapPath("~/App_Data/");
+
+        if (!Directory.Exists(ScreenShotPath))
+        {
+            Directory.CreateDirectory(ScreenShotPath);
+        }
+
         CutyCaptDefaultArguments = " --max-wait=10000 --out-format=png --javascript=on --java=off --plugins=off --js-can-open-windows=off --js-can-access-clipboard=off --private-browsing=on";
 
     }
