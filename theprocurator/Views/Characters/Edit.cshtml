@@ -45,10 +45,10 @@
                 <div class="input-group input-group-sm">
                     <div class="btn-group btn-group-sm" data-toggle="buttons">                        
                         <label class="btn btn-primary @(Model.Published ? "" : "active")">
-                            <input type="radio" autocomplete="off"> Private
+                            <input type="radio" id="Published" value="false" name="Published" @(Model.Published ? "checked" : "") autocomplete="off"> Private
                         </label>
                         <label class="btn btn-primary @(Model.Published ? "active" : "")">
-                            <input type="radio" id="Published" name="Published" checked autocomplete="off"> Published
+                            <input type="radio" id="Published" value="true" name="Published" @(Model.Published ? "checked" : "") autocomplete="off"> Published
                         </label>
                     </div>
                 </div>

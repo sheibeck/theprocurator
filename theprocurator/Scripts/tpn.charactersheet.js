@@ -107,11 +107,11 @@
             return false;
         });
 
-        $(document).on('click', 'button.save-form, button.js-btn-save', function (e) {
+        $(document).on('click', 'button.save-form, .js-btn-save', function (e) {
             e.preventDefault();
             tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data');
             return false;
-        });
+        });    
 
         window.setTimeout(function () {
             if (tpn_common.config.routeaction.toLowerCase() === 'print') {

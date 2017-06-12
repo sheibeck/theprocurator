@@ -32,11 +32,11 @@
         <td style="max-width: 60px;">
             <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })">
                 @{
-                    string image = Regex.Match(item.CharacterData, @"([a-zA-z0-9]{8})-([a-zA-z0-9]{4})-([a-zA-z0-9]{4})-([a-zA-z0-9]{4})-([a-zA-z0-9]{12})_.+.(jpg|png)", RegexOptions.Singleline).Value;
+                    string image = Regex.Match(item.CharacterData, @"([\w-_ $#@!_]+)(.jpg|.png)", RegexOptions.Singleline).Value;
                 }
                 @if (!String.IsNullOrEmpty(image))
                 {
-                    <img class="img-responsive" src="~/Content/Character/Images/@image" />
+                    <img class="img-responsive" src="~/Content/Character/@item.CharacterId/@image" />
                 }
                 else
                 {

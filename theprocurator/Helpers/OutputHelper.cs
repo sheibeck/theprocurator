@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -47,23 +48,47 @@ namespace theprocurator.Helpers
             return new FileStreamResult(ms, "application/pdf");
         }
 
-        public static FileStreamResult ToThumbnail(this Controller controller, string id)
+        public static void ToThumbnail(this Controller controller, string id)
+        {
+           
+            var filePath = HttpContext.Current.Server.MapPath(String.Format("~/Content/CharacterSheet/Thumbnails/{0}.png", id));
+
+
+#if DEBUG
+            string url = String.Format("http://api.screenshotmachine.com/?key=f9b7da&dimension=640x480&format=png&cacheLimit=1&url=null)", GetBaseUrl(), id);
+#endif
+
+#if !DEBUG
+            string url = String.Format("http://api.screenshotmachine.com/?key=f9b7da&dimension=640x480&format=png&cacheLimit=1&url=http://{0}/CharacterSheets/Print/{1})", GetBaseUrl(), id);
+#endif
+
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.AutomaticDecompression = DecompressionMethods.GZip;
+            
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())           
+            using (BinaryReader reader = new BinaryReader(response.GetResponseStream()))
+            {
+                Byte[] lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
+                using (FileStream file = new FileStream(filePath, FileMode.Create))
+                {
+                    file.Write(lnByte, 0, lnByte.Length);
+                }
+            }
+                    
+        }
+        
+        public static string GetBaseUrl()
         {
             var request = HttpContext.Current.Request;
-            var address = string.Format("{0}://{1}", request.Url.Scheme, request.Url.Authority);
-            string url = string.Format("{0}/{1}/Print/{2}", address, controller.RouteData.Values["controller"], id);
+            var appUrl = HttpRuntime.AppDomainAppVirtualPath;
 
-            var cc = new CutyCaptWrapper();
-            var filePath = cc.GetScreenShot(url, id);
+            if (appUrl != "/")
+                appUrl = "/" + appUrl;
 
-            MemoryStream ms = new MemoryStream();
-            FileStream file = new FileStream(HttpContext.Current.Server.MapPath("~/" + filePath), FileMode.Open, FileAccess.Read);
+            var baseUrl = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, appUrl);
 
-            byte[] bytes = new byte[file.Length];
-            file.Read(bytes, 0, (int)file.Length);
-            ms.Write(bytes, 0, (int)file.Length);
-         
-            return new FileStreamResult(ms, "image/png");
-        }        
+            return baseUrl;
+        }
     }
 }

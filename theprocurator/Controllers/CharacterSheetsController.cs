@@ -89,7 +89,8 @@ namespace theprocurator.Controllers
             characterSheet.Published = false;
             characterSheet.UpdatedOn = DateTime.Now;
             db.CharacterSheet.Add(characterSheet);
-            db.SaveChanges();
+
+            SaveDBChanges(characterSheet.CharacterSheetId);
 
             return RedirectToAction("Edit", new { id = characterSheet.CharacterSheetId })
                     .WithNotification("Character sheet was added to your collection.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
@@ -127,6 +128,7 @@ namespace theprocurator.Controllers
             return db.SaveChanges();
         }
 
+        [AllowAnonymous]
         public ActionResult Print(Guid id)
         {
             if (id == null)
@@ -208,6 +210,16 @@ namespace theprocurator.Controllers
                 db.Character.RemoveRange(chars);
                 db.CharacterSheet.Remove(characterSheet);
                 db.SaveChanges();
+
+                var thumbDir = Server.MapPath("~/Content/CharacterSheet/Thumbnails/");
+                var path = Path.Combine(thumbDir, id.ToString());
+
+                FileInfo fi = new FileInfo(path);
+
+                if (fi.Exists)
+                {
+                    fi.Delete();
+                }
 
                 return RedirectToAction("Index").WithNotification("Character sheet deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
             }

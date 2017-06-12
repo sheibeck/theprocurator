@@ -26,7 +26,7 @@ public class CutyCaptWrapper
     public CutyCaptWrapper()
     {
         //default values
-        ThumbNailSize = 1;
+        ThumbNailSize = 3;
         ThumbKeepAspectRatio = false;
         ThumbExpiryTimeInHours = 168; //1 week
         ScreenShotPath = HttpContext.Current.Server.MapPath("~/Content/CharacterSheet/Thumbnails/"); // must be within the web root

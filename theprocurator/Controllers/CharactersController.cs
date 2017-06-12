@@ -78,8 +78,57 @@ namespace theprocurator.Controllers
             db.Character.Add(character);
             db.SaveChanges();
 
+            // copy the character asset folder
+            CopyAssetDirectory(character.CharacterId, character.ParentId);            
+
             return RedirectToAction("Edit", new { id = character.CharacterId })
                     .WithNotification("Character was added to your collection.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
+        }
+
+        private void CopyAssetDirectory(Guid characterId, Guid parentId)
+        {
+            var SourcePath = Server.MapPath(String.Format("~/Content/Character/{0}", parentId));
+            var DestinationPath = Server.MapPath(String.Format("~/Content/Character/{0}", characterId));
+
+            DirectoryCopy(SourcePath, DestinationPath, true);
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
         }
 
         public FileStreamResult Pdf(Guid id)
@@ -88,6 +137,7 @@ namespace theprocurator.Controllers
             return this.PrintToPdf(id.ToString(), character.CharacterName);
         }
 
+        [AllowAnonymous]
         public ActionResult Print(Guid id)
         {     
             if (id == null)
@@ -121,6 +171,7 @@ namespace theprocurator.Controllers
             character.UserId = IdentityExtensions.GetUserId(User.Identity);
             character.CharacterSheet = db.CharacterSheet.Where(c => c.CharacterSheetId == id)
                                             .FirstOrDefault();
+            character.CharacterId = Guid.NewGuid();
 
             if (character.CharacterSheet == null)
             {
@@ -129,7 +180,7 @@ namespace theprocurator.Controllers
 
             else
             {
-                character.CharacterSheetId = character.CharacterSheet.CharacterSheetId;
+                character.CharacterSheetId = character.CharacterSheet.CharacterSheetId;              
                 return View(character).WithNotification(string.Format("Creating a new character with sheet: {0}", character.CharacterSheet.CharacterSheetName), NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.information);
             }
         }
@@ -145,6 +196,15 @@ namespace theprocurator.Controllers
         {           
             if (ModelState.IsValid && CheckSecurity(character.UserId))
             {
+
+                // create an asset directory for the character
+                var charDir = Server.MapPath(string.Format("~/Content/Character/{0}", character.CharacterId));
+                if (!Directory.Exists(charDir))
+                {
+                    Directory.CreateDirectory(charDir);
+                }
+
+
                 character.UpdatedOn = DateTime.Now;
                 db.Entry(character).State = EntityState.Added;
                 db.SaveChanges();
@@ -193,16 +253,16 @@ namespace theprocurator.Controllers
                     {
                         // get a stream
                         var stream = fileContent.InputStream;
-                        // and optionally write the file to disk
-                        var fileName = string.Format("{0}_{1}", id, fileContent.FileName);
-                        var imageDir = Server.MapPath("~/Content/Character/Images");
-                        var path = Path.Combine(imageDir, fileName);
+                        // and optionally write the file to disk                        
+                        var imageDir = Server.MapPath(String.Format("~/Content/Character/{0}", id));
 
                         if (!Directory.Exists(imageDir))
                         {
                             Directory.CreateDirectory(imageDir);
                         }
 
+                        var path = Path.Combine(imageDir, fileContent.FileName);
+                        
                         using (FileStream fs = new FileStream(path, FileMode.Create))
                         {
                             stream.CopyTo(fs);                            
@@ -222,11 +282,11 @@ namespace theprocurator.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAjax]
-        public ActionResult FileDelete(string fileName)
+        public ActionResult FileDelete(string fileName, string id)
         {
             try
             {                
-                var imageDir = Server.MapPath("~/Content/Character/Images");
+                var imageDir = Server.MapPath(string.Format("~/Content/Character/{0}", id));
                 var path = Path.Combine(imageDir, fileName);
 
                 FileInfo fi = new FileInfo(path);
@@ -291,6 +351,13 @@ namespace theprocurator.Controllers
             {
                 db.Character.Remove(character);
                 db.SaveChanges();
+
+                // cleanup the asset folder
+                var charDir = Server.MapPath(string.Format("~/Content/Character/{0}", id));
+                if (Directory.Exists(charDir))
+                {
+                    Directory.Delete(charDir);
+                }
 
                 return RedirectToAction("Index").WithNotification("Character deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
             }

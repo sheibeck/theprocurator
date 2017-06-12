@@ -11,12 +11,15 @@
     @Html.ActionLink("Create a Character Sheet", "Create", new { id = Guid.NewGuid() })
 </p>
 <table class="table">
-    <tr>        
+    <tr>
+        <th>
+
+        </th>        
         <th>
             Name
         </th>
         <th>
-            # Characters
+            Characters
         </th>
         <th>
             Published
@@ -29,6 +32,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <th>
+            <img class="img-responsive" src="~/Content/CharacterSheet/Thumbnails/@(item.CharacterSheetId).png" />
+        </th>
         <td>
             <p>@Html.DisplayFor(modelItem => item.CharacterSheetName)</p>
             <p class="small">edited: @item.UpdatedOn</p>
