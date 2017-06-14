@@ -58,3 +58,11 @@
 {
     float:none;    
 }
+
+.img-thumbnail {
+    max-width: 100px !important;
+}
+
+.btn-group-vertical a {    
+    margin-bottom: 2px;
+}

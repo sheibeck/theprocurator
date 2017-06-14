@@ -19,8 +19,9 @@ namespace theprocurator.Controllers
 {    
     public class CharactersController : Controller
     {
-        private TheProcuratorDbContext db = new TheProcuratorDbContext();        
+        private TheProcuratorDbContext db = new TheProcuratorDbContext();
 
+        [AllowAnonymous]
         // GET: Characters
         public ActionResult Index()
         {
@@ -32,6 +33,7 @@ namespace theprocurator.Controllers
             return View(character.ToList());
         }
 
+        [AllowAnonymous]
         public ActionResult Search(string searchtext)
         {
             var characterSheet = db.Character
@@ -39,9 +41,9 @@ namespace theprocurator.Controllers
                                     .Include(c => c.User)
                                     .OrderBy(c => c.CharacterName)
                                     .Where(c => c.Published == true)
-                                    .Where(c => c.CharacterSheet.CharacterSheetName.Contains(searchtext))
-                                    .Where(c => c.CharacterSheet.CharacterSheetTheme.Contains(searchtext))
-                                    .Where(c => c.User.UserName.Contains(searchtext));
+                                    .Where(c => c.CharacterSheet.CharacterSheetName.Contains(searchtext)
+                                                || c.CharacterSheet.CharacterSheetTheme.Contains(searchtext)
+                                                || c.User.UserName.Contains(searchtext));
 
             ViewBag.SearchText = searchtext;
 

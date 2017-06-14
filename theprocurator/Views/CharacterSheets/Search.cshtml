@@ -20,7 +20,8 @@
     @Html.ActionLink("Create a Character Sheet", "Create")
 </p>
 <table class="table">
-    <tr>        
+    <tr>     
+        <th></th>   
         <th>
             Name
         </th>
@@ -40,6 +41,11 @@
 {
     <tr>
         <td>
+            <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })">
+                <img class="img-responsive img-thumbnail" src="~/Content/CharacterSheet/Thumbnails/@(item.CharacterSheetId).png" />
+            </a>
+        </td>
+        <td>
             <p>@Html.DisplayFor(modelItem => item.CharacterSheetName)</p>
             <h6>
             @if (item.ParentId != Guid.Empty) { <p class="small">this sheet is a copy of @item.ParentId</p>}
@@ -55,12 +61,11 @@
         <td>
             @( @String.IsNullOrEmpty(item.CharacterSheetTheme) ? "default" : @item.CharacterSheetTheme )
         </td>                
-        <td>            
-            <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId })" target="_blank" class="btn btn-info btn-xs preview"><span class="glyphicon glyphicon-eye-open"></span> View Sheet</a>
-            @if (item.User.UserName != User.Identity.Name)
-            { 
-                <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span> Add to Collection</a> 
-            }
+        <td>
+            <div class="btn-group-sm btn-group-vertical">
+                <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View Sheet</a>                
+                <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default @((item.User.UserName == User.Identity.Name) ? "disabled" : "")"><span class="glyphicon @((item.User.UserName == User.Identity.Name) ? "glyphicon-ok" : "glyphicon-plus")"></span> @((item.User.UserName == User.Identity.Name) ? "In Your Collection" : "Add to Collection")</a>                
+            </div>
         </td>
     </tr>
 }
