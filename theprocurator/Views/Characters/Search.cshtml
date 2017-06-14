@@ -39,18 +39,18 @@
 @foreach (var item in Model)
 {
     <tr>
-        <td style="max-width: 60px;">
-            <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })">
+        <td>
+            <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId })">
                 @{
                     string image = Regex.Match(item.CharacterData, @"([\w-_ $#@!_]+)(.jpg|.png)", RegexOptions.Singleline).Value;
                 }
                 @if (!String.IsNullOrEmpty(image))
                 {
-                    <img class="img-responsive" src="~/Content/Character/@item.CharacterId/@image" />
+                    <img class="img-responsive img-thumbnail" src="~/Content/Character/@item.CharacterId/@image" />
                 }
                 else
                 {
-                    <img class="img-responsive" src="~/Content/Images/Character-Default.png" />
+                    <img class="img-responsive img-thumbnail" src="~/Content/Images/Character-Default.png" />
                 }
             </a>
         </td>
@@ -64,8 +64,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.CharacterSheet.CharacterSheetName)
         </td>
-        <td>           
-            <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId })" target="_blank" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+        <td>
+            <div class="btn-group-sm btn-group-vertical btn-group-justified">
+                <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+            </div>
         </td>
     </tr>
 }

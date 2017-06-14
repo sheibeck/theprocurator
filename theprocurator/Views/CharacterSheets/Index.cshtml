@@ -26,15 +26,17 @@
         </th>
         <th>
             Theme
-        </th>                
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <th>
-            <img class="img-responsive" src="~/Content/CharacterSheet/Thumbnails/@(item.CharacterSheetId).png" />
-        </th>
+        <td>
+            <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })">
+                <img class="img-responsive img-thumbnail" src="~/Content/CharacterSheet/Thumbnails/@(item.CharacterSheetId).png" />       
+            </a>       
+        </td>
         <td>
             <p>@Html.DisplayFor(modelItem => item.CharacterSheetName)</p>
             <p class="small">edited: @item.UpdatedOn</p>
@@ -49,11 +51,13 @@
             @( @String.IsNullOrEmpty(item.CharacterSheetTheme) ? "default" : @item.CharacterSheetTheme )
         </td>                
         <td>
-            <a href="@Url.Action("Create", "Characters", new { id = item.CharacterSheetId })" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-user"></span> Create Character</a>
-            <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-            <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId })" target="_blank" class="btn btn-info btn-xs preview"><span class="glyphicon glyphicon-print"></span> Print</a>               
-            <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-copy"></span> Copy</a>
-            <a href="@Url.Action("Delete", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+            <div class="btn-group-sm btn-group-vertical">
+                <a href="@Url.Action("Create", "Characters", new { id = item.CharacterSheetId })" class="btn btn-success"><span class="glyphicon glyphicon-user"></span> Create Character</a>
+                <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-print"></span> Print</a>
+                <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> Copy</a>
+                <a href="@Url.Action("Delete", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+            </div>
         </td>
     </tr>
 }

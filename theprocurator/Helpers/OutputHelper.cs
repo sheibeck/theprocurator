@@ -53,15 +53,7 @@ namespace theprocurator.Helpers
            
             var filePath = HttpContext.Current.Server.MapPath(String.Format("~/Content/CharacterSheet/Thumbnails/{0}.png", id));
 
-
-#if DEBUG
-            string url = String.Format("http://api.screenshotmachine.com/?key=f9b7da&dimension=640x480&format=png&cacheLimit=1&url=null)", GetBaseUrl(), id);
-#endif
-
-#if !DEBUG
-            string url = String.Format("http://api.screenshotmachine.com/?key=f9b7da&dimension=640x480&format=png&cacheLimit=1&url=http://{0}/CharacterSheets/Print/{1})", GetBaseUrl(), id);
-#endif
-
+            string url = String.Format("http://api.screenshotmachine.com/?key=f9b7da&dimension=640x480&format=png&cacheLimit=0&timeout=800&url={0}CharacterSheets/Print/{1}", GetBaseUrl(), id);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.GZip;
