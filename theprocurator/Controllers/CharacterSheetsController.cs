@@ -24,6 +24,7 @@ namespace theprocurator.Controllers
         private TheProcuratorDbContext db = new TheProcuratorDbContext();
 
         // GET: CharacterSheets
+        [AllowAnonymous]
         public ActionResult Index()
         {
             string currentUserId = IdentityExtensions.GetUserId(this.User.Identity);
@@ -36,6 +37,7 @@ namespace theprocurator.Controllers
             return View(characterSheet.ToList());
         }
 
+        [AllowAnonymous]
         public ActionResult Search(string searchtext)
         {
             var characterSheet = db.CharacterSheet
@@ -43,9 +45,9 @@ namespace theprocurator.Controllers
                                     .Include(c => c.User)
                                     .OrderBy(c => c.CharacterSheetName)
                                     .Where(c => c.Published == true)
-                                    .Where(c => c.CharacterSheetName.Contains(searchtext))                                    
-                                    .Where(c => c.CharacterSheetTheme.Contains(searchtext))
-                                    .Where(c => c.User.UserName.Contains(searchtext));
+                                    .Where(c => c.CharacterSheetName.Contains(searchtext)                                    
+                                                || c.CharacterSheetTheme.Contains(searchtext)
+                                                || c.User.UserName.Contains(searchtext));
 
             ViewBag.SearchText = searchtext;
 
@@ -89,7 +91,8 @@ namespace theprocurator.Controllers
             characterSheet.Published = false;
             characterSheet.UpdatedOn = DateTime.Now;
             db.CharacterSheet.Add(characterSheet);
-            db.SaveChanges();
+
+            SaveDBChanges(characterSheet.CharacterSheetId);
 
             return RedirectToAction("Edit", new { id = characterSheet.CharacterSheetId })
                     .WithNotification("Character sheet was added to your collection.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
@@ -127,6 +130,7 @@ namespace theprocurator.Controllers
             return db.SaveChanges();
         }
 
+        [AllowAnonymous]
         public ActionResult Print(Guid id)
         {
             if (id == null)
@@ -208,6 +212,16 @@ namespace theprocurator.Controllers
                 db.Character.RemoveRange(chars);
                 db.CharacterSheet.Remove(characterSheet);
                 db.SaveChanges();
+
+                var thumbDir = Server.MapPath("~/Content/CharacterSheet/Thumbnails/");
+                var path = Path.Combine(thumbDir, id.ToString());
+
+                FileInfo fi = new FileInfo(path);
+
+                if (fi.Exists)
+                {
+                    fi.Delete();
+                }
 
                 return RedirectToAction("Index").WithNotification("Character sheet deleted.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
             }

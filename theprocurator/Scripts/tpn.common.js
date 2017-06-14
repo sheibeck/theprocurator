@@ -80,10 +80,10 @@
                 if (file.size > 0) {
 
                     if (validateFile(file)) {
-                        var fileId = guid();
+                        var characterId = $("#CharacterId").val();
 
-                        uploadFile(entry[0], fileId);
-                        result[entry[0]] = fileId + "_" + entry[1].name;
+                        uploadFile(entry[0], characterId);
+                        result[entry[0]] = entry[1].name;
 
                         tpn_common.config.reloadUI = true; //force reload after the save so the image shows up
                     }
@@ -131,7 +131,7 @@
           s4() + '-' + s4() + s4() + s4();
     }
 
-    function uploadFile(inputId, fileId) {
+    function uploadFile(inputId, characterId) {
         var $file = $("#" + inputId);
         var formData = new FormData();            
         var totalFiles = $file.get(0).files.length;
@@ -140,7 +140,7 @@
             formData.append("FileUpload", file);
         }
 
-        formData.append("id", fileId);
+        formData.append("id", characterId);
 
         $.ajax({
             type: "POST",
@@ -162,6 +162,7 @@
     tpn_common.deleteFile = function($image) {              
         var formData = new FormData();       
         formData.append("fileName", $image.data("image"));
+        formData.append("id", $("#CharacterId").val())
 
         $.ajax({
             type: "POST",

@@ -42,15 +42,9 @@
             </div>  
             
             <div class="col-md-3">
-                <div class="input-group input-group-sm">
-                    <div class="btn-group btn-group-sm" data-toggle="buttons">                        
-                        <label class="btn btn-primary @(Model.Published ? "" : "active")">
-                            <input type="radio" autocomplete="off"> Private
-                        </label>
-                        <label class="btn btn-primary @(Model.Published ? "active" : "")">
-                            <input type="radio" id="Published" name="Published" checked autocomplete="off"> Published
-                        </label>
-                    </div>
+                <div class="input-group input-group-sm">                   
+                    <span class="input-group-addon" id="basic-addon1">Published?</span>
+                    <input type="checkbox" class="form-control" id="Published" name="Published" @(Model.Published ? "checked" : "")>                    
                 </div>
                 @Html.ValidationMessageFor(model => model.Published, "", new { @class = "text-danger" })
             </div>

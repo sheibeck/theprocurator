@@ -11,6 +11,7 @@
     <form id="meta-data">
         <div class="form-group">            
             @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.CharacterId)
             @Html.HiddenFor(model => model.CharacterSheetId)
             @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetForm)
             @Html.HiddenFor(model => model.CharacterSheet.CharacterSheetTheme)

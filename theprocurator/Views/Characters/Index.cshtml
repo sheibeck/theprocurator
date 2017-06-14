@@ -29,18 +29,18 @@
 @foreach (var item in Model)
 {
     <tr>
-        <td style="max-width: 60px;">
+        <td>
             <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })">
                 @{
-                    string image = Regex.Match(item.CharacterData, @"([a-zA-z0-9]{8})-([a-zA-z0-9]{4})-([a-zA-z0-9]{4})-([a-zA-z0-9]{4})-([a-zA-z0-9]{12})_.+.(jpg|png)", RegexOptions.Singleline).Value;
+                    string image = Regex.Match(item.CharacterData, @"([\w-_ $#@!_]+)(.jpg|.png)", RegexOptions.Singleline).Value;
                 }
                 @if (!String.IsNullOrEmpty(image))
                 {
-                    <img class="img-responsive" src="~/Content/Character/Images/@image" />
+                    <img class="img-responsive img-thumbnail" src="~/Content/Character/@item.CharacterId/@image" />
                 }
                 else
                 {
-                    <img class="img-responsive" src="~/Content/Images/Character-Default.png" />
+                    <img class="img-responsive img-thumbnail" src="~/Content/Images/Character-Default.png" />
                 }
             </a>
         </td>
@@ -55,10 +55,12 @@
             @Html.DisplayFor(modelItem => item.CharacterSheet.CharacterSheetName)
         </td>
         <td>
-            <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-            <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId })" target="_blank" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-print"></span> Print</a>
-            <a href="@Url.Action("Copy", "Characters", new { id = item.CharacterId })" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-copy"></span> Copy</a>
-            <a href="@Url.Action("Delete", "Characters", new { id = item.CharacterId })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+            <div class="btn-group-sm btn-group-vertical">
+                <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-print"></span> Print</a>
+                <a href="@Url.Action("Copy", "Characters", new { id = item.CharacterId })" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> Copy</a>
+                <a href="@Url.Action("Delete", "Characters", new { id = item.CharacterId })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+            </div>
         </td>
     </tr>
 }

@@ -21,7 +21,7 @@
         //show the character sheet form right off the bat
         window.setTimeout(function () {            
             tpn_char.renderFormeo(tpn_char.loadCharacter);
-        }, 1000);
+        }, 1000);    
     };
 
 
@@ -85,7 +85,7 @@
                                 case 'file':
                                     if (data[key]) {
                                         $('#' + key).after('<a href="#" class="remove-image js-no-print" data-input-id="' + key + '" data-image="' + data[key] + '">[remove]</a>')
-                                                    .after('<img class="img-responsive" src="/Content/Character/Images/' + data[key] + '" alt="' + data[key] + '" />');
+                                                    .after('<img class="img-responsive" src="/Content/Character/' + $("#CharacterId").val() + "/" + data[key] + '" alt="' + data[key] + '" />');
                                         $('#' + key).prev().remove(); // hide the upload label
                                         $('#' + key).after("<input type='hidden' name='" + key + "' id='" + key + "' value='" + data[key] + "' />"); // add a hidden input so we keep the current value
                                         $('input[type=file][id=' + key + ']').remove(); // hide the upload control
@@ -120,6 +120,7 @@
         if (jsonData) {
             var data = {
                 'CharacterSheetId': metaData.get('CharacterSheetId'),
+                'CharacterId': metaData.get('CharacterId'),
                 'CharacterName': metaData.get('CharacterName'),
                 'CharacterUrl': metaData.get('CharacterUrl'),
                 'ParentId': metaData.get('ParentId') || tpn_common.emptyguid,
