@@ -227,6 +227,7 @@
     <Content Include="Content\images\tpn-full-logo.jpg" />
     <Content Include="Content\images\tpn_header_logo.png" />
     <Content Include="Content\images\tpn_header_logo_2.png" />
+    <Content Include="Content\noty.css" />
     <Content Include="Content\Print.css" />
     <Content Include="Content\theme\default.css" />
     <Content Include="Content\theme\sci-fi.css" />
@@ -254,6 +255,8 @@
     <Content Include="Scripts\noty\layouts\topCenter.js" />
     <Content Include="Scripts\noty\layouts\topLeft.js" />
     <Content Include="Scripts\noty\layouts\topRight.js" />
+    <Content Include="Scripts\noty\noty.js" />
+    <Content Include="Scripts\noty\noty.min.js" />
     <Content Include="Scripts\noty\promise.js" />
     <Content Include="Scripts\noty\themes\default.js" />
     <Content Include="Scripts\tpn.character.js" />

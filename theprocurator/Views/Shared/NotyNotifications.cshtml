@@ -1,19 +1,7 @@
 ﻿@using NotyNotification.Extension
 
-<script src="~/Scripts/noty/jquery.noty.js"></script>
-<script src="~/Scripts/noty/themes/default.js"></script>
-<script src="~/Scripts/noty/layouts/bottom.js"></script>
-<script src="~/Scripts/noty/layouts/bottomCenter.js"></script>
-<script src="~/Scripts/noty/layouts/bottomLeft.js"></script>
-<script src="~/Scripts/noty/layouts/bottomRight.js"></script>
-<script src="~/Scripts/noty/layouts/center.js"></script>
-<script src="~/Scripts/noty/layouts/centerLeft.js"></script>
-<script src="~/Scripts/noty/layouts/centerRight.js"></script>
-<script src="~/Scripts/noty/layouts/inline.js"></script>
-<script src="~/Scripts/noty/layouts/top.js"></script>
-<script src="~/Scripts/noty/layouts/topCenter.js"></script>
-<script src="~/Scripts/noty/layouts/topLeft.js"></script>
-<script src="~/Scripts/noty/layouts/topRight.js"></script>
+<link href="~/Content/noty.css" rel="stylesheet" />
+<script src="~/Scripts/noty/noty.min.js"></script>
 
 <script type="text/javascript">
     function ShowNotification(text, type, layout, modal, timeout) {
@@ -29,20 +17,24 @@
         if (typeof timeout === 'undefined')
         { timeout = 2000; }
 
-        var n = noty({
+        
+        var n = new Noty({
             text: text,
             type: type,
+            theme: 'metroui',
             layout: layout,
             timeout: timeout,
             modal: modal
         });
+
+        n.show();
     }
 </script>
 
 @foreach (var notification in Html.Notifications().Current)
 {
     <script type="text/javascript">
-        ShowNotification('@notification.Message',
+        ShowNotification("@Html.Raw(@notification.Message)",
             '@notification.AlertType',
             '@notification.Position',
              @notification.Modal.ToString().ToLower(),

@@ -20,6 +20,7 @@
 /// <reference path="noty/layouts/topcenter.js" />
 /// <reference path="noty/layouts/topleft.js" />
 /// <reference path="noty/layouts/topright.js" />
+/// <reference path="noty/noty.min.js" />
 /// <reference path="noty/promise.js" />
 /// <reference path="noty/themes/default.js" />
 /// <reference path="respond.js" />
