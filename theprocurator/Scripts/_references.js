@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="ajax-loading.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="formeo.min.js" />
 /// <reference path="html2canvas.js" />

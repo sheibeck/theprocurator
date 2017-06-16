@@ -66,3 +66,7 @@
 .btn-group-vertical a {    
     margin-bottom: 2px;
 }
+
+td .btn-group-vertical {
+    max-width: 150px;
+} 

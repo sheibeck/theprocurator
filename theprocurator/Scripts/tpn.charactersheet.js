@@ -61,6 +61,13 @@
     tpn_charsheet.saveSheet = function (formeoObj, metaDataForm) {
         var metaData = new FormData(document.getElementById(metaDataForm));
 
+        var loading = $.loading({
+            tip: "creating screenshot ..."
+            , width: '175px'
+            , imgPath: '/Content/images/ajax-loading.gif'
+        });
+        loading.open();
+
         var data = {
             'CharacterSheetId': metaData.get('CharacterSheetId'),
             'CharacterSheetName': metaData.get('CharacterSheetName'),
@@ -71,8 +78,8 @@
             'CharacterSheetForm': JSON.stringify(JSON.parse(formeoObj.formData)),
             'UserId': metaData.get('UserId')
         }
-
-        tpn_common.ajax(tpn_charsheet.config.controller, data);
+    
+        tpn_common.ajax(tpn_charsheet.config.controller, data, function () { loading.close(); });
       
     };
 
