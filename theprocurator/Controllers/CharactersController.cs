@@ -163,8 +163,8 @@ namespace theprocurator.Controllers
             if (id == Guid.Empty)
             {
                 return RedirectToAction("Index", "CharacterSheets")
-                    .WithNotification(string.Format("Choose a sheet from your collection and press the CREATE CHARACTER button"),
-                        NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.information, 5000, true, true);
+                    .WithNotification("Choose a sheet from your collection and press the <a href='' class='btn btn-success btn-xs'><span class='glyphicon glyphicon-user'></span> Create Character</a> button.",
+                        NotyNotification.Model.Position.center, NotyNotification.Model.AlertType.information, 3000, true, false);
             }
 
             var character = new Character();
