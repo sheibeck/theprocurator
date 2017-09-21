@@ -1,0 +1,76 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Oswald');
+
+
+.stage-wrap
+, .formeo-render {
+    font-family: 'Oswald', sans-serif;
+    background-image: url('/Content/theme/star-trek/character_sheet_background_alt.png');
+    background-repeat: no-repeat;
+}
+
+.stage-wrap *
+, .formeo-render * {
+    font-family: 'Oswald', sans-serif;
+}
+
+.stage-wrap H1
+, .formeo-render H1 {
+    color: gold !important;
+    text-transform: uppercase;
+    font-family: Oswald
+}
+
+.stage-wrap H3
+, .formeo-render H3 {
+    color: purple !important;
+    text-transform: uppercase;
+    font-family: Oswald;
+}
+
+h3::after {
+    content: " ";
+    position: relative;
+    display: inline-block;
+    background-color: gold;
+    white-space: pre;
+    width: 50%;
+    height: 12px;
+    vertical-align: middle;
+     -moz-border-radius: 0 6px 6px 0;
+    border-radius: 0 6px 6px 0; /* standards-compliant: (IE) */
+}
+
+h3::before {
+    content: " ";
+    position: relative;
+    display: inline-block;
+    background-color: gold;
+    white-space: pre;
+    width: 25px;
+    height: 12px;
+    vertical-align: middle;
+      -moz-border-radius: 6px 0px 0 6px;
+    border-radius: 6px 0px 0 6px; /* standards-compliant: (IE) */
+}
+
+.stage-wrap label
+, .formeo-render label {
+    color: mediumpurple !important;
+    text-transform: uppercase;
+    font-family: Oswald
+}
+
+.f-checkbox label
+, .f-radio label {
+    font-size: 1.0em;
+    font-weight: 500;
+}
+
+.f-row.page-break .f-render-column {
+    border: none !important;
+}
+
+/* the first column in every row is reserved for the background hud*/
+.f-row .f-render-column:first-child {
+    width: 135px !important;
+}

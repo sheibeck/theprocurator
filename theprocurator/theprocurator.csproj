@@ -230,6 +230,7 @@
     <Content Include="Content\noty.css" />
     <Content Include="Content\Print.css" />
     <Content Include="Content\theme\default.css" />
+    <Content Include="Content\theme\star-trek.css" />
     <Content Include="Content\theme\sci-fi.css" />
     <Content Include="Content\theme\fantasy.css" />
     <Content Include="favicon.ico" />
@@ -326,6 +327,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\theme\star-trek\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

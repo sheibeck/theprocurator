@@ -70,3 +70,7 @@
 td .btn-group-vertical {
     max-width: 150px;
 } 
+
+@media print {
+  -webkit-print-color-adjust: exact;
+}
