@@ -190,7 +190,9 @@
         })
 
         if (tpn_common.config.routeaction.toLowerCase() === 'print') {
-            $('input[type=file]').prev('label').remove();
+            // drop a placeholder so we can still style this area if we want
+            $('input[type=file]').before("<div class=" + $('input[type=file]').attr("class") + "></div>");
+            //$('input[type=file]').prev('label').remove();            
             $('input[type=file]').remove();
         }
     }
