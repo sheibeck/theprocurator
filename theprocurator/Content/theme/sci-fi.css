@@ -27,10 +27,13 @@
     padding: 5px !important;
     border: 1px double #ccc;
     -moz-border-radius: 5px;
-    border-radius: 5px;
-    margin: 2px;
+    border-radius: 5px;   
 }
 
 .f-row.page-break .f-render-column {
     border: none !important;
+}
+
+h3 {
+    margin: 0px !important;
 }
