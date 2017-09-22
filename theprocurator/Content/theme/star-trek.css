@@ -1,0 +1,80 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Oswald');
+
+.formeo-render:before {    
+    content: url(/Content/theme/star-trek/character_sheet_background_alt.png);
+    float: left;
+}
+
+.stage-wrap {    
+    background-image: url('/Content/theme/star-trek/character_sheet_background_alt.png');
+    background-repeat: no-repeat;
+    padding-left: 100px;
+}
+
+.stage-wrap *
+, .formeo-render * {
+    font-family: 'Oswald', sans-serif;    
+}
+
+.stage-wrap H1
+, .formeo-render H1 {
+    color: #FF9900 !important;
+    text-transform: uppercase;
+    font-family: Oswald
+}
+
+.stage-wrap H3
+, .formeo-render H3 {
+    color: purple !important;
+    text-transform: uppercase;
+    font-family: Oswald;
+    font-size: 22px;
+}
+
+h3:after {
+    content: " ";
+    position: relative;
+    display: inline-block;
+    background-color: #FF9900 !important;
+    white-space: pre;
+    width: 50px;
+    height: 12px;
+    vertical-align: middle;
+     -moz-border-radius: 0 6px 6px 0;
+    border-radius: 0 6px 6px 0; /* standards-compliant: (IE) */
+}
+
+h3:before {
+    content: " ";
+    position: relative;
+    display: inline-block;
+    background-color: #FF9900 !important;
+    white-space: pre;
+    width: 25px;
+    height: 12px;
+    vertical-align: middle;
+      -moz-border-radius: 6px 0px 0 6px;
+    border-radius: 6px 0px 0 6px; /* standards-compliant: (IE) */
+}
+
+.stage-wrap label
+, .formeo-render label {
+    color: mediumpurple !important;
+    text-transform: uppercase;
+    font-family: Oswald
+}
+
+.f-row.page-break .f-render-column {
+    border: none !important;
+}
+
+.f-render-column .portrait {
+    width: 100% !important;
+    height: 100% !important;
+    float: right;
+    border: solid 1px gray;
+}
+
+.formeo select {
+    padding: .0em .3em !important;
+}
