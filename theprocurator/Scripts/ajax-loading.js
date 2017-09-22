@@ -102,7 +102,7 @@
         textCss += cssArray.join(';');
 
         var html = '<div id="' + opts.id + '" style="' + wrapCss + '">'
-                  +'<img src="' + opts.imgPath + '" style="' + imgCss + '">'
+                  +'<img src="' + opts.imgPath + '" style="' + imgCss + '" alt="loading">'
                   +'<p style="' + textCss + '">' + opts.tip + '</p></div>';
 
         $(document).find('body').append(html);

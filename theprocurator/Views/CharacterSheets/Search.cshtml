@@ -42,7 +42,7 @@
     <tr>
         <td>
             <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })">
-                <img class="img-responsive img-thumbnail" src="~/Content/CharacterSheet/Thumbnails/@(item.CharacterSheetId).png" />
+                <img class="img-responsive img-thumbnail" alt="@item.CharacterSheetName" src="~/Content/CharacterSheet/Thumbnails/@(item.CharacterSheetId).png" />
             </a>
         </td>
         <td>
@@ -63,7 +63,7 @@
         </td>                
         <td>
             <div class="btn-group-sm btn-group-vertical">
-                <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View Sheet</a>                
+                <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId, slug = item.CharacterSheetUrl  })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View Sheet</a>                
                 <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default @((item.User.UserName == User.Identity.Name) ? "disabled" : "")"><span class="glyphicon @((item.User.UserName == User.Identity.Name) ? "glyphicon-ok" : "glyphicon-plus")"></span> @((item.User.UserName == User.Identity.Name) ? "In Your Collection" : "Add to Collection")</a>                
             </div>
         </td>
