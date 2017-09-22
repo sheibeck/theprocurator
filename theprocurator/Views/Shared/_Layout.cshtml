@@ -1,15 +1,34 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P5B2HB');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Online character sheet builder and character manager for table top games." />
+    <meta name="keywords" content="character sheet,character manager,RPG,roleplaying games,tabletop games,character builder,character sheet builder" />
+
     <title>@ViewBag.Title</title>
+    
     @Styles.Render("~/Content/css")
     @RenderSection("theme", false)
     
     @Scripts.Render("~/bundles/modernizr")     
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P5B2HB"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

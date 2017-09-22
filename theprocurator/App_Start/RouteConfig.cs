@@ -15,9 +15,10 @@ namespace theprocurator
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
+                url: "{controller}/{action}/{id}/{slug}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, slug = UrlParameter.Optional }
             );
+
         }
     }
 }

@@ -36,11 +36,11 @@
                 }
                 @if (!String.IsNullOrEmpty(image))
                 {
-                    <img class="img-responsive img-thumbnail" src="~/Content/Character/@item.CharacterId/@image" />
+                    <img class="img-responsive img-thumbnail" alt="@item.CharacterName" src="~/Content/Character/@item.CharacterId/@image" />
                 }
                 else
                 {
-                    <img class="img-responsive img-thumbnail" src="~/Content/Images/Character-Default.png" />
+                    <img class="img-responsive img-thumbnail" alt="default image" src="~/Content/Images/Character-Default.png" />
                 }
             </a>
         </td>
@@ -57,7 +57,7 @@
         <td>
             <div class="btn-group-sm btn-group-vertical">
                 <a href="@Url.Action("Edit", "Characters", new { id = item.CharacterId })" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-print"></span> Print</a>
+                <a href="@Url.Action("Print", "Characters", new { id = item.CharacterId, slug = item.CharacterUrl })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View</a>
                 <a href="@Url.Action("Copy", "Characters", new { id = item.CharacterId })" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> Copy</a>
                 <a href="@Url.Action("Delete", "Characters", new { id = item.CharacterId })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
             </div>
