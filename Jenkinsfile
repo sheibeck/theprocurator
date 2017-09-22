@@ -4,7 +4,7 @@ node {
 
 	stage 'Build'
 		bat 'nuget restore theprocurator.sln'
-		bat "\"${tool 'MSBuild'}\" theprocurator.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+		bat "\"${tool 'MSBuild'}\" theprocurator.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 
 	stage 'Archive'
 		archive 'theprocurator/**'
