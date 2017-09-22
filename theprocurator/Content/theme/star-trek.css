@@ -1,21 +1,24 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Oswald');
 
+.formeo-render:before {    
+    content: url(/Content/theme/star-trek/character_sheet_background_alt.png);
+    float: left;
+}
 
-.stage-wrap
-, .formeo-render {
-    font-family: 'Oswald', sans-serif;
+.stage-wrap {    
     background-image: url('/Content/theme/star-trek/character_sheet_background_alt.png');
     background-repeat: no-repeat;
+    padding-left: 100px;
 }
 
 .stage-wrap *
 , .formeo-render * {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Oswald', sans-serif;    
 }
 
 .stage-wrap H1
 , .formeo-render H1 {
-    color: gold !important;
+    color: #FF9900 !important;
     text-transform: uppercase;
     font-family: Oswald
 }
@@ -25,26 +28,27 @@
     color: purple !important;
     text-transform: uppercase;
     font-family: Oswald;
+    font-size: 22px;
 }
 
-h3::after {
+h3:after {
     content: " ";
     position: relative;
     display: inline-block;
-    background-color: gold;
+    background-color: #FF9900 !important;
     white-space: pre;
-    width: 50%;
+    width: 50px;
     height: 12px;
     vertical-align: middle;
      -moz-border-radius: 0 6px 6px 0;
     border-radius: 0 6px 6px 0; /* standards-compliant: (IE) */
 }
 
-h3::before {
+h3:before {
     content: " ";
     position: relative;
     display: inline-block;
-    background-color: gold;
+    background-color: #FF9900 !important;
     white-space: pre;
     width: 25px;
     height: 12px;
@@ -60,17 +64,17 @@ h3::before {
     font-family: Oswald
 }
 
-.f-checkbox label
-, .f-radio label {
-    font-size: 1.0em;
-    font-weight: 500;
-}
-
 .f-row.page-break .f-render-column {
     border: none !important;
 }
 
-/* the first column in every row is reserved for the background hud*/
-.f-row .f-render-column:first-child {
-    width: 135px !important;
+.f-render-column .portrait {
+    width: 100% !important;
+    height: 100% !important;
+    float: right;
+    border: solid 1px gray;
+}
+
+.formeo select {
+    padding: .0em .3em !important;
 }
