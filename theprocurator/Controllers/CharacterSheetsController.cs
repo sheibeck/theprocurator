@@ -92,7 +92,7 @@ namespace theprocurator.Controllers
             characterSheet.UpdatedOn = DateTime.Now;
             db.CharacterSheet.Add(characterSheet);
 
-            SaveDBChanges(characterSheet.CharacterSheetId);
+            SaveDBChanges(characterSheet.CharacterSheetId, "false");
 
             return RedirectToAction("Edit", new { id = characterSheet.CharacterSheetId })
                     .WithNotification("Character sheet was added to your collection.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success);
@@ -105,13 +105,13 @@ namespace theprocurator.Controllers
         [HttpPost]
         [ValidateAjax]
         [ValidateJSONAntiForgeryHeader]
-        public ActionResult Edit(CharacterSheet characterSheet)
+        public ActionResult Edit(CharacterSheet characterSheet, string MinorVersion)
         {
             if (ModelState.IsValid && CheckSecurity(characterSheet.UserId))
             {
                 characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Modified;
-                SaveDBChanges(characterSheet.CharacterSheetId);
+                SaveDBChanges(characterSheet.CharacterSheetId, MinorVersion);
 
                 return Json(Helpers.AjaxHelper.Notify("Character sheet saved.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success), JsonRequestBehavior.AllowGet);
             }
@@ -124,9 +124,14 @@ namespace theprocurator.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        private int SaveDBChanges(Guid id)
-        {            
-            this.ToThumbnail(id.ToString());
+        private int SaveDBChanges(Guid id, string MinorVersion)
+        {
+            // if this is a major version change (i.e. they click the save button)
+            // then make a new screenshot
+            if (MinorVersion.ToLower() == "false")
+            {
+                this.ToThumbnail(id.ToString());
+            }
             return db.SaveChanges();
         }
 
@@ -176,7 +181,7 @@ namespace theprocurator.Controllers
             {
                 characterSheet.UpdatedOn = DateTime.Now;
                 db.Entry(characterSheet).State = EntityState.Added;
-                SaveDBChanges(characterSheet.CharacterSheetId);
+                SaveDBChanges(characterSheet.CharacterSheetId, "false");
 
                 return Json(Helpers.AjaxHelper.Notify("Character sheet created.", NotyNotification.Model.Position.topRight, NotyNotification.Model.AlertType.success, false, Url.Action("Edit", "CharacterSheets", new { id = characterSheet.CharacterSheetId })), JsonRequestBehavior.AllowGet);
             }            

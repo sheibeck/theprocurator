@@ -39,9 +39,10 @@
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon" id="basic-addon1">Theme</span>
                     <select id="CharacterSheetTheme" name="CharacterSheetTheme" class="form-control input-sm">
-                        <option value="" id="" @(Model.CharacterSheetTheme == "" ? "Selected" : "")>Default</option>
-                        <option value="sci-fi" @(Model.CharacterSheetTheme == "sci-fi" ? "Selected": "")>Sci-Fi</option>
+                        <option value="" id="" @(Model.CharacterSheetTheme == "" ? "Selected" : "")>Default</option>                                                
                         <option value="fantasy" @(Model.CharacterSheetTheme == "fantasy" ? "Selected": "")>Fantasy</option>
+                        <option value="fate" @(Model.CharacterSheetTheme == "fate" ? "Selected" : "")>Fate</option>
+                        <option value="sci-fi" @(Model.CharacterSheetTheme == "sci-fi" ? "Selected" : "")>Sci-Fi</option>
                         <option value="star-trek" @(Model.CharacterSheetTheme == "star-trek" ? "Selected" : "")>Star Trek</option>
                     </select>
                 </div>
@@ -82,6 +83,7 @@
     @Scripts.Render("~/bundles/formeo")
     @Scripts.Render("~/Scripts/tpn.charactersheet.js")
     @Scripts.Render("~/Scripts/html2canvas.js")
+    @Scripts.Render("~/Content/theme/" + Model.CharacterSheetTheme + "/" + Model.CharacterSheetTheme + ".js")
     
     <script type="text/javascript">
         (function ($) {

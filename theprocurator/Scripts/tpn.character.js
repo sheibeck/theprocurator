@@ -14,7 +14,8 @@
         }
     };
 
-    tpn_char.initFormeo = function (elem) {        
+    tpn_char.initFormeo = function (elem) {
+
         tpn_char.config.formeoOpts.container = elem;
         tpn_char.config.formeo = new Formeo(tpn_char.config.formeoOpts, $('#CharacterSheet_CharacterSheetForm').val());
 
@@ -28,7 +29,8 @@
     tpn_char.renderFormeo = function(callback)
     {
         try {
-            tpn_char.config.formeo.render(tpn_char.config.renderContainer);
+            tpn_char.config.formeo.render(tpn_char.config.renderContainer);            
+
             if (callback)
                 callback();
         }
