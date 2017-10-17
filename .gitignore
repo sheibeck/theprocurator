@@ -297,3 +297,6 @@ theprocurator.Data/bin/
 theprocurator/App_Data/
 theprocurator/Content/Character/
 theprocurator/Content/CharacterSheet/
+theprocurator.dll
+theprocurator.*.dll
+*.dll.config
