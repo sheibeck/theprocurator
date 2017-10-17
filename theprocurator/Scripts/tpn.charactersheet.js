@@ -3,8 +3,9 @@
     tpn_charsheet.config = {
         controller: 'CharacterSheets'           
         , formeo: null
+        , pageLoaded: false
         , renderContainer: document.querySelector('.render-form')
-        , formeoOpts: {        
+        , formeoOpts: {
             controls: {
                 sortable: false,
                 groupOrder: [
@@ -31,9 +32,14 @@
                         'button'
                     ]
                 }
-            },       
+            },
+            events: {
+                formeoLoaded: function () {
+                    tpn_charsheet.config.pageLoaded = true;
+                }
+            },
             svgSprite: tpn_common.getRootUrl() + 'Content/images/formeo-sprite.svg',
-            sessionStorage: true,
+            sessionStorage: false,
             editPanelOrder: ['attrs', 'options'],
             container: 'form-edit',
             style: '/Content/theme/' + ($("#CharacterSheetTheme").val() || 'default') + '.css'
@@ -43,30 +49,37 @@
     tpn_charsheet.initFormeo = function (elem) {
         window.sessionStorage.removeItem('formData');
         tpn_charsheet.config.formeoOpts.container = elem;
-        tpn_charsheet.config.formeo = new Formeo(tpn_charsheet.config.formeoOpts, $('#CharacterSheetForm').val());
-        
+        tpn_charsheet.config.formeo = new Formeo(tpn_charsheet.config.formeoOpts, $('#CharacterSheetForm').val());       
+
         if ($('#CharacterSheetId').val() === tpn_common.emptyguid)
         {
             $('#CharacterSheetId').val(JSON.parse(tpn_charsheet.config.formeo.formData).id);
-        }
+        }        
 
         // keep the toolbar in view        
         $(window).scroll(function () {
-            $(".formeo-controls")
-				.stop()
-				.animate({ "marginTop": ($(window).scrollTop() + 0) + "px" }, "slow");
+            var $controls = $(".formeo-controls");
+            if (parseInt($controls.css("margin-top")) <= $(".stage-wrap").outerHeight())
+            {
+                $controls
+                    .stop()
+                    .animate({ "marginTop": ($(window).scrollTop() + 0) + "px" }, "slow");
+            }
         });               
     };
 
-    tpn_charsheet.saveSheet = function (formeoObj, metaDataForm) {
+    tpn_charsheet.saveSheet = function (formeoObj, metaDataForm, minorVersion) {
         var metaData = new FormData(document.getElementById(metaDataForm));
 
-        var loading = $.loading({
-            tip: "creating screenshot ..."
-            , width: '175px'
-            , imgPath: '/Content/images/ajax-loading.gif'
-        });
-        loading.open();
+        //take a new screenshot if this is not a minor version
+        if (!minorVersion) {
+            var loading = $.loading({
+                tip: "creating screenshot ..."
+                , width: '175px'
+                , imgPath: '/Content/images/ajax-loading.gif'
+            });
+            loading.open();
+        }
 
         var data = {
             'CharacterSheetId': metaData.get('CharacterSheetId'),
@@ -76,10 +89,11 @@
             'ParentId': metaData.get('ParentId') || tpn_common.emptyguid,
             'Published': metaData.get('Published') === "on" ? true : false,
             'CharacterSheetForm': JSON.stringify(JSON.parse(formeoObj.formData)),
-            'UserId': metaData.get('UserId')
+            'UserId': metaData.get('UserId'),
+            'MinorVersion': minorVersion
         }
     
-        tpn_common.ajax(tpn_charsheet.config.controller, data, function () { loading.close(); });
+        tpn_common.ajax(tpn_charsheet.config.controller, data, function () { if (!minorVersion) loading.close(); });
       
     };
 
@@ -92,7 +106,7 @@
     tpn_charsheet.renderFormeo = function()
     {
         try {
-            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);
+            tpn_charsheet.config.formeo.render(tpn_charsheet.config.renderContainer);            
         }
         catch(ex)
         {
@@ -116,7 +130,7 @@
 
         $(document).on('click', 'button.save-form, .js-btn-save', function (e) {
             e.preventDefault();
-            tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data');
+            tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data', false);
             return false;
         });    
 

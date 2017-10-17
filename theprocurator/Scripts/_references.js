@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="../content/theme/fate/fate.js" />
 /// <reference path="ajax-loading.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="formeo.min.js" />
