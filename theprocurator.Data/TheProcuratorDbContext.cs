@@ -47,8 +47,11 @@ namespace theprocurator.Data
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
+
             // Configure Asp Net Identity Tables
-            modelBuilder.Entity<IdentityUser>().ToTable("User");            
+            var user = modelBuilder.Entity<IdentityUser>().ToTable("User");
+            user.HasMany(u => u.Logins).WithRequired().HasForeignKey(ul => ul.UserId);
+
             modelBuilder.Entity<IdentityUser>().Property(u => u.PasswordHash).HasMaxLength(500);
             modelBuilder.Entity<IdentityUser>().Property(u => u.SecurityStamp).HasMaxLength(500);
             modelBuilder.Entity<IdentityUser>().Property(u => u.PhoneNumber).HasMaxLength(50);

@@ -1,0 +1,106 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Work+Sans:700');
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:600');
+
+.stage-wrap *
+, .formeo-render * {
+    font-family: 'Work Sans', sans-serif;
+}
+
+.stage-wrap H1
+, .formeo-render H1 {
+    background-color: #000 !important;
+    color: white !important;
+    padding-top: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    font-weight: 700;
+    text-transform: uppercase;   
+    font-size: 32px;
+}
+
+.stage-wrap label
+, .formeo-render label {
+    font-size: 1.2em;
+}
+
+.f-checkbox label
+, .f-radio label {
+    font-size: 1.0em;
+    font-weight: 500;
+}
+
+.f-row.page-break .f-render-column {
+    border: none !important;
+}
+
+H2 {
+    margin: 0px !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 31px;
+}
+
+.formeo .f-field-group {
+    position: relative;
+    font-weight: 600;
+}
+
+/* float labels to the right */
+.formeo-render .f-field-group>label,
+.stage-fields .field-preview>.f-field-group>label {
+    padding: 1px 6px;
+    color: darkgray;
+    font-size: 0.75em;  
+    position: absolute;
+    width: 100%;
+    text-align: right;
+    z-index: 0;
+    font-weight: 600;
+}
+
+.formeo .f-addon, .formeo input, .formeo select, .formeo textarea {
+    margin-bottom: 2px;
+}
+
+.f-row {
+    margin-bottom: 5px !important;
+}
+
+.stage-fields .field-preview>.f-field-group>label {
+    width: 96% !important;    
+}
+
+.fate-logo:before {
+    content: url('/Content/theme/fate/FAE_logo.png');
+}
+
+.fate-logo {
+    text-align: center;
+    margin-top: 2px;
+}
+
+.logo-fields {
+    width:48%;
+    float:left;
+    margin-left: 5px;  
+}
+
+.field-preview .f-checkbox label
+,.formeo-render .f-checkbox label
+{
+    font-size: 4.0em;    
+}
+
+.field-preview .f-checkbox label:nth-child(2)
+,.formeo-render .f-checkbox label:nth-child(2)
+{
+    margin-right:10px;    
+}
+
+.field-preview  input[type=checkbox]+.checkable
+,.field-preview  input[type=radio]+.checkable {    
+    padding-left: 60px;
+    margin-right: 0px;   
+}

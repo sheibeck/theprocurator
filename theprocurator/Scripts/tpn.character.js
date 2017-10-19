@@ -14,7 +14,8 @@
         }
     };
 
-    tpn_char.initFormeo = function (elem) {        
+    tpn_char.initFormeo = function (elem) {
+
         tpn_char.config.formeoOpts.container = elem;
         tpn_char.config.formeo = new Formeo(tpn_char.config.formeoOpts, $('#CharacterSheet_CharacterSheetForm').val());
 
@@ -28,7 +29,8 @@
     tpn_char.renderFormeo = function(callback)
     {
         try {
-            tpn_char.config.formeo.render(tpn_char.config.renderContainer);
+            tpn_char.config.formeo.render(tpn_char.config.renderContainer);            
+
             if (callback)
                 callback();
         }
@@ -172,6 +174,16 @@
             tpn_common.config.reloadUI = true;
 
             $('.js-btn-save').click();            
+        });
+
+        $("#CharacterName").on('blur', function () {
+            var $this = $(this);
+            if ($("#CharacterUrl").val() === "")
+            {
+                //get url safe character slug
+                var charSlug = $this.val().toLowerCase().replace(/[^a-zA-Z0-9-_]/g, '-');
+                $("#CharacterUrl").val(charSlug);
+            }
         });
     }
 

@@ -35,6 +35,7 @@
                     <select id="CharacterSheetTheme" name="CharacterSheetTheme" class="form-control input-sm">
                         <option value="" id="" @(Model.CharacterSheetTheme == "" ? "Selected" : "")>Default</option>                        
                         <option value="fantasy" @(Model.CharacterSheetTheme == "fantasy" ? "Selected" : "")>Fantasy</option>
+                        <option value="fate" @(Model.CharacterSheetTheme == "fate" ? "Selected" : "")>Fate</option>
                         <option value="sci-fi" @(Model.CharacterSheetTheme == "sci-fi" ? "Selected" : "")>Sci-Fi</option>
                         <option value="star-trek" @(Model.CharacterSheetTheme == "star-trek" ? "Selected" : "")>Star Trek</option>
                     </select>
@@ -58,7 +59,7 @@
 <div class="action-buttons">
     <a href="#" class="btn btn-primary js-btn-save"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
     <a href="@Url.Action("Index", "CharacterSheets")" class="btn btn-default"><span class="glyphicon glyphicon-backward"></span> Cancel</a>
-    <a href="@Url.Action("Print", "CharacterSheets", new { id = Model.CharacterSheetId, slug = Model.CharacterSheetUrl })" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+    <a href="@Url.Action("Print", "CharacterSheets", new { id = Model.CharacterSheetId, slug = Model.CharacterSheetUrl })" class="btn btn-info"><span class="glyphicon glyphicon-print"></span> Print</a>
 
 </div>
 
