@@ -132,7 +132,16 @@
             e.preventDefault();
             tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data', false);
             return false;
-        });    
+        });
+
+        $("#CharacterSheetName").on('blur', function () {
+            var $this = $(this);
+            if ($("#CharacterSheetUrl").val() === "") {
+                //get url safe character slug
+                var charSlug = $this.val().toLowerCase().replace(/[^a-zA-Z0-9-_]/g, '-');
+                $("#CharacterSheetUrl").val(charSlug);
+            }
+        });
 
         window.setTimeout(function () {
             if (tpn_common.config.routeaction.toLowerCase() === 'print') {

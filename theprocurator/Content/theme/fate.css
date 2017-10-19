@@ -87,10 +87,20 @@ H2 {
     margin-left: 5px;  
 }
 
-.f-checkbox label {
+.field-preview .f-checkbox label
+,.formeo-render .f-checkbox label
+{
     font-size: 4.0em;    
 }
-.formeo input[type=checkbox]+.checkable, .formeo input[type=radio]+.checkable {    
+
+.field-preview .f-checkbox label:nth-child(2)
+,.formeo-render .f-checkbox label:nth-child(2)
+{
+    margin-right:10px;    
+}
+
+.field-preview  input[type=checkbox]+.checkable
+,.field-preview  input[type=radio]+.checkable {    
     padding-left: 60px;
-    margin-right: 50px;   
+    margin-right: 0px;   
 }

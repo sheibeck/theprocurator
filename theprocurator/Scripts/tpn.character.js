@@ -175,6 +175,16 @@
 
             $('.js-btn-save').click();            
         });
+
+        $("#CharacterName").on('blur', function () {
+            var $this = $(this);
+            if ($("#CharacterUrl").val() === "")
+            {
+                //get url safe character slug
+                var charSlug = $this.val().toLowerCase().replace(/[^a-zA-Z0-9-_]/g, '-');
+                $("#CharacterUrl").val(charSlug);
+            }
+        });
     }
 
     tpn_char.init = function () {        

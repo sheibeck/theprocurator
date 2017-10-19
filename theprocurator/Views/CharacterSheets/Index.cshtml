@@ -54,7 +54,7 @@
             <div class="btn-group-sm btn-group-vertical">
                 <a href="@Url.Action("Create", "Characters", new { id = item.CharacterSheetId })" class="btn btn-success"><span class="glyphicon glyphicon-user"></span> Create Character</a>
                 <a href="@Url.Action("Edit", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId, slug = item.CharacterSheetUrl })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+                <a href="@Url.Action("Print", "CharacterSheets", new { id = item.CharacterSheetId, slug = item.CharacterSheetUrl })" target="_blank" class="btn btn-info"><span class="glyphicon glyphicon-print"></span> Print</a>
                 <a href="@Url.Action("Copy", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> Copy</a>
                 <a href="@Url.Action("Delete", "CharacterSheets", new { id = item.CharacterSheetId })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
             </div>
