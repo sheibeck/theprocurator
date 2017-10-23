@@ -1,6 +1,6 @@
 ﻿$(function () {
     window.setTimeout(function () {
-        if (tpn_common.config.routeaction.toLowerCase() !== 'print') {
+        if (tpn_common.config.routeaction.toLowerCase() === 'edit') {
             $("textarea.input-half").parent().parent().parent().addClass("logo-fields");
         } else {
             $("textarea.input-half").parent().addClass("logo-fields");
