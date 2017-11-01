@@ -82,10 +82,10 @@ td .btn-group-vertical {
 }
 
 .tpn-search-item .preview {
-    margin: auto;
-    width: 50%;
+    margin: auto;    
     padding-top: 10px;
     padding-bottom: 10px;
+    border: solid 1px lightgray;
 }
 
 .tpn-search-item .details p {
