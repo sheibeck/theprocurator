@@ -15,6 +15,7 @@ using theprocurator.Helpers;
 using System.Drawing;
 using System.IO;
 using HiQPdf;
+using System.Threading.Tasks;
 
 namespace theprocurator.Controllers
 {
@@ -124,13 +125,13 @@ namespace theprocurator.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        private int SaveDBChanges(Guid id, string MinorVersion)
+        private async Task<int> SaveDBChanges(Guid id, string MinorVersion)
         {
             // if this is a major version change (i.e. they click the save button)
             // then make a new screenshot
             if (MinorVersion.ToLower() == "false")
             {
-                this.ToThumbnail(id.ToString());
+                await Task.Run(() => this.ToThumbnail(Request, id.ToString()));                
             }
             return db.SaveChanges();
         }

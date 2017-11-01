@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -48,31 +49,34 @@ namespace theprocurator.Helpers
             return new FileStreamResult(ms, "application/pdf");
         }
 
-        public static void ToThumbnail(this Controller controller, string id)
-        {
-           
-            var filePath = HttpContext.Current.Server.MapPath(String.Format("~/Content/CharacterSheet/Thumbnails/{0}.png", id));
+        public static void ToThumbnail(this Controller controller, HttpRequestBase request, string id)
+        {           
+            var filePath = System.Web.Hosting.HostingEnvironment.MapPath(String.Format("~/Content/CharacterSheet/Thumbnails/{0}.png", id));
 
-            string url = String.Format("http://api.screenshotmachine.com/?key=f9b7da&dimension=640x480&format=png&cacheLimit=0&timeout=800&url={0}CharacterSheets/Print/{1}", GetBaseUrl(), id);
+            string url = String.Format("http://api.screenshotmachine.com/?key=f9b7da&dimension=640x480&format=png&cacheLimit=0&timeout=5000&url={0}CharacterSheets/Print/{1}", GetBaseUrl(request), id);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.AutomaticDecompression = DecompressionMethods.GZip;
-            
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())           
-            using (BinaryReader reader = new BinaryReader(response.GetResponseStream()))
-            {
-                Byte[] lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
-                using (FileStream file = new FileStream(filePath, FileMode.Create))
-                {
-                    file.Write(lnByte, 0, lnByte.Length);
-                }
-            }
-                    
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
+            wr.AutomaticDecompression = DecompressionMethods.GZip;
+
+            WebClient client = new WebClient();            
+            client.DownloadFileAsync(new Uri(url), filePath);
         }
         
         public static string GetBaseUrl()
         {
             var request = HttpContext.Current.Request;
+            var appUrl = HttpRuntime.AppDomainAppVirtualPath;
+
+            if (appUrl != "/")
+                appUrl = "/" + appUrl;
+
+            var baseUrl = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, appUrl);
+
+            return baseUrl;
+        }
+
+        public static string GetBaseUrl(HttpRequestBase request)
+        {            
             var appUrl = HttpRuntime.AppDomainAppVirtualPath;
 
             if (appUrl != "/")
