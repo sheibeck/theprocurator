@@ -45,10 +45,14 @@ namespace theprocurator.Controllers
                                     .Include(c => c.Characters)
                                     .Include(c => c.User)
                                     .OrderBy(c => c.CharacterSheetName)
-                                    .Where(c => c.Published == true)
-                                    .Where(c => c.CharacterSheetName.Contains(searchtext)                                    
+                                    .Where(c => c.Published == true);
+
+            if (!string.IsNullOrEmpty(searchtext))
+            {
+                characterSheet = characterSheet.Where(c => c.CharacterSheetName.Contains(searchtext)
                                                 || c.CharacterSheetTheme.Contains(searchtext)
                                                 || c.User.UserName.Contains(searchtext));
+            }
 
             ViewBag.SearchText = searchtext;
 

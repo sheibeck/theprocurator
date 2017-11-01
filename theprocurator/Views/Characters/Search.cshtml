@@ -11,7 +11,7 @@
     <div class="col-xs-12 col-md-9">
         <small>
             <em>
-                published characters @if (ViewBag.SearchText != "")
+                published characters @if (!string.IsNullOrEmpty(ViewBag.SearchText))
             {<span> matching</span> <strong>'@ViewBag.SearchText'</strong> }
             </em>
         </small>
@@ -19,7 +19,7 @@
 </div>
 
 <p>
-    @Html.ActionLink("Create a Character", "Create", new { id = Guid.Empty })
+    <a href="@Url.Action("Create", "Character", new { id = Guid.Empty })" class="btn btn-success"><span class="glyphicon glyphicon-user"></span> Create a Character</a>
 </p>
 <table class="table">
     <tr>     
