@@ -21,7 +21,7 @@ namespace theprocurator.Controllers
     {
         private TheProcuratorDbContext db = new TheProcuratorDbContext();
 
-        [AllowAnonymous]
+        [Authorize]
         // GET: Characters
         public ActionResult Index()
         {
@@ -36,18 +36,23 @@ namespace theprocurator.Controllers
         [AllowAnonymous]
         public ActionResult Search(string searchtext)
         {
-            var characterSheet = db.Character
+            var characters = db.Character
                                     .Include(c => c.CharacterSheet)
                                     .Include(c => c.User)
                                     .OrderBy(c => c.CharacterName)
-                                    .Where(c => c.Published == true)
-                                    .Where(c => c.CharacterSheet.CharacterSheetName.Contains(searchtext)
+                                    .Where(c => c.Published == true);                                    
+
+            if (!string.IsNullOrEmpty(searchtext))
+            {
+                characters = characters.Where(c => c.CharacterSheet.CharacterSheetName.Contains(searchtext)
                                                 || c.CharacterSheet.CharacterSheetTheme.Contains(searchtext)
-                                                || c.User.UserName.Contains(searchtext));
+                                                || c.User.UserName.Contains(searchtext)
+                                                || c.CharacterName.Contains(searchtext));
+            }
 
             ViewBag.SearchText = searchtext;
 
-            return View(characterSheet.ToList());
+            return View(characters.ToList());
         }
 
 
@@ -131,12 +136,6 @@ namespace theprocurator.Controllers
                     DirectoryCopy(subdir.FullName, temppath, copySubDirs);
                 }
             }
-        }
-
-        public FileStreamResult Pdf(Guid id)
-        {
-            Character character = db.Character.Find(id);            
-            return this.PrintToPdf(id.ToString(), character.CharacterName);
         }
 
         [AllowAnonymous]

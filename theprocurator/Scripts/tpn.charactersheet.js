@@ -1,7 +1,7 @@
 ﻿(function (tpn_charsheet, $, undefined) {
 
     tpn_charsheet.config = {
-        controller: 'CharacterSheets'           
+        controller: 'CharacterSheets'        
         , formeo: null
         , pageLoaded: false
         , renderContainer: document.querySelector('.render-form')
@@ -132,6 +132,10 @@
             e.preventDefault();
             tpn_charsheet.saveSheet(tpn_charsheet.config.formeo, 'meta-data', false);
             return false;
+        });
+
+        $("#CharacterSheetTheme").on('change', function () {
+            tpn_common.config.reloadUI = true;
         });
 
         $("#CharacterSheetName").on('blur', function () {

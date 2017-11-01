@@ -70,3 +70,26 @@
 td .btn-group-vertical {
     max-width: 150px;
 }
+
+.tpn-search-item {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 10px
+}
+
+.tpn-search-item .title {
+    font-size: 1.5em;
+}
+
+.tpn-search-item .preview {
+    margin: auto;    
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid 1px lightgray;
+}
+
+.tpn-search-item .details p {
+    margin: 2px;
+    font-style: italic;
+    color: gray;
+}

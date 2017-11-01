@@ -42,11 +42,7 @@
                 </a>
                 &nbsp;
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">                    
-                    <li>@Html.ActionLink("Character Sheets", "Index", "CharacterSheets")</li>
-                    <li>@Html.ActionLink("Characters", "Index", "Characters")</li>
-                </ul>
+            <div class="navbar-collapse collapse">               
                 @Html.Partial("_LoginPartial")
                 <form class="navbar-form navbar-right navbar-collapse collapse" role="search" method="post" action="/CharacterSheets/Search">
                     <div class="form-group">
