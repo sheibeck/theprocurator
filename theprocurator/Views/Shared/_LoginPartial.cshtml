@@ -4,7 +4,8 @@
     <ul class="nav navbar-nav">
         <li>@Html.ActionLink("My Character Sheets", "Index", "CharacterSheets")</li>
         <li>@Html.ActionLink("My Characters", "Index", "Characters")</li>
-    </ul>
+        <li><a href="https://www.patreon.com/darktierstudios" data-patreon-widget-type="become-patron-button"><img class="img-responsive" style="max-height: 25px;" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" alt="Support us on Patreon!"></a></li>
+   </ul>
 
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
@@ -24,6 +25,9 @@
 }
 else
 {
+    <ul class="nav navbar-nav">
+        <li><a href="https://www.patreon.com/darktierstudios" data-patreon-widget-type="become-patron-button"><img class="img-responsive" style="max-height: 25px;" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" alt="Support us on Patreon!"></a></li>
+    </ul>
     <ul class="nav navbar-nav navbar-right navbar-collapse collapse">
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
