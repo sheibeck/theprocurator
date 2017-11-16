@@ -135,7 +135,9 @@
         });
 
         $("#CharacterSheetTheme").on('change', function () {
-            tpn_common.config.reloadUI = true;
+            if (tpn_common.config.routeaction.toLowerCase() === "edit") {
+                tpn_common.config.reloadUI = true;
+            }
         });
 
         $("#CharacterSheetName").on('blur', function () {

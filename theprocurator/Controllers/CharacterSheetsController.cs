@@ -129,15 +129,25 @@ namespace theprocurator.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        private async Task<int> SaveDBChanges(Guid id, string MinorVersion)
+        private int SaveDBChanges(Guid id, string MinorVersion)
+        {
+            // if this is a major version change (i.e. they click the save button)
+            // then make a new screenshot
+            UpdateThumbnail(id, MinorVersion);
+
+            return db.SaveChanges();
+        }
+
+        private async Task<int> UpdateThumbnail(Guid id, string MinorVersion)
         {
             // if this is a major version change (i.e. they click the save button)
             // then make a new screenshot
             if (MinorVersion.ToLower() == "false")
             {
-                await Task.Run(() => this.ToThumbnail(Request, id.ToString()));                
+                await Task.Run(() => this.ToThumbnail(Request, id.ToString()));
             }
-            return db.SaveChanges();
+
+            return 1;
         }
 
         [AllowAnonymous]
