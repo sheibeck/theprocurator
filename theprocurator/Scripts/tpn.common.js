@@ -4,6 +4,7 @@
 
     tpn_common.config = {
         routeaction: null
+        , controller: null
         , reloadUI: false
     }
 

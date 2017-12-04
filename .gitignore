@@ -296,6 +296,7 @@ packages/
 theprocurator.Data/bin/
 theprocurator/App_Data/
 theprocurator/Content/Character/
+theprocurator/Content/Characters/
 theprocurator/Content/CharacterSheet/
 theprocurator.dll
 theprocurator.*.dll
