@@ -94,8 +94,8 @@ namespace theprocurator.Controllers
 
         private void CopyAssetDirectory(Guid characterId, Guid parentId)
         {
-            var SourcePath = Server.MapPath(String.Format("~/Content/Character/{0}", parentId));
-            var DestinationPath = Server.MapPath(String.Format("~/Content/Character/{0}", characterId));
+            var SourcePath = Server.MapPath(String.Format("~/Content/Characters/{0}", parentId));
+            var DestinationPath = Server.MapPath(String.Format("~/Content/Characters/{0}", characterId));
 
             DirectoryCopy(SourcePath, DestinationPath, true);
         }
@@ -199,7 +199,7 @@ namespace theprocurator.Controllers
             {
 
                 // create an asset directory for the character
-                var charDir = Server.MapPath(string.Format("~/Content/Character/{0}", character.CharacterId));
+                var charDir = Server.MapPath(string.Format("~/Content/Characters/{0}", character.CharacterId));
                 if (!Directory.Exists(charDir))
                 {
                     Directory.CreateDirectory(charDir);
@@ -255,7 +255,7 @@ namespace theprocurator.Controllers
                         // get a stream
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk                        
-                        var imageDir = Server.MapPath(String.Format("~/Content/Character/{0}", id));
+                        var imageDir = Server.MapPath(String.Format("~/Content/Characters/{0}", id));
 
                         if (!Directory.Exists(imageDir))
                         {
@@ -287,7 +287,7 @@ namespace theprocurator.Controllers
         {
             try
             {                
-                var imageDir = Server.MapPath(string.Format("~/Content/Character/{0}", id));
+                var imageDir = Server.MapPath(string.Format("~/Content/Characters/{0}", id));
                 var path = Path.Combine(imageDir, fileName);
 
                 FileInfo fi = new FileInfo(path);
@@ -354,7 +354,7 @@ namespace theprocurator.Controllers
                 db.SaveChanges();
 
                 // cleanup the asset folder
-                var charDir = Server.MapPath(string.Format("~/Content/Character/{0}", id));
+                var charDir = Server.MapPath(string.Format("~/Content/Characters/{0}", id));
                 if (Directory.Exists(charDir))
                 {
                     Directory.Delete(charDir);

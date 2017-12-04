@@ -87,7 +87,7 @@
                                 case 'file':
                                     if (data[key]) {
                                         $('#' + key).after('<a href="#" class="remove-image js-no-print" data-input-id="' + key + '" data-image="' + data[key] + '">[remove]</a>')
-                                                    .after('<img class="img-responsive" src="/Content/Character/' + $("#CharacterId").val() + "/" + data[key] + '" alt="' + data[key] + '" />');                                        
+                                                    .after('<img class="img-responsive" src="/Content/Characters/' + $("#CharacterId").val() + "/" + data[key] + '" alt="' + data[key] + '" />');                                        
                                         $('#' + key).after("<input type='hidden' name='" + key + "' id='" + key + "' value='" + data[key] + "' />"); // add a hidden input so we keep the current value                                                                                
                                         $('input[type=file][id=' + key + ']').remove(); // hide the upload control
                                     }

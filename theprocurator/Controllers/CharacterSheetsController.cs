@@ -70,7 +70,7 @@ namespace theprocurator.Controllers
             return View(characterSheet);
         }
 
-        // POST: Character/Copy
+        // POST: Characters/Copy
         [Authorize]
         public ActionResult Copy(Guid id)
         {
