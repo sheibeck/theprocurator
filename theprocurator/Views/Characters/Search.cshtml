@@ -19,7 +19,7 @@
 </div>
 
 <p>
-    <a href="@Url.Action("Create", "Character", new { id = Guid.Empty })" class="btn btn-success"><span class="glyphicon glyphicon-user"></span> Create a Character</a>
+    <a href="@Url.Action("Create", "Characters", new { id = Guid.Empty })" class="btn btn-success"><span class="glyphicon glyphicon-user"></span> Create a Character</a>
 </p>
 <table class="table">
     <tr>     
@@ -46,7 +46,7 @@
                 }
                 @if (!String.IsNullOrEmpty(image))
                 {
-                    <img class="img-responsive img-thumbnail" src="~/Content/Character/@item.CharacterId/@image" />
+                    <img class="img-responsive img-thumbnail" src="~/Content/Characters/@item.CharacterId/@image" />
                 }
                 else
                 {
