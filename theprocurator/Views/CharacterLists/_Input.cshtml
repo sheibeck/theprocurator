@@ -1,0 +1,74 @@
+﻿@model theprocurator.Data.Model.CharacterList
+@using System.Text.RegularExpressions;
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Character List</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CharacterListId)
+        @Html.HiddenFor(model => model.UserId)        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CharacterListName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CharacterListName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CharacterListName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                @Html.LabelFor(model => model.Characters, htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+            <div class="col-xs-10 tpn-multiselect">
+               
+                    @foreach (var item in ViewBag.CharacterList.Items)
+                    {
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div class="checkbox">
+                                <input name="selectedCharacters" id="selectedCharacters" type="checkbox"
+                                       value="@item.CharacterId" @( (ViewBag.CharacterList.SelectedValues != null) ? ((IEnumerable<Guid>)ViewBag.CharacterList.SelectedValues).Any(c => c == item.CharacterId) ? "checked" : "" : "" ) />
+
+                                <div>
+                                    <div class="col-xs-3">
+                                        @{
+                                            string image = Regex.Match(item.CharacterData, @"([\w-_ $#@!_]+)(.jpg|.png)", RegexOptions.Singleline).Value;
+                                        }
+                                        @if (!String.IsNullOrEmpty(image))
+                                        {
+                                            <img class="img-responsive" src="~/Content/Characters/@item.CharacterId/@image" />
+                                        }
+                                        else
+                                        {
+                                            <img class="img-responsive" src="~/Content/Images/Character-Default.png" />
+                                        }
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <div>
+                                            <a href="~/Characters/Print/@item.CharacterUrl" target="_blank">@item.CharacterName</a>
+                                        </div>
+                                        <div class="small">
+                                            sheet: <a href="" target="_blank">@item.CharacterSheet.CharacterSheetName</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    @Html.ValidationMessageFor(model => model.Characters, "", new { @class = "text-danger" })
+                
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+                                        }

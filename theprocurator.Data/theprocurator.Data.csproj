@@ -156,10 +156,15 @@
     <Compile Include="Migrations\201710201226205_AspNetUserIdentity.Designer.cs">
       <DependentUpon>201710201226205_AspNetUserIdentity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801061748436_CharacterLists.cs" />
+    <Compile Include="Migrations\201801061748436_CharacterLists.Designer.cs">
+      <DependentUpon>201801061748436_CharacterLists.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AccountViewModels.cs" />
     <Compile Include="Model\CharacterHistory.cs" />
     <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\CharacterList.cs" />
     <Compile Include="Model\CharacterSheetHistory.cs" />
     <Compile Include="Model\CharacterSheet.cs" />
     <Compile Include="Model\IdentityModels.cs" />
@@ -205,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710201226205_AspNetUserIdentity.resx">
       <DependentUpon>201710201226205_AspNetUserIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801061748436_CharacterLists.resx">
+      <DependentUpon>201801061748436_CharacterLists.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

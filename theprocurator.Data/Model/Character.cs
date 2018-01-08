@@ -9,7 +9,7 @@ namespace theprocurator.Data.Model
     {
         public Character()
         {
-
+            this.CharacterLists = new HashSet<CharacterList>();
         }
 
         [Key]
@@ -39,9 +39,11 @@ namespace theprocurator.Data.Model
         public DateTime UpdatedOn { get; set; }        
         public bool Published { get; set; }
 
-        // User        
+        // Foreign Keys
+        [Required]
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
+        public virtual ICollection<CharacterList> CharacterLists { get; set; }
     }
 }

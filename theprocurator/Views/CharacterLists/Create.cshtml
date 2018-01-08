@@ -1,0 +1,14 @@
+﻿@model theprocurator.Data.Model.CharacterList
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Character List</h2>
+
+@Html.Partial("~/Views/CharacterLists/_Input.cshtml", Model)
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

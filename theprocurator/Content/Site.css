@@ -93,3 +93,8 @@ td .btn-group-vertical {
     font-style: italic;
     color: gray;
 }
+
+.tpn-multiselect .checkbox {       
+    margin: 5px;
+    padding: 5px;
+}

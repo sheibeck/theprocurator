@@ -12,6 +12,7 @@ namespace theprocurator.Data.Model
     {
         public virtual ICollection<Character> Characters { get; set; }
         public virtual ICollection<CharacterSheet> CharacterSheets { get; set; }
+        public virtual ICollection<CharacterList> CharacterLists { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

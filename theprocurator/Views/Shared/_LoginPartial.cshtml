@@ -2,8 +2,9 @@
 @if (Request.IsAuthenticated)
 {
     <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("My Character Sheets", "Index", "CharacterSheets")</li>
+        <li>@Html.ActionLink("My Sheets", "Index", "CharacterSheets")</li>
         <li>@Html.ActionLink("My Characters", "Index", "Characters")</li>
+        <li>@Html.ActionLink("My Lists", "Index", "CharacterLists")</li>
         <li><a href="https://www.patreon.com/darktierstudios" data-patreon-widget-type="become-patron-button"><img class="img-responsive" style="max-height: 25px;" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" alt="Support us on Patreon!"></a></li>
    </ul>
 
